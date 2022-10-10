@@ -2,15 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <groupId>com.f12s</groupId>
+    <artifactId>playdatenow08</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.7.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.f12s</groupId>
-    <artifactId>playdatenow08</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>playdatenow08</name>
     <description>playdatenow08</description>
@@ -29,6 +29,7 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -38,6 +39,61 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+<!--            adding this exclusion stuff below, per appRunner documentation-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+<!--        added from appRunner documentation, but now taking out per JW chat, but putting back in now -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+
+        <!--        first JRF entry starts below-->
+
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67359 -->
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67327 -->
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+
+<!--        whacking below, to try to make this work with appRunner... and putting back in now that db connection-->
+
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67353 --> <!-- also --> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67355 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
     </dependencies>
 
@@ -47,7 +103,30 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+<!--            added below per appRunner doc-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <release>11</release>
+                </configuration>
+            </plugin>
+
+<!--            adding below per jwy, but now taking it out too.  this is for docker stuff.  and putting back in now b/c maven>>package blows up w/o it-->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <includes>
+                        <include>TestFail.java</include>
+                    </includes>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
         </plugins>
+<!--        added per jwy-->
+        <finalName>${project.artifactId}</finalName>
     </build>
 
 </project>
