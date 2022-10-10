@@ -18,11 +18,73 @@
         <java.version>11</java.version>
     </properties>
     <dependencies>
+<!--       #1-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+<!--        #2-->
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67327 -->
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+
+<!--        #3 add from v04-->
+        <dependency>  <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+            <version>0.30</version>
+        </dependency>
+
+<!--        #4-->
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+
+<!--        #5-->
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+
+<!--        #6-->
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+<!--        #7-->
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67353 --> <!-- also --> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+<!--        #8-->
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67355 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+<!--        #9-->
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67359 -->
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+
+        <!-- DEPENDENCIES FOR STARTING SPRING PROJECTS-->
+<!--        #10-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+<!--        #11-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -30,11 +92,7 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
+<!--        #12-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -48,53 +106,35 @@
             </exclusions>
         </dependency>
 
-<!--        added from appRunner documentation, but now taking out per JW chat, but putting back in now -->
+<!--        #14 add from v04 -->
+
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67370 -->
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+
+<!--        #15 add from v04 -->
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9951/67396 -->
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+
+<!--        #16 add from v04 -->
+        <!-- only commentON below if the app is in fact using the full spring security.  Otherwise, the index page/app will behave like demon possession -->
+
+        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9951/67396 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+<!--        #17-->
+        <!--        added from appRunner documentation, but now taking out per JW chat, but putting back in now -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
         </dependency>
 
-        <!--        first JRF entry starts below-->
-
-        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67359 -->
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-        </dependency>
-
-        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67327 -->
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-
-        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>5.0.1</version>
-        </dependency>
-
-        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-            <version>3.6.0</version>
-        </dependency>
-
-<!--        whacking below, to try to make this work with appRunner... and putting back in now that db connection-->
-
-        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67353 --> <!-- also --> <!-- origin: https://login.codingdojo.com/m/325/9947/67332 -->
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67355 -->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
