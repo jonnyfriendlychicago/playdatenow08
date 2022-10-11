@@ -14,11 +14,11 @@ package com.f12s.playdatenow08.controllers;
 //    }
 //}
 import com.f12s.playdatenow08.dataTransferObjects.UserUpdateDto;
-//import com.jonfriend.playdatenow_v04.models.PlaydateMdl;
 import com.f12s.playdatenow08.models.UserMdl;
-//import com.jonfriend.playdatenow_v04.services.PlaydateSrv;
 import com.f12s.playdatenow08.services.UserSrv;
 import com.f12s.playdatenow08.validator.UserValidator;
+//import com.jonfriend.playdatenow_v04.models.PlaydateMdl;
+//import com.jonfriend.playdatenow_v04.services.PlaydateSrv;
 //import com.jonfriend.playdatenow_v04.services.StateterritorySrv;
 //import com.jonfriend.playdatenow_v04.models.LoginUserMdl;
 //import com.jonfriend.playdatenow_v04.models.UserUpdateMdl;
@@ -51,8 +51,6 @@ import java.util.Date;
 //import java.util.ArrayList;
 //import java.util.HashMap;
 import java.util.List;
-
-
 
 @Controller
 public class IndexhomeprofileCtl {
