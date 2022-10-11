@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.security.SecureRandom;
+
 @Configuration
 public class WebSecurityConfig {
 
@@ -18,7 +20,9 @@ public class WebSecurityConfig {
 
     @Bean
     BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+//        return new BCryptPasswordEncoder();
+        // above replaced by below, per https://stackoverflow.com/questions/51777464/why-is-spring-boot-security-basic-authentication-slow
+        return new BCryptPasswordEncoder(10);
     }
 
     @Bean
