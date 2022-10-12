@@ -20,9 +20,9 @@ public class WebSecurityConfig {
 
     @Bean
     BCryptPasswordEncoder bCryptPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
         // above replaced by below, per https://stackoverflow.com/questions/51777464/why-is-spring-boot-security-basic-authentication-slow
-        return new BCryptPasswordEncoder(1);
+//        return new BCryptPasswordEncoder(1);
     }
 
     @Bean
