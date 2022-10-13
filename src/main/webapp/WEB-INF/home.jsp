@@ -30,7 +30,7 @@
 
     <h2>This is the home screen, I have nothing to say! :-)</h2>
     <h3>This is playdatenow08.  You got this, baby!</h3>
-    <h4>Randy please help me.</h4>
+    <h4>Trying new war file deployment.</h4>
 
 
 </div><!-- end playdateList -->
