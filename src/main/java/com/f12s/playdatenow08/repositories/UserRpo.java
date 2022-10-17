@@ -1,14 +1,9 @@
 package com.f12s.playdatenow08.repositories;
 
-//public interface UserRpo {
-//}
-
+import com.f12s.playdatenow08.models.UserMdl;
 import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
-import com.f12s.playdatenow08.models.UserMdl;
 
 @Repository
 public interface UserRpo extends CrudRepository<UserMdl, Long> {

@@ -1,8 +1,5 @@
 package com.f12s.playdatenow08.models;
 
-//public class PlaydateMdl {
-//}
-
 import java.util.Date;
 import java.util.List;
 

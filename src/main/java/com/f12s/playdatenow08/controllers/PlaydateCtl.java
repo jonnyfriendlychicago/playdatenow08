@@ -1,14 +1,16 @@
 package com.f12s.playdatenow08.controllers;
 
-//public class PlaydateCtl {
-//}
-
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
-
 import javax.validation.Valid;
-
+import com.f12s.playdatenow08.models.UserMdl;
+import com.f12s.playdatenow08.pojos.PlaydateUserUnionRsvpUser;
+import com.f12s.playdatenow08.models.RsvpMdl;
+import com.f12s.playdatenow08.models.PlaydateMdl;
+import com.f12s.playdatenow08.services.RsvpSrv;
+import com.f12s.playdatenow08.services.PlaydateSrv;
+import com.f12s.playdatenow08.services.UserSrv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.f12s.playdatenow08.models.UserMdl;
-import com.f12s.playdatenow08.pojos.PlaydateUserUnionRsvpUser;
-import com.f12s.playdatenow08.models.RsvpMdl;
-import com.f12s.playdatenow08.models.PlaydateMdl;
-import com.f12s.playdatenow08.services.RsvpSrv;
-import com.f12s.playdatenow08.services.PlaydateSrv;
-import com.f12s.playdatenow08.services.UserSrv;
 
 @Controller
 public class PlaydateCtl {
@@ -46,9 +41,7 @@ public class PlaydateCtl {
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         List<PlaydateMdl> playdateList = playdateSrv.returnAll();
         model.addAttribute("playdateList", playdateList);
@@ -63,9 +56,7 @@ public class PlaydateCtl {
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
         model.addAttribute("startTimeList", startTimeList );
@@ -82,9 +73,7 @@ public class PlaydateCtl {
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         if(result.hasErrors()) {
             model.addAttribute("validationErrorMsg", "Uh-oh! Please fix the errors noted below and submit again.  (Or cancel.)");
@@ -105,15 +94,13 @@ public class PlaydateCtl {
     @GetMapping("/playdate/{id}")
     public String displayPlaydate(
             @PathVariable("id") Long playdateId
-            , @ModelAttribute("rsvp") RsvpMdl rsvpObj // enables delivery of a RSVP record on the page
+            , @ModelAttribute("rsvp") RsvpMdl rsvpObj // enables delivery of RSVP record on the page
             , Model model
             , Principal principal
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         PlaydateMdl playdateObj = playdateSrv.findById(playdateId); // display native playdate fields, etc.
 
@@ -167,15 +154,12 @@ public class PlaydateCtl {
     @GetMapping("/playdate/{id}/edit")
     public String editPlaydate(
             @PathVariable("id") Long playdateId
-//			, @ModelAttribute("rsvp") RsvpMdl rsvpMdl
             , Model model
             , Principal principal
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         PlaydateMdl playdateObj = playdateSrv.findById(playdateId);
         model.addAttribute("playdate", playdateObj);
@@ -247,9 +231,7 @@ public class PlaydateCtl {
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         PlaydateMdl playdateObj = playdateSrv.findById(playdateMdl.getId());
 

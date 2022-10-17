@@ -9,7 +9,7 @@
 
 <c:if test="${validationErrorMsg != null}">
     <div class="alert alert-danger" role="alert">
-            ${validationErrorMsg}
+        ${validationErrorMsg}
     </div>
 </c:if>
 <div id="loginCard" class="card p-3 d-md-flex justify-content-center align-items-center">

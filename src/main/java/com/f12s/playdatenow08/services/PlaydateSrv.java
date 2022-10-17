@@ -1,15 +1,11 @@
 package com.f12s.playdatenow08.services;
 
-//public class PlaydateSrv {
-//}
-
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.f12s.playdatenow08.models.PlaydateMdl;
 import com.f12s.playdatenow08.repositories.PlaydateRpo;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PlaydateSrv {
@@ -21,22 +17,22 @@ public class PlaydateSrv {
     @Autowired
     PlaydateRpo playdateRpo;
 
-    // creates one playdate
+    // creates one
     public PlaydateMdl create(PlaydateMdl x) {
         return playdateRpo.save(x);
     }
 
-    // updates one playdate
+    // update one
     public PlaydateMdl update(PlaydateMdl x) {
         return playdateRpo.save(x);
     }
 
-    // delete playdate by id
+    // delete by id
     public void delete(PlaydateMdl x) {
         playdateRpo.delete(x);
     }
 
-    // returns one playdate by id
+    // returns one by id
     public PlaydateMdl findById(Long id) {
         Optional<PlaydateMdl> optionalPlaydate = playdateRpo.findById(id);
         if(optionalPlaydate.isPresent()) {
@@ -46,7 +42,7 @@ public class PlaydateSrv {
         }
     }
 
-    // returns all playdate
+    // returns all
     public List<PlaydateMdl> returnAll(){
         return playdateRpo.findAll();
     }

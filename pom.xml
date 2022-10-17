@@ -106,29 +106,27 @@
             </exclusions>
         </dependency>
 
-<!--        #14 add from v04 -->
-
+<!--        #13 add from v04 -->
         <dependency> <!-- origin: https://login.codingdojo.com/m/325/9948/67370 -->
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
 
-<!--        #15 add from v04 -->
+<!--        #14 add from v04 -->
         <dependency> <!-- origin: https://login.codingdojo.com/m/325/9951/67396 -->
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
 
-<!--        #16 add from v04 -->
+<!--        #15 add from v04 -->
         <!-- only commentON below if the app is in fact using the full spring security.  Otherwise, the index page/app will behave like demon possession -->
-
         <dependency> <!-- origin: https://login.codingdojo.com/m/325/9951/67396 -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-<!--        #17-->
+<!--        #16-->
         <!--        added from appRunner documentation, but now taking out per JW chat, but putting back in now -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

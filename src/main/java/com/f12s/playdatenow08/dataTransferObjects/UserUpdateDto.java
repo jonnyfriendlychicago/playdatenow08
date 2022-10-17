@@ -1,17 +1,10 @@
 package com.f12s.playdatenow08.dataTransferObjects;
 
-//public class UserUpdateDto {
-//}
-
-//import javax.persistence.FetchType;
-//import javax.persistence.JoinColumn;
-//import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class UserUpdateDto {
-
 
     @NotEmpty(message="Username required.")
     @Size(min=3, max=128, message="Username must be between 3 and 30 characters.")

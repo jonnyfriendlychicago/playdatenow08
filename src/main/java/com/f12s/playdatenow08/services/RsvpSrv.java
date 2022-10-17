@@ -1,45 +1,36 @@
 package com.f12s.playdatenow08.services;
 
-//public class RsvpSrv {
-//}
-
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.f12s.playdatenow08.models.RsvpMdl;
 import com.f12s.playdatenow08.pojos.PlaydateUserUnionRsvpUser;
 import com.f12s.playdatenow08.models.PlaydateMdl;
 import com.f12s.playdatenow08.repositories.RsvpRpo;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RsvpSrv {
 
-    // adding the rsvp repository as a dependency
-//	private final RsvpRpo rsvpRpo;
-//	public RsvpSrv(RsvpRpo rsvpRpo) {this.rsvpRpo = rsvpRpo;}
-    // above replaced by below
     @Autowired
     RsvpRpo rsvpRpo;
 
-    // creates one rsvp
+    // creates one
     public RsvpMdl create(RsvpMdl x) {
         return rsvpRpo.save(x);
     }
 
-    // updates one rsvp
+    // updates one
     public RsvpMdl update(RsvpMdl x) {
         return rsvpRpo.save(x);
     }
 
-    // delete rsvp by id
+    // delete  by id
     public void delete(RsvpMdl x) {
         rsvpRpo.delete(x);
     }
 
-    // returns one rsvp by id
+    // returns one  by id
     public RsvpMdl findById(Long id) {
         Optional<RsvpMdl> optionalRsvp = rsvpRpo.findById(id);
         if(optionalRsvp.isPresent()) {
@@ -49,7 +40,7 @@ public class RsvpSrv {
         }
     }
 
-    // returns all rsvp
+    // returns all
     public List<RsvpMdl> returnAll(){
         return rsvpRpo.findAll();
     }

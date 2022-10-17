@@ -1,15 +1,11 @@
 package com.f12s.playdatenow08.repositories;
 
-//public interface PlaydateRpo {
-//}
-
 import java.util.List;
 
+import com.f12s.playdatenow08.models.PlaydateMdl;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
-import com.f12s.playdatenow08.models.PlaydateMdl;
 
 @Repository
 public interface PlaydateRpo extends CrudRepository<PlaydateMdl, Long> {

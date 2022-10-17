@@ -113,6 +113,5 @@
             <button type="submit" class="btn btn-primary w-100">Update</button>
         </div>
     </form:form>
-</div>
-<!-- end profileCard -->
+</div><!-- end profileCard -->
 <jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />

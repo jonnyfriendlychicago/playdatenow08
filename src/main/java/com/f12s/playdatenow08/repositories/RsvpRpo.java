@@ -1,16 +1,12 @@
 package com.f12s.playdatenow08.repositories;
 
-//public interface RsvpRpo {
-//}
-
-import java.util.List;
-
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 import com.f12s.playdatenow08.models.RsvpMdl;
 import com.f12s.playdatenow08.pojos.PlaydateUserUnionRsvpUser;
 import com.f12s.playdatenow08.models.PlaydateMdl;
+import java.util.List;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RsvpRpo extends CrudRepository<RsvpMdl, Long> {

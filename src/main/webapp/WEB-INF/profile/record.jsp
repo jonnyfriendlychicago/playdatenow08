@@ -57,8 +57,7 @@
     <p class="m-0">${userProfile.city} -- ${userProfile.zipCode}</p>
   </div>
 
-</div>
-<!-- end profileCard -->
+</div><!-- end profileCard -->
 
 <div id="userEventsCard"
      class="card p-3 mt-3 d-md-flex justify-content-start">
@@ -74,11 +73,9 @@
     </c:choose>
   </h3>
   <ul class="nav nav-tabs">
-    <li class="nav-item"><a class="nav-link active"
-                            data-bs-toggle="tab" aria-current="page" href="#userEventsUpcoming">Upcoming</a>
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" aria-current="page" href="#userEventsUpcoming">Upcoming</a>
     </li>
-    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
-                            href="#userEventsPast">Previous</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#userEventsPast">Previous</a></li>
   </ul>
 
   <div class="tab-content">
@@ -93,8 +90,7 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="record"
-                   items="${userHostedPlaydateListCurrentPlus}">
+        <c:forEach var="record" items="${userHostedPlaydateListCurrentPlus}">
           <tr>
             <td><a class="text-decoration-none"
                    href="/playdate/${record.id}"> <c:choose>
@@ -107,10 +103,7 @@
             </c:choose>
             </a></td>
             <td>${record.eventStatus}
-            <td><fmt:formatDate value="${record.eventDate}"
-                                pattern="MMMM dd" />, <fmt:formatDate
-                    value="${record.eventDate}" pattern="yyyy" /> @
-                ${record.startTimeTxt}</td>
+            <td><fmt:formatDate value="${record.eventDate}" pattern="MMMM dd" />, <fmt:formatDate value="${record.eventDate}" pattern="yyyy" /> @${record.startTimeTxt}</td>
           </tr>
         </c:forEach>
         </tbody>
@@ -129,8 +122,7 @@
         <tbody>
         <c:forEach var="record" items="${userHostedPlaydateListPast}">
           <tr>
-            <td><a class="text-decoration-none"
-                   href="/playdate/${record.id}"> <c:choose>
+            <td><a class="text-decoration-none" href="/playdate/${record.id}"> <c:choose>
               <c:when test="${record.eventName.length() == 0}">
                 Playdate @ ${record.locationName}
               </c:when>
