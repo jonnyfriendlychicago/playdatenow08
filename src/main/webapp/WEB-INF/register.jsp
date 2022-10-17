@@ -10,7 +10,7 @@
 
 <c:if test="${validationErrorMsg != null}">
     <div class="alert alert-danger" role="alert">
-            ${validationErrorMsg}
+        ${validationErrorMsg}
     </div>
 </c:if>
 <div id="registerCard" class="card p-3 d-md-flex justify-content-center align-items-center">
@@ -87,6 +87,5 @@
 
     <p>Already have account? <a href="/" class="link-primary">Login</a>
         </form:form>
-</div>
-<!-- end registerCard -->
+</div><!-- end registerCard -->
 <jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />

@@ -1,8 +1,5 @@
 package com.f12s.playdatenow08.config;
 
-//public class WebSecurityConfig {
-//}
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,8 +18,6 @@ public class WebSecurityConfig {
     @Bean
     BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
-        // above replaced by below, per https://stackoverflow.com/questions/51777464/why-is-spring-boot-security-basic-authentication-slow
-//        return new BCryptPasswordEncoder(1);
     }
 
     @Bean

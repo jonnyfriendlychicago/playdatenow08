@@ -1,8 +1,5 @@
 package com.f12s.playdatenow08.models;
 
-//public class RoleMdl {
-//}
-
 import java.util.List;
 
 import javax.persistence.Entity;

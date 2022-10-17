@@ -1,8 +1,5 @@
 package com.f12s.playdatenow08.models;
 
-//public class RsvpMdl {
-//}
-
 import java.util.Date;
 
 import javax.persistence.Column;

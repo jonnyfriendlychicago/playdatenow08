@@ -11,8 +11,9 @@
 
 <div id="playdateList" class="container-sm my-5 table-responsive">
 
-    <h2>This is the home screen, I have nothing to say! :-)</h2>
-    <h3>This page has been updated by intelliJ on newly reset JRF mac.</h3>
+    <h2>This is the home screen.</h2>
+    <h3>This web app has been deployed by war file replacement.</h3>
+    <h4>I have nothing more to say! :-)</h4>
 
 </div><!-- end playdateList -->
 <jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />

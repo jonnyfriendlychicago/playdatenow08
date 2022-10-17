@@ -1,33 +1,13 @@
 package com.f12s.playdatenow08.controllers;
 
-// below commentOUT: original appRunner POC
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.GetMapping;
-//
-//@Controller
-//public class IndexhomeprofileCtl {
-//    @GetMapping(value = {"/", "/home"})
-//    public String displayHome(
-//    ) {
-//
-//        return "home.jsp";
-//    }
-//}
 import com.f12s.playdatenow08.dataTransferObjects.UserUpdateDto;
 import com.f12s.playdatenow08.models.UserMdl;
 import com.f12s.playdatenow08.services.UserSrv;
 import com.f12s.playdatenow08.validator.UserValidator;
-//import com.jonfriend.playdatenow_v04.models.PlaydateMdl;
-//import com.jonfriend.playdatenow_v04.services.PlaydateSrv;
-//import com.jonfriend.playdatenow_v04.services.StateterritorySrv;
-//import com.jonfriend.playdatenow_v04.models.LoginUserMdl;
-//import com.jonfriend.playdatenow_v04.models.UserUpdateMdl;
-//import com.jonfriend.playdatenow_v04.models.UserupdateMdl;
-//import com.jonfriend.playdatenow_v04.models.PlaydateMdl;
-//import com.jonfriend.playdatenow_v04.models.StateterritoryMdl;
 
 import java.security.Principal;
-//import java.util.Date;
+import java.util.Date;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -47,10 +27,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Date;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-import java.util.List;
 
 @Controller
 public class IndexhomeprofileCtl {
@@ -141,7 +117,7 @@ public class IndexhomeprofileCtl {
         return "redirect:/";
     }
 
-    // login plugin method
+    // login  method
     public void authWithHttpServletRequest(
             HttpServletRequest request
             , String email
@@ -177,16 +153,13 @@ public class IndexhomeprofileCtl {
 //********************************************************************
 
     @GetMapping(value = {"/", "/home"})
-//    public String home(
     public String displayHome(
             Principal principal
             , Model model
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         // JRF temporarily removing below: updating last login and substituting admin.jsp for home is not desired
 //		if(userMdl!=null) {
@@ -241,16 +214,13 @@ public class IndexhomeprofileCtl {
 
     // view all profile
     @GetMapping("/profile")
-//	public String showAllprofile(
     public String displayProfileAll(
             Model model
             , Principal principal
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         List<UserMdl> profileList = userSrv.returnAll();
         model.addAttribute("profileList", profileList);
@@ -258,7 +228,6 @@ public class IndexhomeprofileCtl {
     }
 
     @GetMapping("/profile/{id}")
-//    public String showProfile(
     public String displayProfile(
             @PathVariable("id") Long userProfileId
             , Principal principal
@@ -266,9 +235,7 @@ public class IndexhomeprofileCtl {
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         model.addAttribute("userProfile", userSrv.findById(userProfileId)); // grab the entire user object using the url parameter, then deliver to page
 
@@ -276,7 +243,6 @@ public class IndexhomeprofileCtl {
     }
 
     @GetMapping("/profile/{id}/edit")
-//	public String editProfile(
     public String displayProfileEdit(
             @ModelAttribute("userProfileTobe") UserUpdateDto userUpdateObj
             , @PathVariable("id") Long userProfileId
@@ -285,9 +251,7 @@ public class IndexhomeprofileCtl {
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         // (1) get these values from the db, so they can be delivered as addAtt independent of obj that's in flux
         String authUserName = authUserObj.getUserName();
@@ -319,7 +283,6 @@ public class IndexhomeprofileCtl {
     }
 
     @PostMapping("/profile/edit")
-//	public String PostTheEditProfile(
     public String processProfileEdit(
             @Valid
             @ModelAttribute("userProfileTobe") UserUpdateDto userUpdateObj
@@ -330,9 +293,7 @@ public class IndexhomeprofileCtl {
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         // (1) get these values from the db, so they can be delivered as addAtt independent of obj that's in flux
         Long userProfileId = authUserObj.getId();

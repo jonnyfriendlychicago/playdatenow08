@@ -15,8 +15,7 @@
         <h5 class="card-title">${record.userName}</h5>
         <p class="card-text">${record.firstName}${record.lastName}</p>
 
-        <pre
-                style="white-space: pre-wrap; max-height: 10rem; overflow: ellipsis;">${record.aboutMe}</pre>
+        <pre style="white-space: pre-wrap; max-height: 10rem; overflow: ellipsis;">${record.aboutMe}</pre>
 
       </div>
       <ul class="list-group list-group-flush">

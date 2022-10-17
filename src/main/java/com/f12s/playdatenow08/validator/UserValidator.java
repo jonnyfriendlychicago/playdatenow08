@@ -1,20 +1,15 @@
 package com.f12s.playdatenow08.validator;
 
-//public class UserValidator {
-//}
-
+import com.f12s.playdatenow08.models.UserMdl;
+import com.f12s.playdatenow08.repositories.UserRpo;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import com.f12s.playdatenow08.models.UserMdl;
-import com.f12s.playdatenow08.repositories.UserRpo;
 
 @Component
 public class UserValidator implements Validator {
-
 
     @Autowired
     private UserRpo userRpo;

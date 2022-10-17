@@ -1,8 +1,5 @@
 package com.f12s.playdatenow08.services;
 
-//public class UserSrv {
-//}
-
 import com.f12s.playdatenow08.models.UserMdl;
 import com.f12s.playdatenow08.repositories.RoleRpo;
 import com.f12s.playdatenow08.repositories.UserRpo;
@@ -86,7 +83,7 @@ public class UserSrv{
 
     }
 
-    // returns all user
+    // returns all
     public List<UserMdl> returnAll(){
         return userRpo.findAll();
     }

@@ -1,8 +1,5 @@
 package com.f12s.playdatenow08.controllers;
 
-//public class RsvpCtl {
-//}
-
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +25,6 @@ import com.f12s.playdatenow08.services.PlaydateSrv;
 import com.f12s.playdatenow08.services.UserSrv;
 
 @Controller
-//public class RsvpCtl {
 public class RsvpCtl {
 
     @Autowired
@@ -41,7 +37,6 @@ public class RsvpCtl {
     private PlaydateSrv playdateSrv;
 
     @PostMapping("/playdate/{id}/rsvp/create")
-//	public String addNewRsvp(
     public String processRsvpNew(
             @PathVariable ("id") Long playdateId
             , @Valid @ModelAttribute("rsvp") RsvpMdl rsvpMdl
@@ -51,9 +46,7 @@ public class RsvpCtl {
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         PlaydateMdl playdateObj = playdateSrv.findById(playdateId);
 
@@ -82,7 +75,6 @@ public class RsvpCtl {
     }
 
     @GetMapping("playdate/{playdateId}/rsvp/{rsvpId}/edit")
-//	public String editRsvp(
     public String displayRsvpEdit(
             @PathVariable("playdateId") Long playdateId
             , @PathVariable("rsvpId") Long rsvpId
@@ -91,9 +83,7 @@ public class RsvpCtl {
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         RsvpMdl rsvpObj = rsvpSrv.findById(rsvpId); // get the object that is the primary object displayed on this page
         model.addAttribute("rsvp", rsvpObj);
@@ -148,9 +138,7 @@ public class RsvpCtl {
     }
 
     @PostMapping("/rsvp/edit")
-//	public String PostTheEditRsvp
     public String processRsvpEdit(
-//			@PathVariable ("id") Long playdateId
             @Valid @ModelAttribute("rsvp") RsvpMdl rsvpMdl
             , BindingResult result
             , Model model
@@ -159,9 +147,7 @@ public class RsvpCtl {
     ) {
 
         // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        model.addAttribute("authUser", authUserObj);
-        model.addAttribute("authUserName", authUserObj.getUserName());
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         RsvpMdl rsvpObj = rsvpSrv.findById(rsvpMdl.getId()); // this is so circular, refactor please
         PlaydateMdl playdateObj = rsvpObj.getPlaydateMdl();

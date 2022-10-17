@@ -2,7 +2,6 @@
 
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
-<!-- <div id=main class="container-fluid" > -->
 <div id=main class="container-fluid" >
     <div class="row" style="height: 100vh" >
         <div class="col py-0">

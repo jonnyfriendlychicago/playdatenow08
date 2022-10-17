@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" import="java.util.Date"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.Date"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -49,9 +48,7 @@
         <td><a class="text-decoration-none"
                href="/profile/${record.userMdl.id}">${record.userMdl.userName}</a></td>
         <td>${record.eventStatus}
-        <td><fmt:formatDate value="${record.eventDate}"
-                            pattern="MMMM dd" />, <fmt:formatDate value="${record.eventDate}"
-                                                                  pattern="yyyy" /> @ ${record.startTimeTxt}</td>
+        <td><fmt:formatDate value="${record.eventDate}" pattern="MMMM dd" />, <fmt:formatDate value="${record.eventDate}" pattern="yyyy" /> @ ${record.startTimeTxt}</td>
       </tr>
     </c:forEach>
     </tbody>
