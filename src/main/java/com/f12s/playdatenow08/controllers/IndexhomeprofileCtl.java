@@ -4,7 +4,6 @@ import com.f12s.playdatenow08.dataTransferObjects.UserUpdateDto;
 import com.f12s.playdatenow08.models.UserMdl;
 import com.f12s.playdatenow08.services.UserSrv;
 import com.f12s.playdatenow08.validator.UserValidator;
-
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 
 @Controller
 public class IndexhomeprofileCtl {
@@ -82,7 +80,6 @@ public class IndexhomeprofileCtl {
         if (isAuthenticated()) {
             return "redirect:/";
         }
-
         return "register.jsp";
     }
 
@@ -93,6 +90,7 @@ public class IndexhomeprofileCtl {
             , Model model
             , HttpSession session
             , HttpServletRequest request
+            , RedirectAttributes redirectAttributes
     ) {
 
         userValidator.validate(userMdl, result);
@@ -113,7 +111,7 @@ public class IndexhomeprofileCtl {
 
         // Log in new user with the password we stored before encrypting it.  NOTE: the method listed immed below is built right after this mthd concludes
         authWithHttpServletRequest(request, userMdl.getEmail(), password);
-
+        redirectAttributes.addFlashAttribute("successMsg", "Congratulations on joining PlayDateNOW!  Take a minute now (or later...) to complete your profile.");
         return "redirect:/";
     }
 
@@ -270,14 +268,8 @@ public class IndexhomeprofileCtl {
         userUpdateObj.setZipCode(userProfileObj.getZipCode());
 
         // (4) send the as-is object to the page, so static values can be used (createdAt, Id, etc.)
-
-//		*******
-//		something is goofy with below.  fix this later,  I think for example the userProfileObj line is not used downstream.
-//		*******
-        model.addAttribute("userProfile", userProfileObj); // send the as-is object to the page, so static values can be used (createdAt, Id, etc.)
-        model.addAttribute("userProfileId", userProfileId);
-        model.addAttribute("authUserName", authUserName); // set the "as-is" username, so it can be statically posted to the top right nav bar
-        model.addAttribute("userProfileCreatedAt", userProfileCreatedAt);
+        model.addAttribute("userProfileId", userProfileId); // need for cancel button
+        model.addAttribute("userProfileCreatedAt", userProfileCreatedAt); // static single value on the page
 
         return "profile/edit.jsp";
     }
@@ -313,14 +305,12 @@ public class IndexhomeprofileCtl {
         userSrv.updateUserProfile(authUserObj, result);
 
         if (result.hasErrors() ) {
+            // (4) send the as-is object to the page, so static values can be used (createdAt, Id, etc.)
             model.addAttribute("userProfileId", userProfileId);
-            model.addAttribute("authUserName", authUserName);
             model.addAttribute("userProfileCreatedAt", userProfileCreatedAt);
-
             return "profile/edit.jsp";
 
         } else {
-
             return "redirect:/profile/" + authUserObj.getId();
         }
     }

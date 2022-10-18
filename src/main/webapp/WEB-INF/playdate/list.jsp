@@ -10,17 +10,14 @@
 
 
 <div id="playdateList" class="container-sm my-5 table-responsive">
-
   <c:if test="${successMsg != null}">
-    <div class="alert alert-success alert-dismissible fade show"
-         role="alert">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
         ${successMsg}
-      <button type="button" class="btn-close" data-bs-dismiss="alert"
-              aria-label="Close"></button>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   </c:if>
 
-  <h3>Playdate List cosmeticUpdateJRF</h3>
+  <h3>Playdate List</h3>
   <a href="/playdate/new"><button class="btn btn-primary">Create
     New Playdate</button></a>
   <table class="table table-striped table-hover table-bordered">

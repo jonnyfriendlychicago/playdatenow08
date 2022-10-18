@@ -11,8 +11,16 @@
 
 <div id="playdateList" class="container-sm my-5 table-responsive">
 
+    <c:if test="${successMsg != null}">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                ${successMsg}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </c:if>
+
     <h2>This is the home screen.</h2>
-    <h3>This web app has been deployed by war file replacement.</h3>
+    <h3>This web app was originally deployed by war file.</h3>
+    <h3>What you see now has been deployed by war file replacement.</h3>
     <h4>I have nothing more to say! :-)</h4>
 
 </div><!-- end playdateList -->
