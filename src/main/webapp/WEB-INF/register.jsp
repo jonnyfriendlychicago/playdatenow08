@@ -17,27 +17,29 @@
     <p class="h3 mb-3 fw-normal">Register</p>
     <form:form action='/register' method='post' modelAttribute='user'>
 
-    <div class="form-floating mb-3">
-        <form:input
-                path="firstName"
-                type="text"
-                class="form-control"
-                id="firstName"
-                placeholder="firstName" />
-        <form:label path="firstName" for="firstName">First Name</form:label>
-        <p class="text-danger"><form:errors path="firstName" />
-    </div>
+<%--    2022.10.18 JRF: taking out fname/lname from below: just get this guy registered, and fill in name/etc in profile later--%>
 
-    <div class="form-floating mb-3">
-        <form:input
-                path="lastName"
-                type="text"
-                class="form-control"
-                id="lastName"
-                placeholder="lastName" />
-        <form:label path="lastName" for="lastName">Last Name</form:label>
-        <p class="text-danger"><form:errors path="lastName" />
-    </div>
+<%--    <div class="form-floating mb-3">--%>
+<%--        <form:input--%>
+<%--                path="firstName"--%>
+<%--                type="text"--%>
+<%--                class="form-control"--%>
+<%--                id="firstName"--%>
+<%--                placeholder="firstName" />--%>
+<%--        <form:label path="firstName" for="firstName">First Name</form:label>--%>
+<%--        <p class="text-danger"><form:errors path="firstName" />--%>
+<%--    </div>--%>
+
+<%--    <div class="form-floating mb-3">--%>
+<%--        <form:input--%>
+<%--                path="lastName"--%>
+<%--                type="text"--%>
+<%--                class="form-control"--%>
+<%--                id="lastName"--%>
+<%--                placeholder="lastName" />--%>
+<%--        <form:label path="lastName" for="lastName">Last Name</form:label>--%>
+<%--        <p class="text-danger"><form:errors path="lastName" />--%>
+<%--    </div>--%>
 
     <div class="form-floating mb-3">
         <form:input
