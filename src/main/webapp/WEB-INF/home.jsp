@@ -19,8 +19,7 @@
     </c:if>
 
     <h2>This is the home screen.</h2>
-    <h3>This web app was originally deployed by war file.</h3>
-    <h3>What you see now has been deployed by war file replacement.</h3>
+    <h3>We are about to map some awesome stuff.</h3>
     <h4>I have nothing more to say! :-)</h4>
 
 </div><!-- end playdateList -->
