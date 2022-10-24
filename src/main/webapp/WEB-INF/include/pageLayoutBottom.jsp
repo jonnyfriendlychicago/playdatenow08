@@ -16,7 +16,5 @@
     </div>
 </div>
 
-<%-- <jsp:include page="/WEB-INF/include/footerbuffer.jsp"/>   --%>
-<%-- <jsp:include page="/WEB-INF/include/footer.jsp"/> --%>
 </body>
 </html>

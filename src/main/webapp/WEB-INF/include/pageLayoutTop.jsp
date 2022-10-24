@@ -6,4 +6,4 @@
     <div class="row" style="height: 100vh" >
         <div class="col py-0">
         </div> <!-- end col -->
-        <div class="col-sm-8 bg-light py-0"  >
+        <div class="col-sm-8 bg-light py-0">

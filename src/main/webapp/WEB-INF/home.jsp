@@ -22,5 +22,26 @@
     <h3>We are about to map some awesome stuff.</h3>
     <h4>I have nothing more to say! :-)</h4>
 
+    <div id="mapInfo" class="card p-2 m-2 border-0 bg-info">
+        <p>map info</p>
+    </div>
+
+    <div id="map" class="card p-2 m-2 border-0 bg-info" style="height: 25rem">
+<%--        <p>map itself</p>--%>
+    </div>
+
+    <script>
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: {lat: 45.334120, lng:   -121.69868},
+                zoom: 12
+            });
+        }
+    </script>
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcebr3h87oaEoYNm0ix80FMxuoBzh7nMI&callback=initMap"  async defer
+    ></script>
+
 </div><!-- end playdateList -->
 <jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />

@@ -18,8 +18,7 @@
   </c:if>
 
   <h3>Playdate List</h3>
-  <a href="/playdate/new"><button class="btn btn-primary">Create
-    New Playdate</button></a>
+  <a href="/playdate/new"><button class="btn btn-primary">Create New Playdate</button></a>
   <table class="table table-striped table-hover table-bordered">
     <thead>
     <tr>
