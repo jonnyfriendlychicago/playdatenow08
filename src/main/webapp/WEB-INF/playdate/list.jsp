@@ -3,7 +3,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="/WEB-INF/include/head.jsp" />
+<%--<jsp:include page="/WEB-INF/include/head.jsp" />--%>
+<jsp:include page="/WEB-INF/include/headCommon.jsp" />
+</head>
 <jsp:include page="/WEB-INF/include/bodyDesign.jsp" />
 <jsp:include page="/WEB-INF/include/header.jsp" />
 <jsp:include page="/WEB-INF/include/pageLayoutTop.jsp" />
@@ -50,6 +52,10 @@
     </tbody>
   </table>
 
-</div>
-<!-- end playdateList -->
-<jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />
+</div> <!-- end playdateList -->
+<%--<jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />--%>
+
+<jsp:include page="/WEB-INF/include/pageLayoutBottomCommon.jsp" />
+
+</body>
+</html>

@@ -57,9 +57,8 @@ public class IndexhomeprofileCtl {
             , Model model
     ) {
 
-        if (isAuthenticated()) {
-            return "redirect:/playdate";
-        }
+
+        if (isAuthenticated()) {return "redirect:/home";} // if already authenticated, redirect away from /login path-page
 
         if(error != null) {
             model.addAttribute("errorMessage", "Invalid Credentials, Please try again.");
@@ -78,8 +77,11 @@ public class IndexhomeprofileCtl {
     ) {
 
         if (isAuthenticated()) {
-            return "redirect:/";
+//            return "redirect:/";
+//            return "redirect:/playdate";
+            return "redirect:/home";
         }
+
         return "register.jsp";
     }
 
@@ -112,7 +114,8 @@ public class IndexhomeprofileCtl {
         // Log in new user with the password we stored before encrypting it.  NOTE: the method listed immed below is built right after this mthd concludes
         authWithHttpServletRequest(request, userMdl.getEmail(), password);
         redirectAttributes.addFlashAttribute("successMsg", "Congratulations on joining PlayDateNOW!  Take a minute now (or later...) to complete your profile.");
-        return "redirect:/";
+//        return "redirect:/playdate";
+        return "redirect:/home";
     }
 
     // login  method
@@ -173,6 +176,8 @@ public class IndexhomeprofileCtl {
 //		}
 
         return "home.jsp";
+        // below is an example of how to redirect users away from this screen if that's desired
+//        return "redirect:/playdate";
     }
 
     // JRF temporarily disabling this whole admin program

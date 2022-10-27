@@ -16,10 +16,3 @@
     </div>
 </div>
 
-<%--<script--%>
-<%--        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcebr3h87oaEoYNm0ix80FMxuoBzh7nMI&callback=initMap"--%>
-<%--        defer--%>
-<%--></script>--%>
-
-</body>
-</html>

@@ -3,11 +3,20 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="/WEB-INF/include/head.jsp" />
+<jsp:include page="/WEB-INF/include/headCommon.jsp" />
+<%--without this polyfill, the map won't load, which will then put you on an endless downward spiral of plug/chug to make it work.  stop the insanity.--%>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script
+        type = "module"
+        src="/js/map.js"
+        async
+></script>
+
+</head>
+
 <jsp:include page="/WEB-INF/include/bodyDesign.jsp" />
 <jsp:include page="/WEB-INF/include/header.jsp" />
 <jsp:include page="/WEB-INF/include/pageLayoutTop.jsp" />
-
 
 <div id="playdateList" class="container-sm my-5 table-responsive">
 
@@ -18,30 +27,20 @@
         </div>
     </c:if>
 
-    <h2>This is the home screen.</h2>
+    <h2>This is the home screen. Oct 25</h2>
     <h3>We are about to map some awesome stuff.</h3>
     <h4>I have nothing more to say! :-)</h4>
 
-    <div id="mapInfo" class="card p-2 m-2 border-0 bg-info">
-        <p>map info</p>
-    </div>
-
-    <div id="map" class="card p-2 m-2 border-0 bg-info" style="height: 25rem">
-<%--        <p>map itself</p>--%>
-    </div>
-
-    <script>
-        var map;
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: {lat: 45.334120, lng:   -121.69868},
-                zoom: 12
-            });
-        }
-    </script>
-    <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcebr3h87oaEoYNm0ix80FMxuoBzh7nMI&callback=initMap"  async defer
-    ></script>
+    <div id="map" class="card p-2 m-2 border-0" style="height: 25rem"></div>
 
 </div><!-- end playdateList -->
-<jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />
+
+<jsp:include page="/WEB-INF/include/pageLayoutBottomCommon.jsp" />
+
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcebr3h87oaEoYNm0ix80FMxuoBzh7nMI&callback=initMap"
+        defer
+></script>
+
+</body>
+</html>

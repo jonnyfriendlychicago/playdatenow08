@@ -20,6 +20,30 @@
             <!-- <script type ="text/javascript" src="javascript/app.js"></script> -->
 
             <%-- below for google maps--%>
+<%--            <script>--%>
+<%--                function initMap() {--%>
+<%--                    let map = new google.maps.Map(document.getElementById("map"), {--%>
+<%--                    center: {lat: 45.334120, lng:   -121.69868},--%>
+<%--                    zoom: 12--%>
+<%--                    });--%>
+<%--                }--%>
+<%--            </script>--%>
+            <%-- swapping below for above, see how it goes--%>
+<%--            <script--%>
+<%--                    type = "module"--%>
+<%--                    src="./js/map.js"--%>
+<%--                    src="/js/map.js"--%>
+<%--                    defer--%>
+<%--                    type="text/javascript"--%>
+<%--                    src="js/map.js"--%>
+<%--            ></script>--%>
+<%--            on above, absolutely, the /static must be included inthe path, b/c springboot freaks out if not clearly declaring --%>
+
+<%--            <script--%>
+<%--                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcebr3h87oaEoYNm0ix80FMxuoBzh7nMI&callback=initMap"--%>
+<%--                async--%>
+<%--                defer--%>
+<%--            ></script>--%>
 
 
         </head>

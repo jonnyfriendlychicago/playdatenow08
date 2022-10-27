@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.security.SecureRandom;
-
 @Configuration
 public class WebSecurityConfig {
 
@@ -24,7 +22,7 @@ public class WebSecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.
                 authorizeRequests()
-                .antMatchers("/resources/**", "/static/**", "/webjars/**","/css/**", "/img/**",  "/js/**", "/register", "/login").permitAll() // this prob can be consolidated to resources and reg/login pages
+                .antMatchers("/resources/**", "/static/**", "/webjars/**","/css/**", "/img/**", "/static/img/js/**", "/register", "/login").permitAll() // this prob can be consolidated to resources and reg/login pages
 //	                .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .antMatchers("/admin/**").access("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
                 .anyRequest().authenticated()
