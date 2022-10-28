@@ -22,7 +22,7 @@ public class WebSecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.
                 authorizeRequests()
-                .antMatchers("/resources/**", "/static/**", "/webjars/**","/css/**", "/img/**", "/static/img/js/**", "/register", "/login").permitAll() // this prob can be consolidated to resources and reg/login pages
+                .antMatchers("/resources/**", "/static/**", "/webjars/**","/css/**", "/img/**", "/static/img/js/**", "/register", "/login", "/favicon.ico").permitAll() // this prob can be consolidated to resources and reg/login pages
 //	                .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .antMatchers("/admin/**").access("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
                 .anyRequest().authenticated()
