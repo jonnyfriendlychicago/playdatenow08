@@ -9,7 +9,7 @@
 <script
         type = "module"
         src="/js/map.js"
-        async <%--   this async is not in google documentation, but the program still works.  leave?--%>
+<%--async    this async is not in google documentation, but the program still works.  leave?--%>
 ></script>
 
 </head>
