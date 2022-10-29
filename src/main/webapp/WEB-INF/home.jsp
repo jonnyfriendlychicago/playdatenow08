@@ -9,8 +9,10 @@
 <script
         type = "module"
         src="/js/map.js"
-<%--async    this async is not in google documentation, but the program still works.  leave?--%>
 ></script>
+
+<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+
 
 </head>
 
@@ -41,6 +43,31 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcebr3h87oaEoYNm0ix80FMxuoBzh7nMI&callback=initMap"
         defer
 ></script>
+
+<script>
+
+    geocode();
+
+    function geocode() {
+        let incomingAddy = "128 S Aberdeen ";
+        axios
+            .get('https://maps.googleapis.com/maps/api/geocode/json', {
+                params: {
+                    address: incomingAddy,
+                    key: 'AIzaSyBcebr3h87oaEoYNm0ix80FMxuoBzh7nMI'
+                }
+            })
+            .then(function(response) {
+                console.log(response)
+            })
+
+            .catch(function(error) {
+                console.log(error);
+            }
+        );
+    }
+
+</script>
 
 </body>
 </html>

@@ -80,10 +80,19 @@ function initMap(callback) {
 
 
     // below NEXT take on multimarker
-    addMarkerz({coords: {lat: 45.30447594851857, lng: -121.75421673233924}, content: '<h1> Hola, Friend!</h1>'}); 
-    addMarkerz({coords: {lat: 45.33231072131942, lng: -121.66490406283796}, content: '<h2> Eat here!</h2>'});
+    // addMarkerz({coords: {lat: 45.30447594851857, lng: -121.75421673233924}, content: '<h1> Hola, Friend!</h1>'});
+    // addMarkerz({coords: {lat: 45.33231072131942, lng: -121.66490406283796}, content: '<h2> Eat here!</h2>'});
 
-    // addMarkerz( {lat: 45.33231072131942, lng: -121.66490406283796} );
+    // above replaced by below
+
+    const markerList = [
+        {coords: {lat: 45.30447594851857, lng: -121.75421673233924}, content: '<h1>Huck it!</h1>'},
+        {coords: {lat: 45.33231072131942, lng: -121.66490406283796}, content: '<h2>Eat here!</h2>'}
+    ]
+
+    for (let i= 0; i < markerList.length; i++ ) {
+        addMarkerz(markerList[i])
+    };
 
     function addMarkerz (props) {
         const marker = new google.maps.Marker ( {
