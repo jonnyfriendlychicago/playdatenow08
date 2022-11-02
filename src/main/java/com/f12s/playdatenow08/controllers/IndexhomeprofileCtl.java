@@ -162,6 +162,10 @@ public class IndexhomeprofileCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
+        String staticAddy = "910 W Belden Chicago IL";
+        model.addAttribute("staticAddy", staticAddy);
+
+
         // JRF temporarily removing below: updating last login and substituting admin.jsp for home is not desired
 //		if(userMdl!=null) {
 //			userMdl.setLastLogin(new Date());

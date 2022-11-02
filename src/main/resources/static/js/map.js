@@ -34,6 +34,61 @@
 
 
 function initMap(callback) {
+
+    // // begin: geocode section
+    //
+    // const incomingAddy = "2834 W Palmer Chicago IL";
+    // // let incomingAddy = "xyz";
+    // // incomingAddy === ${staticAddy};
+    //
+    // axios
+    //     .get('https://maps.googleapis.com/maps/api/geocode/json', {
+    //         params: {
+    //             address: incomingAddy,
+    //             key: 'AIzaSyBcebr3h87oaEoYNm0ix80FMxuoBzh7nMI'
+    //         }
+    //     })
+    //
+    //     .then(function(response) {
+    //         // log results
+    //         console.log(response)
+    //
+    //         const formattedAddy = response.data.results[0].formatted_address;
+    //         console.log ("formattedAddy:" + formattedAddy);
+    //
+    //         const addyComp = response.data.results[0].address_components[0].long_name;
+    //         console.log ("addyComp:" + addyComp);
+    //
+    //         const lat2 = response.data.results[0].geometry.location.lat;
+    //         console.log ("lat2:" + lat2);
+    //
+    //         const lng2 = response.data.results[0].geometry.location.lng;
+    //         console.log ("lng2:" + lng2);
+    //
+    //         // below is supposed to be the "right" way, but it doesn't work. WTF?  so, this entire thing is replaced by dom manipulation approach that follows
+    //         // <%--const formattedAddyOutput =--%>
+    //         //     <%--    '<div class="hello">' + '<p>' + '${formattedAddy} and hello to you' + '</p>' + '</div>'--%>
+    //         // document.getElementById('formattedAddyOnScreenContainer2').innerHTML =  formattedAddyOutput;
+    //
+    //         const newEl = document.createElement('p');
+    //         newEl.setAttribute('id','validatedAddy');
+    //         newEl.setAttribute('class', "m-0 text-secondary text-center");
+    //         const newText = document.createTextNode(formattedAddy);
+    //         newEl.appendChild(newText);
+    //         const position = document.getElementById('validatedAddyCard');
+    //         position.appendChild(newEl);
+    //
+    //     })
+    //
+    //     .catch(function(error) {
+    //         console.log(error)
+    //     })
+    //
+    // // end: geocode section
+
+
+    // all of below is working spendidly to produce a simple oregon map
+
     // set map position and zoom level
     const locoCenter = { lat: 45.334120, lng: -121.69868 }; // the mere inclusion of this line makes the script fail.  why????
 
@@ -44,7 +99,7 @@ function initMap(callback) {
 
     // const map = new google.maps.Map(document.getElementById(
     const locoMap = new google.maps.Map(document.getElementById(
-        "map"),
+        "map1"),
         mapDeets
     );
 
