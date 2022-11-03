@@ -82,7 +82,7 @@ public class PlaydateMdl {
 
     // end: entity-specific table fields
 
-    // start: code for joins
+    // begin: joins
 
     // join user table
     @ManyToOne(fetch = FetchType.LAZY)
@@ -93,11 +93,12 @@ public class PlaydateMdl {
     @OneToMany(mappedBy="playdateMdl", fetch = FetchType.LAZY)
     private List<RsvpMdl> rsvpList;
 
-
     // join stateterritory table
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="stateterritory_id")
     private StateterritoryMdl stateterritoryMdl;
+
+    // end: joins
 
     // instantiate the model:
     public PlaydateMdl() {}
@@ -229,9 +230,7 @@ public class PlaydateMdl {
         return stateterritoryMdl;
     }
 
-    public void setStateterritoryMdl(StateterritoryMdl stateterritoryMdl) {
-        this.stateterritoryMdl = stateterritoryMdl;
-    }
+    public void setStateterritoryMdl(StateterritoryMdl stateterritoryMdl) {this.stateterritoryMdl = stateterritoryMdl;}
 
     public String getRsvpStatus() {
         return rsvpStatus;

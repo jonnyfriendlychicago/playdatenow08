@@ -2,20 +2,7 @@ package com.f12s.playdatenow08.models;
 
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -67,13 +54,18 @@ public class UserMdl {
 
     private String aboutMe;
 
+    private String addressLine1;
+
+    private String addressLine2;
+
     private String city;
 
     private String zipCode;
 
+
     // end entity-specific fields
 
-    // begin joins
+    // begin: joins
 
     // join playdate
     @OneToMany(mappedBy="userMdl", fetch = FetchType.LAZY)
@@ -91,7 +83,13 @@ public class UserMdl {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<RoleMdl> roleMdl;
-    // end joins
+
+    // join stateterritory table
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="stateterritory_id")
+    private StateterritoryMdl stateterritoryMdl;
+
+    // end: joins
 
     // instantiate the mdl
     public UserMdl() {}
@@ -228,6 +226,16 @@ public class UserMdl {
         this.zipCode = zipCode;
     }
 
+    public String getAddressLine1() {return addressLine1;}
+
+    public void setAddressLine1(String addressLine1) {this.addressLine1 = addressLine1;}
+
+    public String getAddressLine2() {return addressLine2;}
+
+    public void setAddressLine2(String addressLine2) {this.addressLine2 = addressLine2;}
+
+
+
     public List<PlaydateMdl> getPlaydateList() {
         return playdateList;
     }
@@ -243,6 +251,12 @@ public class UserMdl {
     public void setRsvpList(List<RsvpMdl> rsvpList) {
         this.rsvpList = rsvpList;
     }
+
+    public StateterritoryMdl getStateterritoryMdl() {
+        return stateterritoryMdl;
+    }
+
+    public void setStateterritoryMdl(StateterritoryMdl stateterritoryMdl) {this.stateterritoryMdl = stateterritoryMdl;}
 
     // end: getters and setters
 

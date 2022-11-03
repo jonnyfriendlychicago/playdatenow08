@@ -32,11 +32,17 @@ public class StateterritoryMdl {
     @OneToMany(mappedBy="stateterritoryMdl", fetch = FetchType.LAZY)
     private List<PlaydateMdl> playdateList;
 
+    //	join user
+    @OneToMany(mappedBy="stateterritoryMdl", fetch = FetchType.LAZY)
+    private List<UserMdl> userList;
+
     // end joins
 
     // instantiate the model:
     public StateterritoryMdl() {}
     // begin: getters and setters
+
+
 
     public Long getId() {
         return id;
@@ -66,9 +72,20 @@ public class StateterritoryMdl {
         return playdateList;
     }
 
-    public void setPlaydateList(List<PlaydateMdl> playdateList) {
-        this.playdateList = playdateList;
+    public void setPlaydateList(List<PlaydateMdl> playdateList) {this.playdateList = playdateList;}
+
+//    public List<UserMdl> getUserList() {return userList;}
+//
+//    public void setUserList(List<UserMdl> userList) {this.userList = userList;}
+
+    public List<UserMdl> getUserList() {
+        return userList;
     }
+
+    public void setUserList(List<UserMdl> userList) {
+        this.userList = userList;
+    }
+
 
     // end: getters and setters
 

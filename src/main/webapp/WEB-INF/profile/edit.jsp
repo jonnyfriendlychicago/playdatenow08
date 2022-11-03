@@ -96,6 +96,32 @@
 
                 <div class="form-floating mb-3">
                     <form:input
+                            path="addressLine1"
+                            type="text"
+                            class="form-control"
+                            id="addressLine1"
+                            placeholder="addressLine1" />
+                    <form:label
+                            path="addressLine1"
+                            for="addressLine1">addressLine1</form:label>
+                    <p class="text-danger"><form:errors path="addressLine1" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <form:input
+                            path="addressLine2"
+                            type="text"
+                            class="form-control"
+                            id="addressLine2"
+                            placeholder="addressLine2" />
+                    <form:label
+                            path="addressLine2"
+                            for="addressLine2">addressLine2</form:label>
+                    <p class="text-danger"><form:errors path="addressLine2" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <form:input
                             path="city"
                             type="text"
                             class="form-control"
@@ -106,6 +132,31 @@
                             for="city">City</form:label>
                     <p class="text-danger"><form:errors path="city" />
                 </div>
+
+                <div class="form-floating mb-3">
+                    <form:select
+                            path="stateterritoryMdl"
+                            class="form-control"
+                            id="stateterritoryMdl"
+                            placeholder="stateterritoryMdl">
+                        <c:forEach items="${stateterritoryList}" var="record">
+                            <c:choose>
+                                <c:when test="${record == asIsStateTerritoryObj}">
+                                    <form:option value="${record.id}" path="stateterritoryMdl"
+                                                 selected="true">${record.abbreviation}</form:option>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="${record.id}" path="stateterritoryMdl">${record.abbreviation}</form:option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+
+                    </form:select>
+                    <form:label path="stateterritoryMdl" for="stateterritoryMdl">stateterritoryMdl:</form:label>
+                    <p class="text-danger"><form:errors path="stateterritoryMdl" />
+                </div>
+
+
 
                 <div class="form-floating mb-3">
                     <form:input
