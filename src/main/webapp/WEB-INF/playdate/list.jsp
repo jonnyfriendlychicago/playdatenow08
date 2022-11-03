@@ -52,6 +52,26 @@
     </tbody>
   </table>
 
+  <h3>StateTerritory List</h3>
+  <table class="table table-striped table-hover table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">abbreviation</th>
+      <th scope="col">fullName</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="record" items="${stateterritoryList}">
+      <tr>
+        <td>${record.id}
+        <td>${record.abbreviation}
+        <td>${record.fullName}
+      </tr>
+    </c:forEach>
+    </tbody>
+  </table>
+
 </div> <!-- end playdateList -->
 <%--<jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />--%>
 

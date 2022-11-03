@@ -1,5 +1,10 @@
 package com.f12s.playdatenow08.dataTransferObjects;
 
+import com.f12s.playdatenow08.models.StateterritoryMdl;
+
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -20,11 +25,20 @@ public class UserUpdateDto {
 
     private String aboutMe;
 
+    private String addressLine1;
+
+    private String addressLine2;
+
     private String city;
 
     private String zipCode;
 
     // begin joins
+
+    // join stateterritory table
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="stateterritory_id")
+    private StateterritoryMdl stateterritoryMdl;
     // end joins
 
     // instantiate the mdl class
@@ -68,9 +82,15 @@ public class UserUpdateDto {
         return aboutMe;
     }
 
-    public void setAboutMe(String aboutMe) {
-        this.aboutMe = aboutMe;
-    }
+    public void setAboutMe(String aboutMe) {this.aboutMe = aboutMe;}
+
+    public String getAddressLine1() {return addressLine1;}
+
+    public void setAddressLine1(String addressLine1) {this.addressLine1 = addressLine1;}
+
+    public String getAddressLine2() {return addressLine2;}
+
+    public void setAddressLine2(String addressLine2) {this.addressLine2 = addressLine2;}
 
     public String getCity() {
         return city;
@@ -86,6 +106,14 @@ public class UserUpdateDto {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public StateterritoryMdl getStateterritoryMdl() {
+        return stateterritoryMdl;
+    }
+
+    public void setStateterritoryMdl(StateterritoryMdl stateterritoryMdl) {
+        this.stateterritoryMdl = stateterritoryMdl;
     }
 
     // end: getters/setters

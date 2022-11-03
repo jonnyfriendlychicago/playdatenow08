@@ -1,7 +1,10 @@
 package com.f12s.playdatenow08.controllers;
 
 import com.f12s.playdatenow08.dataTransferObjects.UserUpdateDto;
+import com.f12s.playdatenow08.models.PlaydateMdl;
+import com.f12s.playdatenow08.models.StateterritoryMdl;
 import com.f12s.playdatenow08.models.UserMdl;
+import com.f12s.playdatenow08.services.StateterritorySrv;
 import com.f12s.playdatenow08.services.UserSrv;
 import com.f12s.playdatenow08.validator.UserValidator;
 import java.security.Principal;
@@ -34,6 +37,9 @@ public class IndexhomeprofileCtl {
 
     @Autowired
     private UserValidator userValidator;
+
+    @Autowired
+    private StateterritorySrv stateterritorySrv;
 
 // ********************************************************************
 // AUTHENTICATION METHODS
@@ -267,6 +273,8 @@ public class IndexhomeprofileCtl {
         // (1) get these values from the db, so they can be delivered as addAtt independent of obj that's in flux
         String authUserName = authUserObj.getUserName();
         Date userProfileCreatedAt = authUserObj.getCreatedAt();
+        StateterritoryMdl asIsStateTerritoryObj = authUserObj.getStateterritoryMdl();
+
 
         // (2) acquire as-is object/values from db
         UserMdl userProfileObj = userSrv.findById(userProfileId);
@@ -279,10 +287,20 @@ public class IndexhomeprofileCtl {
         userUpdateObj.setAboutMe(userProfileObj.getAboutMe());
         userUpdateObj.setCity(userProfileObj.getCity());
         userUpdateObj.setZipCode(userProfileObj.getZipCode());
+        userUpdateObj.setStateterritoryMdl(userProfileObj.getStateterritoryMdl());
+
+        userUpdateObj.setAddressLine1(userProfileObj.getAddressLine1());
+        userUpdateObj.setAddressLine2(userProfileObj.getAddressLine2());
 
         // (4) send the as-is object to the page, so static values can be used (createdAt, Id, etc.)
         model.addAttribute("userProfileId", userProfileId); // need for cancel button
         model.addAttribute("userProfileCreatedAt", userProfileCreatedAt); // static single value on the page
+        model.addAttribute("asIsStateTerritoryObj", asIsStateTerritoryObj);
+
+        // (5) create+send the list of stateTerritory to the page, for drop-down purposes
+
+        List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
+        model.addAttribute("stateterritoryList", stateterritoryList);
 
         return "profile/edit.jsp";
     }
@@ -313,6 +331,10 @@ public class IndexhomeprofileCtl {
         authUserObj.setAboutMe(userUpdateObj.getAboutMe() );
         authUserObj.setCity(userUpdateObj.getCity() );
         authUserObj.setZipCode(userUpdateObj.getZipCode() );
+
+        authUserObj.setAddressLine1(userUpdateObj.getAddressLine1());
+        authUserObj.setAddressLine2(userUpdateObj.getAddressLine2());
+        authUserObj.setStateterritoryMdl(userUpdateObj.getStateterritoryMdl());
 
         // (3) run the service to save the updated object
         userSrv.updateUserProfile(authUserObj, result);

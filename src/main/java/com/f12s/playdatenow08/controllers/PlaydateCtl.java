@@ -4,12 +4,15 @@ import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
+
+import com.f12s.playdatenow08.models.PlaydateMdl;
+import com.f12s.playdatenow08.models.RsvpMdl;
+import com.f12s.playdatenow08.models.StateterritoryMdl;
 import com.f12s.playdatenow08.models.UserMdl;
 import com.f12s.playdatenow08.pojos.PlaydateUserUnionRsvpUser;
-import com.f12s.playdatenow08.models.RsvpMdl;
-import com.f12s.playdatenow08.models.PlaydateMdl;
-import com.f12s.playdatenow08.services.RsvpSrv;
 import com.f12s.playdatenow08.services.PlaydateSrv;
+import com.f12s.playdatenow08.services.RsvpSrv;
+import com.f12s.playdatenow08.services.StateterritorySrv;
 import com.f12s.playdatenow08.services.UserSrv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +37,9 @@ public class PlaydateCtl {
     @Autowired
     private RsvpSrv rsvpSrv;
 
+    @Autowired
+    private StateterritorySrv stateterritorySrv;
+
     @GetMapping("/playdate")
     public String displayPlaydateAll(
             Principal principal
@@ -45,6 +51,10 @@ public class PlaydateCtl {
 
         List<PlaydateMdl> playdateList = playdateSrv.returnAll();
         model.addAttribute("playdateList", playdateList);
+
+        List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
+        model.addAttribute("stateterritoryList", stateterritoryList);
+
         return "playdate/list.jsp";
     }
 
