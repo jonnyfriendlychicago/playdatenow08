@@ -3,7 +3,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="/WEB-INF/include/head.jsp" />
+<jsp:include page="/WEB-INF/include/headCommon.jsp" />
+</head>
 <jsp:include page="/WEB-INF/include/bodyDesign.jsp" />
 <jsp:include page="/WEB-INF/include/header.jsp" />
 <jsp:include page="/WEB-INF/include/pageLayoutTop.jsp" />
@@ -15,7 +16,7 @@
 <c:if test="${successMsg != null}">
   <div class="alert alert-success" role="success">${successMsg}</div>
 </c:if>
-<div id="playdateCard" class="card p-3 d-md-flex justify-content-start">
+<div id="playdateCard" class="card p-3 d-md-flex justify-content-start mt-3">
   <div id="creationOrganizerButtons" class="d-flex justify-content-between">
 
     <div id="creatorOrganizer" class="card p-2 border-0">
@@ -45,8 +46,7 @@
   <div class="row mt-3">
     <div id="playdateInfoCol" class="col">
       <div class="card p-2 m-0 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Event
-          Status</p>
+        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Event Status</p>
         <p class="m-0">${playdate.eventStatus}</p>
       </div>
 
@@ -255,7 +255,7 @@
           </c:otherwise>
         </c:choose>
       </div> <!-- end rsvpCard -->
-    </div><!-- end col -->
+    </div><!-- end rsvpEtcCol -->
   </div><!-- end row -->
 
   <div id="rsvpListRow" class="row m-1">
@@ -290,4 +290,10 @@
 
   </div><!-- end rsvpListRow -->
 </div><!-- end playdateCard -->
-<jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />
+
+<jsp:include page="/WEB-INF/include/pageLayoutBottomCommon.jsp" />
+
+
+
+</body>
+</html>
