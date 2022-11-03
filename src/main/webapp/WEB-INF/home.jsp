@@ -4,222 +4,127 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <jsp:include page="/WEB-INF/include/headCommon.jsp" />
-<%--without this polyfill, the map won't load, which will then put you on an endless downward spiral of plug/chug to make it work.  stop the insanity.--%>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-<%--<script--%>
-<%--        type = "module"--%>
-<%--        src="/js/map.js"--%>
-<%--></script>--%>
-
-<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> <%--without this polyfill, the map won't load.--%>
+<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script> <%-- this enables the geocode that's embedded in initMap function--%>
 
 <script>
-
-
-    // begin: second mapping stuff
     function initMap(callback) {
 
-        let incomingAddy = "xyz";
-        incomingAddy = "${staticAddy}";
-
-        // let latBaby = response.data.results[0].geometry.location.lat;
-        let latBaby = 1;
-        console.log ("latBaby:" + latBaby);
-
-        // let lngBaby = response.data.results[0].geometry.location.lng;
-        let lngBaby = 2;
-        console.log ("lngBaby:" + lngBaby);
-
-        const latLongObj = {lat: 1, lng: 1};
+        // (1) instantiate internal js object composed of kvp, with numbers in the var position, for consumption in downstream activities.
+        const latLongObj = {lat: 1, lng: 1}; //
 
         axios
+            // (2) get geocoded values from incoming java variable addy
             .get('https://maps.googleapis.com/maps/api/geocode/json', {
                 params: {
-                    address: incomingAddy,
+                    address: "${staticAddy}",
                     key: 'AIzaSyBcebr3h87oaEoYNm0ix80FMxuoBzh7nMI'
                 }
-            })
+            }) // end get
 
             .then(function(response) {
-                // log results
-                console.log(response)
+                console.log(response) // log full gma results for analysis
 
+                // (3) display geocode values on the page
                 const formattedAddy = response.data.results[0].formatted_address;
-                console.log ("formattedAddy:" + formattedAddy);
 
-                const addyComp = response.data.results[0].address_components[0].long_name;
-                console.log ("addyComp:" + addyComp);
+                const addyComp = response.data.results[0].address_components[0].long_name; // start of additional analysis/dev we're gonna do in a little bit
+                console.log ("addyComp: ", addyComp);
 
-                latBaby = response.data.results[0].geometry.location.lat;
-                console.log ("latBaby UPDATED BY GOOGLE:" + latBaby);
+                const formattedAddyOutput =
+                "<p class = 'm-0 text-danger text-center'>" + formattedAddy + "</p>" // this works, yay!
 
-                lngBaby = response.data.results[0].geometry.location.lng;
-                console.log ("lngBaby UPDATED BY GOOGLE:" + lngBaby);
+                // below is an interesting take on doing this, that will not work, to hell with it!
+                <%--`<div class="hello">--%>
+                <%--    <p> ${formattedAddy} </p>--%>
+                <%--</div>--%>
+                <%--`--%>
+                document.getElementById('validatedAddyCard2').innerHTML =  formattedAddyOutput;
 
+                // // begin: below is the ol-skool way of doing it, but why would you do that do yourself now that above method is (finally) working??
+                // const newEl = document.createElement('p');
+                // newEl.setAttribute('id','validatedAddy');
+                // newEl.setAttribute('class', "m-0 text-secondary text-center");
+                // const newText = document.createTextNode(formattedAddy);
+                // newEl.appendChild(newText);
+                // const position = document.getElementById('validatedAddyCard');
+                // // console.log("position:", position)
+                // position.appendChild(newEl);
+
+                // (4) update the js object (creatd in step 1 above), then execute function that builds the map, passing in the js object.  The full function is below axios, and contains the display-on-page functionality.
                 latLongObj.lat = response.data.results[0].geometry.location.lat;
                 latLongObj.lng = response.data.results[0].geometry.location.lng;
+                buildMapFromGeo(latLongObj, formattedAddy);
 
-                console.log("latLongNateSol: ", latLongObj)
-
-                buildMapFromGeo(latLongObj);
-
-                // const latBaby = response.data.results[0].geometry.location.lat;
-                // console.log ("latBaby:" + latBaby);
-                //
-                // const lngBaby = response.data.results[0].geometry.location.lng;
-                // console.log ("lngBaby:" + lngBaby);
-
-                // below is supposed to be the "right" way, but it doesn't work. WTF?  so, this entire thing is replaced by dom manipulation approach that follows
-                <%--const formattedAddyOutput = --%>
-                <%--    `--%>
-                <%--    <div class="hello">--%>
-                <%--        <p>${formattedAddy} and hello to you</p>--%>
-                <%--    </div>--%>
-                <%--     `;--%>
-                <%-- //'<div class="hello">' + '<p>' + '${formattedAddy} and hello to you' + '</p>' + '</div>' --%>
-                // document.getElementById('formattedAddyOnScreenContainer2').innerHTML =  formattedAddyOutput;
-
-                // begin: below is the ol-skool way of doing it, but it works.
-                const newEl = document.createElement('p');
-                newEl.setAttribute('id','validatedAddy');
-                newEl.setAttribute('class', "m-0 text-secondary text-center");
-                const newText = document.createTextNode("formattedAddy: " + formattedAddy);
-                newEl.appendChild(newText);
-                const position = document.getElementById('validatedAddyCard');
-                position.appendChild(newEl);
-
-
-
-
-
-            })
+            }) // end then
 
             .catch(function(error) {
                 console.log(error)
-            })
+            }) // end catch
 
+        function buildMapFromGeo(latLong, formattedAddy, formattedAddyOutput) {
 
-        // console.log("theDigits: " + axios.return()); // this doesn't work
+            // const locationTitle = "OurHome";
 
-// // all of below is working spendidly to produce a simple oregon map
-//
-//         // set map position and zoom level
-//         // const locoCenter = { lat: 45.334120, lng: -121.69868 };
-//         const locoCenter = { lat: latBaby, lng: lngBaby  };
-//
-//         const mapDeets = {
-//             zoom: 12,
-//             center: locoCenter,
-//         }
-//
-//         // const map = new google.maps.Map(document.getElementById(
-//         const locoMap = new google.maps.Map(document.getElementById(
-//                 "map2"),
-//             mapDeets
-//         );
-//
-//         const markerList = [
-//             // {coords: {lat: 45.30447594851857, lng: -121.75421673233924}, content: '<h1>My Hometown</h1>'},
-//             {coords: {lat: latBaby, lng: lngBaby}, content: '<h1>Joni and Chachi</h1>'},
-//             // {coords: {lat: 45.33231072131942, lng: -121.66490406283796}, content: '<h2>Eat here!</h2>'}
-//         ];
-//
-//         console.log("markerList: ",  markerList)
-//         for (let i= 0; i < markerList.length; i++ ) {
-//             addMarkerz(markerList[i])
-//         };
-//
-//         function addMarkerz (props) {
-//             const marker = new google.maps.Marker ( {
-//                 map: locoMap,
-//                 position: props.coords,
-//                 content: props.content,
-//             })
-//
-//             if(props.content) {
-//
-//                 const infoWindow = new google.maps.InfoWindow({
-//                     content: props.content
-//                 });
-//
-//                 marker.addListener('click', function () {
-//                     // marker.addEventListener('click', function () {
-//                     // infoWindow.open(map, marker);
-//                     infoWindow.open(locoMap, marker);
-//                 });
-//             }
-//
-//         };  // end function addMarkerz
+            // prework: prepare HTML elements for insertion into map's info window; hopefully we find a better way to do this, and discard this step in the near future.
+            // const infoWindowContent = document.createElement('h6');
+            // infoWindowContent.setAttribute('id','xyz');
+            // infoWindowContent.setAttribute('class', "m-0 text-center");
+            // const newText = document.createTextNode(formattedAddy);
+            // infoWindowContent.appendChild(newText);
+            //
+            // const lineBreak1 = document.createElement('br');
+            // const position = infoWindowContent;
+            // position.appendChild(lineBreak1);
 
-        function buildMapFromGeo(latLong) {
-            // all of below is working splendidly to produce a simple oregon map
+            // const newEl2 = document.createElement('p');
+            // newEl2.setAttribute('id','validatedAddy');
+            // newEl2.setAttribute('class', "m-0 text-secondary text-center");
+            // const newText2 = document.createTextNode(formattedAddy);
+            //
+            // const position2 = lineBreak1;
+            // position2.appendChild(newEl2);
 
-            // set map position and zoom level
-            // const locoCenter = { lat: 45.334120, lng: -121.69868 };
-            // const locoCenter = { lat: latBaby, lng: lngBaby  };
-            const locoCenter = latLong;
-
-            const mapDeets = {
-                zoom: 12,
-                center: locoCenter,
-            }
-
-            // const map = new google.maps.Map(document.getElementById(
-            const locoMap = new google.maps.Map(document.getElementById(
-                    "map2"),
-                mapDeets
+            // (4a) instantiate new map object
+            const map1 = new google.maps.Map(document.getElementById(
+                "mapCard1"),
+                {zoom: 12, center: latLong,}
             );
 
-            const markerList = [
-                // {coords: {lat: 45.30447594851857, lng: -121.75421673233924}, content: '<h1>My Hometown</h1>'},
-                {coords: {lat: latBaby, lng: lngBaby}, content: '<h1>Joni and Chachi</h1>'},
-                // {coords: {lat: 45.33231072131942, lng: -121.66490406283796}, content: '<h2>Eat here!</h2>'}
+            // (4b) instantiate/populate array of marker objects
+            const markerObjList = [
+                {coords: latLong, content: "<p class = 'm-0 text-success text-center'>" + formattedAddy + "</p>" },
+                // {coords: latLong, content: "<h2>" + formattedAddy + "</h2>" },
+                // {coords: latLong, content: formattedAddyOutput}, // this doesn't work
+                // put more items in here as needed.
             ];
 
-            console.log("markerList: ",  markerList)
-            for (let i= 0; i < markerList.length; i++ ) {
-                addMarkerz(markerList[i])
+            // (4c) run the addMarker function on all objects in the marker object array
+            for (let i= 0; i < markerObjList.length; i++ ) {
+                addMarkers(markerObjList[i])
             };
 
-            function addMarkerz (props) {
+            function addMarkers (props) {
                 const marker = new google.maps.Marker ( {
-                    map: locoMap,
+                    map: map1,
                     position: props.coords,
                     content: props.content,
                 })
 
                 if(props.content) {
-
                     const infoWindow = new google.maps.InfoWindow({
                         content: props.content
                     });
 
                     marker.addListener('click', function () {
-                        // marker.addEventListener('click', function () {
-                        // infoWindow.open(map, marker);
-                        infoWindow.open(locoMap, marker);
+                        infoWindow.open(map1, marker);
                     });
-                }
-
-            };  // end function addMarkerz
-
-
-        }
-
-    }  // end: initMap
-
-
+                } // end if-props
+            };  // end function addMarkers
+        } // end function: buildMapFromGeo
+    }  // end function: initMap
 </script>
-
-<%--<script--%>
-<%--&lt;%&ndash;        this works!&ndash;%&gt;--%>
-<%--        type = "module"--%>
-<%--        src="/js/geocode.js"--%>
-<%--></script>--%>
-
-<%--<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>--%>
-
 
 </head>
 
@@ -236,21 +141,14 @@
         </div>
     </c:if>
 
-    <h4>Welcome to home screen. I have nothing more to say right now! :-)</h4>
+    <h4>Welcome to the home screen sandbox.  I have nothing more to say right now! :-)</h4>
 
-<%--    <div id="map1" class="card p-2 m-2 border-0" style="height: 20rem"></div>--%>
-
-    <div id = "validatedAddyCard" class="card p-2 m-2 border-0" style="height: 5rem">
-        <p>StaticAddy delivered from controller: ${staticAddy}</p>
-
+    <div id = "validatedAddyCard2" class="card p-2 m-2 border-0" style="height: 5rem">
     </div>
 
-    <div id="map2" class="card p-2 m-2 border-0" style="height: 20rem"></div>
+    <div id="mapCard1" class="card p-2 m-2 border-0" style="height: 20rem"></div>
 
-<%--    see comments below about this div--%>
-<%--    <div id = "formattedAddyOnScreenContainer2"></div>--%>
-
-</div><!-- end playdateList -->
+</div> <!-- end playdateList -->
 
 <jsp:include page="/WEB-INF/include/pageLayoutBottomCommon.jsp" />
 

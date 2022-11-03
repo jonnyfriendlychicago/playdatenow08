@@ -246,6 +246,10 @@ public class IndexhomeprofileCtl {
 
         model.addAttribute("userProfile", userSrv.findById(userProfileId)); // grab the entire user object using the url parameter, then deliver to page
 
+
+        String staticAddy = "910 W Belden Chicago IL";
+        model.addAttribute("staticAddy", staticAddy);
+
         return "profile/record.jsp";
     }
 
