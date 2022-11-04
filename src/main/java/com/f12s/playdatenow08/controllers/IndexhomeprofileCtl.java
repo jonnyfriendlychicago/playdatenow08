@@ -252,9 +252,25 @@ public class IndexhomeprofileCtl {
 
         model.addAttribute("userProfile", userSrv.findById(userProfileId)); // grab the entire user object using the url parameter, then deliver to page
 
+        // concatenate all non-null address components saved by user, then deliver to page for gma
+        String homeAddy = "";
+        if (authUserObj.getAddressLine1() != null && authUserObj.getAddressLine1().length() > 0 ) {homeAddy += authUserObj.getAddressLine1();}
+        if (authUserObj.getAddressLine2() != null && authUserObj.getAddressLine2().length() > 0 ) {
+            if (homeAddy.length() > 0) {homeAddy += " ";}
+            homeAddy += authUserObj.getAddressLine2();
+        }
+        if (authUserObj.getCity() != null && authUserObj.getCity().length() > 0 ) {
+            if (homeAddy.length() > 0) {homeAddy += " ";}
+            homeAddy += authUserObj.getCity();}
+        if (authUserObj.getStateterritoryMdl() != null ) {
+            if (homeAddy.length() > 0) {homeAddy += " ";}
+            homeAddy += authUserObj.getStateterritoryMdl().getAbbreviation();}
+        if (authUserObj.getZipCode() != null && authUserObj.getZipCode().length() > 0 ) {
+            if (homeAddy.length() > 0) {homeAddy += " ";}
+            homeAddy += authUserObj.getZipCode();}
+        System.out.println("homeAddy: " + homeAddy);
 
-        String staticAddy = "910 W Belden Chicago IL";
-        model.addAttribute("staticAddy", staticAddy);
+        model.addAttribute("homeAddy", homeAddy);
 
         return "profile/record.jsp";
     }
@@ -334,7 +350,15 @@ public class IndexhomeprofileCtl {
 
         authUserObj.setAddressLine1(userUpdateObj.getAddressLine1());
         authUserObj.setAddressLine2(userUpdateObj.getAddressLine2());
+
         authUserObj.setStateterritoryMdl(userUpdateObj.getStateterritoryMdl());
+        // all of below was intended to cleanly set the fk for stateterritory_id as null... but using 0 as the incoming value for "no selection" seems to do the trick, so whatever!
+//        if (userUpdateObj.getStateterritoryMdl().getId() == Long.valueOf(99) ) {
+//            authUserObj.setStateterritoryMdl(null);
+//        } else {
+//            authUserObj.setStateterritoryMdl(userUpdateObj.getStateterritoryMdl());
+//        };
+
 
         // (3) run the service to save the updated object
         userSrv.updateUserProfile(authUserObj, result);

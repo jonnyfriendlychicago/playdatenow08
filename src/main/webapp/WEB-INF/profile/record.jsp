@@ -18,8 +18,7 @@
             // (2) get geocoded values from incoming java variable addy
             .get('https://maps.googleapis.com/maps/api/geocode/json', {
               params: {
-                <%--address: "${staticAddy}",--%>
-                address: "${userProfile.addressLine1}",
+                address: "${homeAddy}",
                 key: 'AIzaSyBcebr3h87oaEoYNm0ix80FMxuoBzh7nMI'
               }
             }) // end get
@@ -144,23 +143,13 @@
         <pre style="white-space: pre-wrap">${userProfile.aboutMe}</pre>
       </div>
 
-      <div class="card p-2 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">stateterritoryMdl.fullName</p>
-        <p class="m-0">${userProfile.stateterritoryMdl.fullName}</p>
-      </div>
-
-      <div class="card p-2 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">stateterritoryMdl.abbreviation</p>
-        <p class="m-0">${userProfile.stateterritoryMdl.abbreviation}</p>
-      </div>
-
     </div><!-- end playdateInfoCol -->
 
     <div id="homeEtcCol" class="col">
-<%--      <div class="card" style="width: 18rem;">--%>
+
       <div class="card p-2 border-0">
         <p class="m-0 text-secondary" style="font-size: 0.8rem;">Home address</p>
-        <p class="m-0">${userProfile.addressLine1}<br>${userProfile.addressLine2}<br>${userProfile.city}, ${userProfile.zipCode}</p>
+        <p class="m-0">${homeAddy}</p>
       </div>
 
     <div class="card">

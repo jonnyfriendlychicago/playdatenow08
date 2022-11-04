@@ -139,6 +139,7 @@
                             class="form-control"
                             id="stateterritoryMdl"
                             placeholder="stateterritoryMdl">
+                        <form:option value="0" path="stateterritoryMdl">(none)</form:option>
                         <c:forEach items="${stateterritoryList}" var="record">
                             <c:choose>
                                 <c:when test="${record == asIsStateTerritoryObj}">
@@ -150,7 +151,6 @@
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
-
                     </form:select>
                     <form:label path="stateterritoryMdl" for="stateterritoryMdl">stateterritoryMdl:</form:label>
                     <p class="text-danger"><form:errors path="stateterritoryMdl" />
