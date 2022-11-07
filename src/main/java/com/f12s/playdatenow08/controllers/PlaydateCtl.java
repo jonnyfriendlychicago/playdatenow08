@@ -5,15 +5,9 @@ import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
 
-import com.f12s.playdatenow08.models.PlaydateMdl;
-import com.f12s.playdatenow08.models.RsvpMdl;
-import com.f12s.playdatenow08.models.StateterritoryMdl;
-import com.f12s.playdatenow08.models.UserMdl;
+import com.f12s.playdatenow08.models.*;
 import com.f12s.playdatenow08.pojos.PlaydateUserUnionRsvpUser;
-import com.f12s.playdatenow08.services.PlaydateSrv;
-import com.f12s.playdatenow08.services.RsvpSrv;
-import com.f12s.playdatenow08.services.StateterritorySrv;
-import com.f12s.playdatenow08.services.UserSrv;
+import com.f12s.playdatenow08.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +33,10 @@ public class PlaydateCtl {
 
     @Autowired
     private StateterritorySrv stateterritorySrv;
+
+    @Autowired
+    private CodeSrv codeSrv;
+
 
     @GetMapping("/playdate")
     public String displayPlaydateAll(
@@ -68,8 +66,15 @@ public class PlaydateCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
+        // create+send the list of times to the page, for drop-down
         String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
         model.addAttribute("startTimeList", startTimeList );
+
+        // create+send the list of locationTypes to the page, for drop-down
+
+        List<CodeMdl> codeList = codeSrv.returnAll();
+        model.addAttribute("codeList", codeList);
+
         return "playdate/create.jsp";
     }
 
