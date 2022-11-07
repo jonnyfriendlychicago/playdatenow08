@@ -118,6 +118,30 @@
           <form:label path="maxCountKids" for="maxCountKids">Max. Number Kids</form:label>
           <p class="text-danger"><form:errors path="maxCountKids" />
         </div>
+
+        <div class="form-floating mb-3">
+          <form:select
+                  path="codeMdl"
+                  class="form-control"
+                  id="codeMdl"
+                  placeholder="codeMdl">
+            <form:option value="0" path="codeMdl">(none)</form:option>
+            <c:forEach items="${codeList}" var="record">
+<%--              <c:choose>--%>
+<%--                <c:when test="${record == asIsStateTerritoryObj}">--%>
+<%--                  <form:option value="${record.id}" path="codeMdl"--%>
+<%--                               selected="true">${record.code}</form:option>--%>
+<%--                </c:when>--%>
+<%--                <c:otherwise>--%>
+                  <form:option value="${record.id}" path="codeMdl">${record.code}</form:option>
+<%--                </c:otherwise>--%>
+<%--              </c:choose>--%>
+            </c:forEach>
+          </form:select>
+          <form:label path="codeMdl" for="codeMdl">codeMdl:</form:label>
+          <p class="text-danger"><form:errors path="codeMdl" />
+        </div>
+
       </div><!-- end playdateInfoCol -->
 
       <div id="rsvpEtcCol" class="col">

@@ -98,6 +98,11 @@ public class PlaydateMdl {
     @JoinColumn(name="stateterritory_id")
     private StateterritoryMdl stateterritoryMdl;
 
+    // join code table, for locationtype
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="locationtype_id")
+    private CodeMdl codeMdl;
+
     // end: joins
 
     // instantiate the model:
@@ -263,6 +268,11 @@ public class PlaydateMdl {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public CodeMdl getCodeMdl() {return codeMdl;}
+
+    public void setCodeMdl(CodeMdl codeMdl) {this.codeMdl = codeMdl;}
+
     // end: getters and setters
 
 // end mdl
