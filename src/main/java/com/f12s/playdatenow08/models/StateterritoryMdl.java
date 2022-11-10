@@ -28,7 +28,7 @@ public class StateterritoryMdl {
 
     // begin joins
 
-    //	join playdate
+    //	be the stateterritory lookup for playdate
     @OneToMany(mappedBy="stateterritoryMdl", fetch = FetchType.LAZY)
     private List<PlaydateMdl> playdateList;
 
@@ -41,8 +41,6 @@ public class StateterritoryMdl {
     // instantiate the model:
     public StateterritoryMdl() {}
     // begin: getters and setters
-
-
 
     public Long getId() {
         return id;
@@ -89,5 +87,4 @@ public class StateterritoryMdl {
 
     // end: getters and setters
 
-// end mdl
-}
+} // end mdl

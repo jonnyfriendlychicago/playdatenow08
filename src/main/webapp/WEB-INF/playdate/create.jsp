@@ -126,20 +126,44 @@
                   id="codeMdl"
                   placeholder="codeMdl">
             <form:option value="0" path="codeMdl">(none)</form:option>
-            <c:forEach items="${codeList}" var="record">
-<%--              <c:choose>--%>
-<%--                <c:when test="${record == asIsStateTerritoryObj}">--%>
-<%--                  <form:option value="${record.id}" path="codeMdl"--%>
-<%--                               selected="true">${record.code}</form:option>--%>
-<%--                </c:when>--%>
-<%--                <c:otherwise>--%>
-                  <form:option value="${record.id}" path="codeMdl">${record.code}</form:option>
-<%--                </c:otherwise>--%>
-<%--              </c:choose>--%>
+<%--            <c:forEach items="${codeList}" var="record">--%>
+            <c:forEach items="${locationTypeList}" var="record">
+                            <c:choose>
+                              <c:when test="${record == playdate.codeMdl}">
+                                <form:option value="${record.id}" path="codeMdl"
+                                             selected="true">${record.displayValue}</form:option>
+                              </c:when>
+                              <c:otherwise>
+                  <form:option value="${record.id}" path="codeMdl">${record.displayValue}</form:option>
+                              </c:otherwise>
+                            </c:choose>
             </c:forEach>
           </form:select>
-          <form:label path="codeMdl" for="codeMdl">codeMdl:</form:label>
+          <form:label path="codeMdl" for="codeMdl">location type:</form:label>
           <p class="text-danger"><form:errors path="codeMdl" />
+        </div>
+
+        <div class="form-floating mb-3">
+          <form:select
+                  path="eventStatuslookup"
+                  class="form-control"
+                  id="eventStatuslookup"
+                  placeholder="eventStatuslookup">
+            <form:option value="0" path="eventStatuslookup">(none)</form:option>
+            <c:forEach items="${playdateStatusList}" var="record">
+                            <c:choose>
+                              <c:when test="${record == playdate.eventStatuslookup}">
+                                <form:option value="${record.id}" path="codeMdl"
+                                             selected="true">${record.displayValue}</form:option>
+                              </c:when>
+                              <c:otherwise>
+              <form:option value="${record.id}" path="eventStatuslookup">${record.displayValue}</form:option>
+                              </c:otherwise>
+                            </c:choose>
+            </c:forEach>
+          </form:select>
+          <form:label path="codeMdl" for="eventStatuslookup">EventStatusLookup:</form:label>
+          <p class="text-danger"><form:errors path="eventStatuslookup" />
         </div>
 
       </div><!-- end playdateInfoCol -->

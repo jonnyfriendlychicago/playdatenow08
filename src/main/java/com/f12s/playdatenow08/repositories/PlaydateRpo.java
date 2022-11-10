@@ -24,5 +24,4 @@ public interface PlaydateRpo extends CrudRepository<PlaydateMdl, Long> {
             , nativeQuery = true)
     List<PlaydateMdl> userHostedPlaydateListPast(Long keyword);
 
-// end rpo
-}
+} // end rpo

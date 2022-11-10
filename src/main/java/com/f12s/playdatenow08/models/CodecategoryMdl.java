@@ -7,8 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name="code")
-public class CodeMdl {
+@Table(name="codecategory")
+
+public class CodecategoryMdl {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +23,8 @@ public class CodeMdl {
     private Date updatedAt;
 
     // begin: entity-specific table fields
-//    @NotBlank(message="code required.")
-    private String code;
 
-//    @NotBlank(message="codeType required.")
     private String codeType;
-
-//    @NotBlank(message="displayValue required.")
-    private String displayValue;
 
     private String description;
 
@@ -37,28 +32,19 @@ public class CodeMdl {
 
     // begin: joins
 
-    // join playdate
-    @OneToMany(mappedBy="codeMdl", fetch = FetchType.LAZY)
-    private List<PlaydateMdl> playdateList;
-
-    // begin: new stuff nov 9th
-
-    // join user table for createdBy field
+    // join user table
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="createdby")
     private UserMdl createdByUserMdl;
 
-    // lookup for codecategory field
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="codecategory_id")
-    private CodecategoryMdl codecategoryMdl; // remember that the latter value here is the "mappedBy" value on the joined table!
-
-
+    // be the codecategory lookup for codeMdl
+    @OneToMany(mappedBy="codecategoryMdl", fetch = FetchType.LAZY)
+    private List<CodeMdl> codeList;
 
     // end: joins
 
     // instantiate the model:
-    public CodeMdl() {};
+    public CodecategoryMdl() {};
 
     // add methods to populate maintain createdAt/UpdatedAt
     @PrePersist
@@ -96,28 +82,12 @@ public class CodeMdl {
         this.updatedAt = updatedAt;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getCodeType() {
         return codeType;
     }
 
     public void setCodeType(String codeType) {
         this.codeType = codeType;
-    }
-
-    public String getDisplayValue() {
-        return displayValue;
-    }
-
-    public void setDisplayValue(String displayValue) {
-        this.displayValue = displayValue;
     }
 
     public String getDescription() {
@@ -128,30 +98,6 @@ public class CodeMdl {
         this.description = description;
     }
 
-//    public List<CodeMdl> getCodeList() {
-//        return codeList;
-//    }
-//
-//    public void setCodeList(List<CodeMdl> codeList) {
-//        this.codeList = codeList;
-//    }
-
-    //    public List<CodeMdl> getCodeList() {
-//        return codeList;
-//    }
-//
-//    public void setCodeList(List<CodeMdl> codeList) {
-//        this.codeList = codeList;
-//    }
-
-    public List<PlaydateMdl> getPlaydateList() {
-        return playdateList;
-    }
-
-    public void setPlaydateList(List<PlaydateMdl> playdateList) {
-        this.playdateList = playdateList;
-    }
-
     public UserMdl getCreatedByUserMdl() {
         return createdByUserMdl;
     }
@@ -160,21 +106,16 @@ public class CodeMdl {
         this.createdByUserMdl = createdByUserMdl;
     }
 
-    public CodecategoryMdl getCodecategoryMdl() {
-        return codecategoryMdl;
+    public List<CodeMdl> getCodeList() {
+        return codeList;
     }
 
-    public void setCodecategoryMdl(CodecategoryMdl codecategoryMdl) {
-        this.codecategoryMdl = codecategoryMdl;
+    public void setCodeList(List<CodeMdl> codeList) {
+        this.codeList = codeList;
     }
 
-// end: getters and setters
 
-
-
-
-
-
+    // end: getters and setters
 
 
 

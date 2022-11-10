@@ -94,6 +94,17 @@
         <p class="m-0 text-secondary" style="font-size: 0.8rem;">Description</p>
         <pre style="white-space: pre-wrap">${playdate.eventDescription}</pre>
       </div>
+
+      <div class="card p-2 m-0 border-0">
+        <p class="m-0 text-secondary" style="font-size: 0.8rem;">locationType</p>
+        <p class="m-0">${playdate.codeMdl.displayValue}</p>
+      </div>
+
+      <div class="card p-2 m-0 border-0">
+        <p class="m-0 text-secondary" style="font-size: 0.8rem;">eventStatusLookup</p>
+        <p class="m-0">${playdate.eventStatuslookup.displayValue}</p>
+      </div>
+
     </div><!-- end playdateInfoCol -->
 
     <div id="rsvpEtcCol" class="col">
