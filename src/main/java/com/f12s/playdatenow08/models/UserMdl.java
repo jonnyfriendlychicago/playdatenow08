@@ -67,15 +67,7 @@ public class UserMdl {
 
     // begin: joins
 
-    // join playdate
-    @OneToMany(mappedBy="userMdl", fetch = FetchType.LAZY)
-    private List<PlaydateMdl> playdateList;
-
-    // join rsvp
-    @OneToMany(mappedBy="userMdl", fetch = FetchType.LAZY)
-    private List<RsvpMdl> rsvpList;
-
-    // below added for springSec
+    // (1) joins for spring security
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
@@ -83,6 +75,27 @@ public class UserMdl {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<RoleMdl> roleMdl;
+
+    // (2) joins to have "createdBy" be captured in a col in foreign table
+
+    // join playdate
+    @OneToMany(mappedBy="userMdl", fetch = FetchType.LAZY)
+    private List<PlaydateMdl> playdateList;
+
+
+    // join rsvp
+    @OneToMany(mappedBy="userMdl", fetch = FetchType.LAZY)
+    private List<RsvpMdl> rsvpList;
+
+    // join codecategory
+    @OneToMany(mappedBy="createdByUserMdl", fetch = FetchType.LAZY)
+    private List<CodecategoryMdl> codecategoryList;
+
+    // join code
+    @OneToMany(mappedBy="createdByUserMdl", fetch = FetchType.LAZY)
+    private List<CodeMdl> codeList;
+
+    // (3) joins to put other cols on a user record
 
     // join stateterritory table
     @ManyToOne(fetch = FetchType.LAZY)
@@ -257,6 +270,22 @@ public class UserMdl {
     }
 
     public void setStateterritoryMdl(StateterritoryMdl stateterritoryMdl) {this.stateterritoryMdl = stateterritoryMdl;}
+
+    public List<CodecategoryMdl> getCodecategoryList() {
+        return codecategoryList;
+    }
+
+    public void setCodecategoryList(List<CodecategoryMdl> codecategoryList) {
+        this.codecategoryList = codecategoryList;
+    }
+
+    public List<CodeMdl> getCodeList() {
+        return codeList;
+    }
+
+    public void setCodeList(List<CodeMdl> codeList) {
+        this.codeList = codeList;
+    }
 
     // end: getters and setters
 

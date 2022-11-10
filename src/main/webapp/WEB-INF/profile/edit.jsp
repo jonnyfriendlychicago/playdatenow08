@@ -89,7 +89,6 @@
                     <p class="text-danger"><form:errors path="aboutMe" />
                 </div>
 
-
             </div><!-- end playdateInfoCol -->
 
             <div id="rsvpEtcCol" class="col">
@@ -142,12 +141,15 @@
                         <form:option value="0" path="stateterritoryMdl">(none)</form:option>
                         <c:forEach items="${stateterritoryList}" var="record">
                             <c:choose>
-                                <c:when test="${record == asIsStateTerritoryObj}">
+                                <c:when test="${record == intendedStateTerritoryObj}">
+<%--                                above replaced by below--%>
+<%--                                <c:when test="${record == userProfileObj.stateterritoryMdl  }">--%>
                                     <form:option value="${record.id}" path="stateterritoryMdl"
                                                  selected="true">${record.abbreviation}</form:option>
                                 </c:when>
                                 <c:otherwise>
-                                    <form:option value="${record.id}" path="stateterritoryMdl">${record.abbreviation}</form:option>
+                                    <form:option value="${record.id}" path="stateterritoryMdl">
+                                                                    ${record.abbreviation}</form:option>
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
@@ -155,8 +157,6 @@
                     <form:label path="stateterritoryMdl" for="stateterritoryMdl">stateterritoryMdl:</form:label>
                     <p class="text-danger"><form:errors path="stateterritoryMdl" />
                 </div>
-
-
 
                 <div class="form-floating mb-3">
                     <form:input

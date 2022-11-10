@@ -93,15 +93,32 @@ public class PlaydateMdl {
     @OneToMany(mappedBy="playdateMdl", fetch = FetchType.LAZY)
     private List<RsvpMdl> rsvpList;
 
-    // join stateterritory table
+    // lookup for stateterritory field
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="stateterritory_id")
     private StateterritoryMdl stateterritoryMdl;
 
+    // below are working, and shall be boilerplated, proven, deprecated
     // join code table, for locationtype
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="locationtype_id")
     private CodeMdl codeMdl;
+
+    // join code table, for eventStatus
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="eventstatus_id")
+    private CodeMdl eventStatuslookup;
+
+//    // new ones (to be implemented after we prove/fix out the prototype above)
+//    // join code table, for locationtype
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="locationType")
+//    private CodeMdl locationType;
+//
+//    // join code table, for eventStatus
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="playdateStatus")
+//    private CodeMdl playdateStatus;
 
     // end: joins
 
@@ -272,6 +289,23 @@ public class PlaydateMdl {
     public CodeMdl getCodeMdl() {return codeMdl;}
 
     public void setCodeMdl(CodeMdl codeMdl) {this.codeMdl = codeMdl;}
+
+    // above replaced by immed below
+
+
+//    public CodeMdl getLocationTypeLookup() {
+//        return locationTypeLookup;
+//    }
+//
+//    public void setLocationTypeLookup(CodeMdl locationTypeLookup) {
+//        this.locationTypeLookup = locationTypeLookup;
+//    }
+
+    public CodeMdl getEventStatuslookup() {return eventStatuslookup;}
+
+    public void setEventStatuslookup(CodeMdl eventStatuslookup) {this.eventStatuslookup = eventStatuslookup;}
+
+
 
     // end: getters and setters
 

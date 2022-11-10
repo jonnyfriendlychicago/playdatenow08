@@ -66,14 +66,32 @@ public class PlaydateCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
-        // create+send the list of times to the page, for drop-down
+        // (2) deliver lists for drop-down fields
         String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
         model.addAttribute("startTimeList", startTimeList );
 
-        // create+send the list of locationTypes to the page, for drop-down
-
+        // create+send the list of all to the page, for drop-down
+        // I think immedBelow is now deprecated
         List<CodeMdl> codeList = codeSrv.returnAll();
         model.addAttribute("codeList", codeList);
+
+        // create+send the list of locationTypes to the page, for drop-down
+//        List<CodeMdl> locationTypeList = codeSrv.returnAll();
+//        model.addAttribute("locationTypeList", locationTypeList);
+        // replacing above with below
+        Long codeCategoryIdForPlaydateLocationTypeCodes = Long.valueOf(1);
+        List<CodeMdl> locationTypeList = codeSrv.locationTypeList(codeCategoryIdForPlaydateLocationTypeCodes);
+        model.addAttribute("locationTypeList", locationTypeList);
+
+
+
+
+
+        // ignoring below for now... 11/9 921pm
+        // create+send the list of locationTypes to the page, for drop-down
+        List<CodeMdl> playdateStatusList = codeSrv.returnAll();
+        model.addAttribute("playdateStatusList", playdateStatusList);
+
 
         return "playdate/create.jsp";
     }
@@ -94,6 +112,19 @@ public class PlaydateCtl {
             model.addAttribute("validationErrorMsg", "Uh-oh! Please fix the errors noted below and submit again.  (Or cancel.)");
             String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
             model.addAttribute("startTimeList", startTimeList );
+
+            // create+send the list of all to the page, for drop-down
+            List<CodeMdl> codeList = codeSrv.returnAll();
+            model.addAttribute("codeList", codeList);
+
+            // create+send the list of locationTypes to the page, for drop-down
+            List<CodeMdl> locationTypeList = codeSrv.returnAll();
+            model.addAttribute("locationTypeList", locationTypeList);
+
+            // create+send the list of locationTypes to the page, for drop-down
+            List<CodeMdl> playdateStatusList = codeSrv.returnAll();
+            model.addAttribute("playdateStatusList", playdateStatusList);
+
             return "playdate/create.jsp";
 
         } else {
@@ -176,15 +207,31 @@ public class PlaydateCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
+        // (1) get as-is object from db, then send to form for editing
         PlaydateMdl playdateObj = playdateSrv.findById(playdateId);
-        model.addAttribute("playdate", playdateObj);
+        model.addAttribute("playdate", playdateObj); // note: this addAttVar is not kosher, should be 'playdateObj' or better yet: asisPlaydateObj; will need to refactor this later.  'playdateObj' is a var/term currently used different way on postMapping
 
-        // get/deliver from playdate db record, Part 1 (so they can be addAtts that are independent from the playdate obj)
+        // (2) deliver lists for drop-down fields
+        String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
+        model.addAttribute("startTimeList", startTimeList );
+
+        List<CodeMdl> codeList = codeSrv.returnAll();
+        model.addAttribute("codeList", codeList);
+
+        // (3) deliver list of unioned rsvp records for child record table
+        List<PlaydateUserUnionRsvpUser> playdateRsvpList = rsvpSrv.playdateRsvpList(playdateId);
+        model.addAttribute("playdateRsvpList", playdateRsvpList);
+
+        // (4) send non-changing static attributes to the page, so static values can be used
         Date playdateCreatedAt = playdateObj.getCreatedAt();
+        model.addAttribute("playdateCreatedAt", playdateCreatedAt);
         Long playdateCreatedById = playdateObj.getUserMdl().getId();
+        model.addAttribute("playdateCreatedById", playdateCreatedById);
         String playdateCreatedByUserName = playdateObj.getUserMdl().getUserName();
+        model.addAttribute("playdateCreatedByUserName", playdateCreatedByUserName);
 
-        // begin: calculate various RSVP-related stats.  NOTE: this all could be done with native queries as well, but this is good function/loop practice.
+        // (5) calculate various RSVP-related stats and controls.
+        // NOTE: this all could be done with native queries as well, but this is good function/loop practice.
         List<RsvpMdl> rsvpList = rsvpSrv.returnAllRsvpForPlaydate(playdateObj); // list of rsvps, which we will use downstream
         Integer rsvpCount = 0; 							// here and below: instantiate the java variable that we will update in the loop
         Integer aggKidsCount = 0;
@@ -212,25 +259,13 @@ public class PlaydateCtl {
         model.addAttribute("rsvpList", rsvpList);
         model.addAttribute("aggAdultsCount", aggAdultsCount);
         model.addAttribute("openKidsSpots", openKidsSpots);
-        // end: calculate various RSVP-related stats.
-
-        // get/deliver list of unioned rsvp records
-        List<PlaydateUserUnionRsvpUser> playdateRsvpList = rsvpSrv.playdateRsvpList(playdateId);
-        model.addAttribute("playdateRsvpList", playdateRsvpList);
 
         Boolean hasOneOrMoreRsvp = false; // at present, this is being used to show the delete button or not.
         if ( rsvpList.size() > 0 ) {
             hasOneOrMoreRsvp = true;
         }
         model.addAttribute("hasOneOrMoreRsvp", hasOneOrMoreRsvp);
-
-        String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
-        model.addAttribute("startTimeList", startTimeList );
-
-        // get/deliver from playdate db record, Part 2 (so they can be addAtts that are independent from the playdate obj)
-        model.addAttribute("playdateCreatedAt", playdateCreatedAt);
-        model.addAttribute("playdateCreatedById", playdateCreatedById);
-        model.addAttribute("playdateCreatedByUserName", playdateCreatedByUserName);
+        // END: calculate various RSVP-related stats and controls.
 
         return "playdate/edit.jsp";
     }
@@ -248,27 +283,55 @@ public class PlaydateCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
+        // (1) get as-is object from db.  several implications downstream herein.
         PlaydateMdl playdateObj = playdateSrv.findById(playdateMdl.getId());
 
-        // get/deliver from playdate db record, Part 1 (so they can be addAtts that are independent from the playdate obj)
-        Date playdateCreatedAt = playdateObj.getCreatedAt();
-        Long playdateCreatedById = playdateObj.getUserMdl().getId();
-        String playdateCreatedByUserName = playdateObj.getUserMdl().getUserName();
-
+        // (2) validate if authenticated user has security to edit this profile record; if not, redirect user to record screen with flash msg.
         UserMdl recordCreatorUserMdl = playdateObj.getUserMdl();
-
         if(!authUserObj.equals(recordCreatorUserMdl)) {
             System.out.println("recordCreatorUserMdl != currentUserMdl, so redirected to record");
             redirectAttributes.addFlashAttribute("permissionErrorMsg", "This record can only be edited by its creator.  Any edits just attempted were discarded.");
             return "redirect:/playdate/" + playdateObj.getId();
         }
 
-        if (result.hasErrors()) {
-            // note: do not re-deliver playdateObj: doing so will overrride all the values the users submitted / system rejected
-            model.addAttribute("validationErrorMsg", "Uh-oh! Please fix the errors noted below and submit again.  (Or cancel.)");
-            Long playdateId = playdateMdl.getId();
+        // (3) if not errors detected, proceed with update
+        if (!result.hasErrors()) {
+            // (a) update the incoming playdate object by re-attaching any attribute of the object/record not managed by the form.
+            playdateMdl.setUserMdl(playdateObj.getUserMdl());
+            // (b) run the update service
+            playdateSrv.update(playdateMdl);
+            // (c) redirect to the record
+            return "redirect:/playdate/" + playdateObj.getId();
 
-            // begin: calculate various RSVP-related stats.  NOTE: this all could be done with native queries as well, but this is good function/loop practice.
+        // (4) if errors detected, basically reconstitute the entire edit screen and return it to the user.
+        } else {
+
+            // (0) super duper important: do not re-deliver playdateObj to the page, because doing so will overrride all the values the user submitted / system rejected
+
+            // (1) playdateObj already constituted in steps above, so not repeated here.
+
+            // (2) deliver lists for drop-down fields
+            String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
+            model.addAttribute("startTimeList", startTimeList );
+
+            List<CodeMdl> codeList = codeSrv.returnAll();
+            model.addAttribute("codeList", codeList);
+
+            // (3) deliver list of unioned rsvp records for child record table
+            Long playdateId = playdateMdl.getId(); // this is needed here, because the id is not being supplied by path variable
+            List<PlaydateUserUnionRsvpUser> playdateRsvpList = rsvpSrv.playdateRsvpList(playdateId);
+            model.addAttribute("playdateRsvpList", playdateRsvpList);
+
+            // (4) send non-changing static attributes to the page, so static values can be used
+            Date playdateCreatedAt = playdateObj.getCreatedAt();
+            model.addAttribute("playdateCreatedAt", playdateCreatedAt);
+            Long playdateCreatedById = playdateObj.getUserMdl().getId();
+            model.addAttribute("playdateCreatedById", playdateCreatedById);
+            String playdateCreatedByUserName = playdateObj.getUserMdl().getUserName();
+            model.addAttribute("playdateCreatedByUserName", playdateCreatedByUserName);
+
+            // (5) calculate various RSVP-related stats and controls.
+            // NOTE: this all could be done with native queries as well, but this is good function/loop practice.
             List<RsvpMdl> rsvpList = rsvpSrv.returnAllRsvpForPlaydate(playdateObj); // list of rsvps, which we will use downstream
             Integer rsvpCount = 0; 							// here and below: instantiate the java variable that we will update in the loop
             Integer aggKidsCount = 0;
@@ -296,32 +359,17 @@ public class PlaydateCtl {
             model.addAttribute("rsvpList", rsvpList);
             model.addAttribute("aggAdultsCount", aggAdultsCount);
             model.addAttribute("openKidsSpots", openKidsSpots);
-            // end: calculate various RSVP-related stats.
-
-            // get/deliver list of unioned rsvp records
-            List<PlaydateUserUnionRsvpUser> playdateRsvpList = rsvpSrv.playdateRsvpList(playdateId);
-            model.addAttribute("playdateRsvpList", playdateRsvpList);
-
             Boolean hasOneOrMoreRsvp = false; // at present, this is being used to show the delete button or not.
             if ( rsvpList.size() > 0 ) {
                 hasOneOrMoreRsvp = true;
             }
             model.addAttribute("hasOneOrMoreRsvp", hasOneOrMoreRsvp);
+            // end: calculate various RSVP-related stats.
 
-            String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
-            model.addAttribute("startTimeList", startTimeList );
-
-            // get/deliver from playdate db record, Part 2 (so they can be addAtts that are independent from the playdate obj)
-            model.addAttribute("playdateCreatedAt", playdateCreatedAt);
-            model.addAttribute("playdateCreatedById", playdateCreatedById);
-            model.addAttribute("playdateCreatedByUserName", playdateCreatedByUserName);
+            // (6) deliver error msg to page
+            model.addAttribute("validationErrorMsg", "Uh-oh! Please fix the errors noted below and submit again.  (Or cancel.)");
 
             return "playdate/edit.jsp";
-
-        } else {
-            playdateMdl.setUserMdl(playdateObj.getUserMdl()); // deliver any attribute of the object/record not managed by the form
-            playdateSrv.update(playdateMdl);
-            return "redirect:/playdate/" + playdateObj.getId();
         }
     }
 

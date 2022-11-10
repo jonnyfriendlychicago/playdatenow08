@@ -200,7 +200,7 @@
       <table class="table table-striped table-hover table-responsive mt-2">
         <thead>
         <tr>
-          <th scope="col">EventX</th>
+          <th scope="col">Event</th>
           <th scope="col">Status</th>
           <th scope="col">Date/Time</th>
         </tr>
