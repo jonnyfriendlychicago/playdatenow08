@@ -27,10 +27,11 @@
               console.log(response) // log full gma results for analysis
 
               // (3) display geocode values on the page
-              const formattedAddy = response.data.results[0].formatted_address;
 
               const addyComp = response.data.results[0].address_components[0].long_name; // start of additional analysis/dev we're gonna do in a little bit
-              console.log ("addyComp: ", addyComp);
+              // console.log ("addyComp: ", addyComp);
+
+              const formattedAddy = response.data.results[0].formatted_address;
 
               const formattedAddyOutput =
                       "<h5 class='card-title text-center'>Home</h5>" +
@@ -218,7 +219,7 @@
               </c:otherwise>
             </c:choose>
             </a></td>
-            <td>${record.eventStatus}
+            <td>${record.eventStatuslookup.displayValue}
             <td><fmt:formatDate value="${record.eventDate}" pattern="MMMM dd" />, <fmt:formatDate value="${record.eventDate}" pattern="yyyy" /> @${record.startTimeTxt}</td>
           </tr>
         </c:forEach>
@@ -247,7 +248,7 @@
               </c:otherwise>
             </c:choose>
             </a></td>
-            <td>${record.eventStatus}
+            <td>${record.eventStatuslookup.displayValue}
             <td><fmt:formatDate value="${record.eventDate}"
                                 pattern="MMMM dd" />, <fmt:formatDate
                     value="${record.eventDate}" pattern="yyyy" /> @

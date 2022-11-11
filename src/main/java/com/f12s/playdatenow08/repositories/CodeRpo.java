@@ -15,8 +15,9 @@ public interface CodeRpo extends CrudRepository<CodeMdl, Long> {
 
 
     @Query(
-            value= "SELECT c.* FROM playdatenow08.code c where c.codecategory_id = :keyword"
+            value= "SELECT c.* FROM playdatenow08.code c where c.codecategory_id = :keyword order by c.gui_display_order"
             , nativeQuery = true)
-    List<CodeMdl> locationTypeList(Long keyword);
+//    List<CodeMdl> locationTypeList(Long keyword);
+    List<CodeMdl> targetedCodeList(Long keyword);
 
 } // end rpo

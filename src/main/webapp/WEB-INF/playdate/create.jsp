@@ -21,17 +21,40 @@
     <div id="eventDeetsAndRsvpRow" class="row mt-3">
       <div id="playdateInfoCol" class="col">
 
-        <div class="form-floating mb-3">
-          <form:select path="eventStatus" class="form-control" id="eventStatus" placeholder="eventStatus">
-            <form:option value="It's on" path="eventStatus">It's on</form:option>
-            <form:option value="Canceled" path="eventStatus">Canceled</form:option>
-            <form:option value="Pending" path="eventStatus">Pending</form:option>
-          </form:select>
-          <form:label path="eventStatus" for="eventStatus">Playdate status</form:label>
-          <p class="text-danger"><form:errors path="eventStatus" />
-        </div>
+<%--        <div class="form-floating mb-3">--%>
+<%--          <form:select path="eventStatus" class="form-control" id="eventStatus" placeholder="eventStatus">--%>
+<%--            <form:option value="It's on" path="eventStatus">It's on</form:option>--%>
+<%--            <form:option value="Canceled" path="eventStatus">Canceled</form:option>--%>
+<%--            <form:option value="Pending" path="eventStatus">Pending</form:option>--%>
+<%--          </form:select>--%>
+<%--          <form:label path="eventStatus" for="eventStatus">Playdate status</form:label>--%>
+<%--          <p class="text-danger"><form:errors path="eventStatus" />--%>
+<%--        </div>--%>
 
-        <div class="form-floating mb-3">
+  <div class="form-floating mb-3">
+    <form:select
+            path="playdateStatus"
+            class="form-control"
+            id="playdateStatus"
+            placeholder="playdateStatus">
+<%--      <form:option value="0" path="playdateStatus">(none)</form:option>--%>
+      <c:forEach items="${playdateStatusList}" var="record">
+        <c:choose>
+          <c:when test="${record == playdate.playdateStatus}">
+            <form:option value="${record.id}" path="playdateStatus"
+                         selected="true">${record.displayValue}</form:option>
+          </c:when>
+          <c:otherwise>
+            <form:option value="${record.id}" path="playdateStatus">${record.displayValue}</form:option>
+          </c:otherwise>
+        </c:choose>
+      </c:forEach>
+    </form:select>
+    <form:label path="playdateStatus" for="playdateStatus">Playdate Status</form:label>
+    <p class="text-danger"><form:errors path="playdateStatus" />
+  </div>
+
+  <div class="form-floating mb-3">
           <form:input
                   path="eventName"
                   type="text"
@@ -41,9 +64,33 @@
           <form:label path="eventName" for="playdateName">Playdate Name</form:label>
           <div id="eventNameHelp" class="form-text">If left blank, your event will be listed as "Playdate."" Suggestion: enter a descriptive name (e.g., arts & crafts, bike ride, scooters, legos, etc.).</div>
           <p class="text-danger"><form:errors path="eventName" />
-        </div>
+  </div>
 
-        <div class="form-floating mb-3">
+    <div class="form-floating mb-3">
+        <form:select
+                path="locationType"
+                class="form-control"
+                id="codeMdl"
+                placeholder="locationType">
+<%--            <form:option value="0" path="locationType">(none)</form:option>--%>
+            <%--            <c:forEach items="${codeList}" var="record">--%>
+            <c:forEach items="${locationTypeList}" var="record">
+                <c:choose>
+                    <c:when test="${record == playdate.locationType}">
+                        <form:option value="${record.id}" path="locationType"
+                                     selected="true">${record.displayValue}</form:option>
+                    </c:when>
+                    <c:otherwise>
+                        <form:option value="${record.id}" path="locationType">${record.displayValue}</form:option>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </form:select>
+        <form:label path="locationType" for="locationType">Location Type</form:label>
+        <p class="text-danger"><form:errors path="locationType" />
+    </div>
+
+    <div class="form-floating mb-3">
           <form:input
                   path="locationName"
                   type="text"
@@ -54,6 +101,17 @@
           <div id="locationHelp" class="form-text">Examples: Our Home or Central Park or Gertie's Ice Cream, etc.</div>
           <p class="text-danger"><form:errors path="locationName" />
         </div>
+
+    <div class="form-floating mb-3">
+        <form:input
+                path="locationAddy"
+                type="text"
+                class="form-control"
+                id="locationAddy"
+                placeholder="locationAddy" />
+        <form:label path="locationAddy" for="locationAddy">Location Address</form:label>
+        <p class="text-danger"><form:errors path="locationAddy" />
+    </div>
 
         <div class="form-floating mb-3">
           <form:input
@@ -82,17 +140,6 @@
         </div>
 
         <div class="form-floating mb-3">
-          <form:input
-                  path="locationAddy"
-                  type="text"
-                  class="form-control"
-                  id="locationAddy"
-                  placeholder="locationAddy" />
-          <form:label path="locationAddy" for="locationAddy">Location Address</form:label>
-          <p class="text-danger"><form:errors path="locationAddy" />
-        </div>
-
-        <div class="form-floating mb-3">
           <form:textarea
                   path="eventDescription"
                   type="eventDescription"
@@ -117,53 +164,6 @@
                   value="1" />
           <form:label path="maxCountKids" for="maxCountKids">Max. Number Kids</form:label>
           <p class="text-danger"><form:errors path="maxCountKids" />
-        </div>
-
-        <div class="form-floating mb-3">
-          <form:select
-                  path="codeMdl"
-                  class="form-control"
-                  id="codeMdl"
-                  placeholder="codeMdl">
-            <form:option value="0" path="codeMdl">(none)</form:option>
-<%--            <c:forEach items="${codeList}" var="record">--%>
-            <c:forEach items="${locationTypeList}" var="record">
-                            <c:choose>
-                              <c:when test="${record == playdate.codeMdl}">
-                                <form:option value="${record.id}" path="codeMdl"
-                                             selected="true">${record.displayValue}</form:option>
-                              </c:when>
-                              <c:otherwise>
-                  <form:option value="${record.id}" path="codeMdl">${record.displayValue}</form:option>
-                              </c:otherwise>
-                            </c:choose>
-            </c:forEach>
-          </form:select>
-          <form:label path="codeMdl" for="codeMdl">location type:</form:label>
-          <p class="text-danger"><form:errors path="codeMdl" />
-        </div>
-
-        <div class="form-floating mb-3">
-          <form:select
-                  path="eventStatuslookup"
-                  class="form-control"
-                  id="eventStatuslookup"
-                  placeholder="eventStatuslookup">
-            <form:option value="0" path="eventStatuslookup">(none)</form:option>
-            <c:forEach items="${playdateStatusList}" var="record">
-                            <c:choose>
-                              <c:when test="${record == playdate.eventStatuslookup}">
-                                <form:option value="${record.id}" path="codeMdl"
-                                             selected="true">${record.displayValue}</form:option>
-                              </c:when>
-                              <c:otherwise>
-              <form:option value="${record.id}" path="eventStatuslookup">${record.displayValue}</form:option>
-                              </c:otherwise>
-                            </c:choose>
-            </c:forEach>
-          </form:select>
-          <form:label path="codeMdl" for="eventStatuslookup">EventStatusLookup:</form:label>
-          <p class="text-danger"><form:errors path="eventStatuslookup" />
         </div>
 
       </div><!-- end playdateInfoCol -->

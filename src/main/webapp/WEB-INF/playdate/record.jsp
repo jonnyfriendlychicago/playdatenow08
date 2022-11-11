@@ -45,9 +45,20 @@
 
   <div class="row mt-3">
     <div id="playdateInfoCol" class="col">
+
+<%--      <div class="card p-2 m-0 border-0">--%>
+<%--        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Event Status</p>--%>
+<%--        <p class="m-0">${playdate.eventStatus}</p>--%>
+<%--      </div>--%>
+
+<%--      <div class="card p-2 m-0 border-0">--%>
+<%--        <p class="m-0 text-secondary" style="font-size: 0.8rem;">eventStatusLookup</p>--%>
+<%--        <p class="m-0">${playdate.eventStatuslookup.displayValue}</p>--%>
+<%--      </div>--%>
+
       <div class="card p-2 m-0 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Event Status</p>
-        <p class="m-0">${playdate.eventStatus}</p>
+        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Playdate Status</p>
+        <p class="m-0">${playdate.playdateStatus.displayValue}</p>
       </div>
 
       <c:if test="${playdate.eventName.length() > 0}">
@@ -57,10 +68,26 @@
         </div>
       </c:if>
 
-      <div class="card p-2 m-0 border-0">
+
+<%--  <div class="card p-2 m-0 border-0">--%>
+<%--    <p class="m-0 text-secondary" style="font-size: 0.8rem;">locationType</p>--%>
+<%--    <p class="m-0">${playdate.codeMdl.displayValue}</p>--%>
+<%--  </div>--%>
+
+  <div class="card p-2 m-0 border-0">
+    <p class="m-0 text-secondary" style="font-size: 0.8rem;">Location Type</p>
+    <p class="m-0">${playdate.locationType.displayValue}</p>
+  </div>
+
+  <div class="card p-2 m-0 border-0">
         <p class="m-0 text-secondary" style="font-size: 0.8rem;">Location</p>
         <p class="m-0" style="font-size: 2rem;">${playdate.locationName}</p>
       </div>
+
+  <div class="card p-2 m-0 border-0">
+    <p class="m-0 text-secondary" style="font-size: 0.8rem;">Address</p>
+    <p class="m-0">${playdate.locationAddy}</p>
+  </div>
 
       <div class="card p-2 border-0">
         <p class="m-0 text-secondary" style="font-size: 0.8rem;">Event Date</p>
@@ -72,11 +99,6 @@
       <div class="card p-2 m-0 border-0">
         <p class="m-0 text-secondary" style="font-size: 0.8rem;">Start Time</p>
         <p class="m-0">${playdate.startTimeTxt}</p>
-      </div>
-
-      <div class="card p-2 m-0 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Address</p>
-        <p class="m-0">${playdate.locationAddy}</p>
       </div>
 
       <c:choose>
@@ -93,16 +115,6 @@
       <div class="card p-2 border-0">
         <p class="m-0 text-secondary" style="font-size: 0.8rem;">Description</p>
         <pre style="white-space: pre-wrap">${playdate.eventDescription}</pre>
-      </div>
-
-      <div class="card p-2 m-0 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">locationType</p>
-        <p class="m-0">${playdate.codeMdl.displayValue}</p>
-      </div>
-
-      <div class="card p-2 m-0 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">eventStatusLookup</p>
-        <p class="m-0">${playdate.eventStatuslookup.displayValue}</p>
       </div>
 
     </div><!-- end playdateInfoCol -->
@@ -271,10 +283,8 @@
 
   <div id="rsvpListRow" class="row m-1">
 
-    <table
-            class="table table-striped table-hover table-responsive mt-2 caption-top">
-      <caption class="text-dark" style="font-size: 1.5rem;">Rsvp
-        List</caption>
+    <table class="table table-striped table-hover table-responsive mt-2 caption-top">
+      <caption class="text-dark" style="font-size: 1.5rem;">Rsvp List</caption>
       <thead class="border-top-0">
       <tr>
         <th scope="col">Name</th>
@@ -282,7 +292,6 @@
         <th scope="col"># of Kids</th>
         <th scope="col"># of Adults</th>
         <th scope="col">Comment</th>
-
       </tr>
       </thead>
       <tbody>
@@ -303,8 +312,6 @@
 </div><!-- end playdateCard -->
 
 <jsp:include page="/WEB-INF/include/pageLayoutBottomCommon.jsp" />
-
-
 
 </body>
 </html>

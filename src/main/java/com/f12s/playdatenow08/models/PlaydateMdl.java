@@ -35,9 +35,9 @@ public class PlaydateMdl {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
 
-    // begin: entity-specific table fields
-    @NotBlank(message="Playdate Status required.")
-    private String eventStatus;
+//    // begin: entity-specific table fields
+//    @NotBlank(message="Playdate Status required.")
+//    private String eventStatus;
 
     private String eventName;
 
@@ -84,41 +84,46 @@ public class PlaydateMdl {
 
     // begin: joins
 
-    // join user table
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="createdby_id")
-    private UserMdl userMdl;
+    // (1) joins to have "playdate_id" be captured in foreign table
 
     // join rsvp table
     @OneToMany(mappedBy="playdateMdl", fetch = FetchType.LAZY)
     private List<RsvpMdl> rsvpList;
+
+    // (2) joins to put other tables' cols on this mdl
+
+    // new ones (to be implemented after we prove/fix out the prototype above)
+    // join code table, for locationtype
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="locationType")
+    private CodeMdl locationType;
+
+    // join code table, for eventStatus
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="playdateStatus")
+    private CodeMdl playdateStatus;
+
+    // join user table
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="createdby_id")
+    private UserMdl userMdl;
 
     // lookup for stateterritory field
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="stateterritory_id")
     private StateterritoryMdl stateterritoryMdl;
 
-    // below are working, and shall be boilerplated, proven, deprecated
-    // join code table, for locationtype
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="locationtype_id")
-    private CodeMdl codeMdl;
-
-    // join code table, for eventStatus
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="eventstatus_id")
-    private CodeMdl eventStatuslookup;
-
-//    // new ones (to be implemented after we prove/fix out the prototype above)
+//    // below are working, and shall be boilerplated, proven, deprecated
 //    // join code table, for locationtype
 //    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="locationType")
-//    private CodeMdl locationType;
+//    @JoinColumn(name="locationtype_id")
+//    private CodeMdl codeMdl;
 //
 //    // join code table, for eventStatus
 //    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="playdateStatus")
-//    private CodeMdl playdateStatus;
+//    @JoinColumn(name="eventstatus_id")
+//    private CodeMdl eventStatuslookup;
+
 
     // end: joins
 
@@ -160,13 +165,13 @@ public class PlaydateMdl {
         this.updatedAt = updatedAt;
     }
 
-    public String getEventStatus() {
-        return eventStatus;
-    }
-
-    public void setEventStatus(String eventStatus) {
-        this.eventStatus = eventStatus;
-    }
+//    public String getEventStatus() {
+//        return eventStatus;
+//    }
+//
+//    public void setEventStatus(String eventStatus) {
+//        this.eventStatus = eventStatus;
+//    }
 
     public String getEventName() {
         return eventName;
@@ -286,9 +291,9 @@ public class PlaydateMdl {
         this.comment = comment;
     }
 
-    public CodeMdl getCodeMdl() {return codeMdl;}
-
-    public void setCodeMdl(CodeMdl codeMdl) {this.codeMdl = codeMdl;}
+//    public CodeMdl getCodeMdl() {return codeMdl;}
+//
+//    public void setCodeMdl(CodeMdl codeMdl) {this.codeMdl = codeMdl;}
 
     // above replaced by immed below
 
@@ -301,11 +306,25 @@ public class PlaydateMdl {
 //        this.locationTypeLookup = locationTypeLookup;
 //    }
 
-    public CodeMdl getEventStatuslookup() {return eventStatuslookup;}
+//    public CodeMdl getEventStatuslookup() {return eventStatuslookup;}
+//
+//    public void setEventStatuslookup(CodeMdl eventStatuslookup) {this.eventStatuslookup = eventStatuslookup;}
 
-    public void setEventStatuslookup(CodeMdl eventStatuslookup) {this.eventStatuslookup = eventStatuslookup;}
+    public CodeMdl getLocationType() {
+        return locationType;
+    }
 
+    public void setLocationType(CodeMdl locationType) {
+        this.locationType = locationType;
+    }
 
+    public CodeMdl getPlaydateStatus() {
+        return playdateStatus;
+    }
+
+    public void setPlaydateStatus(CodeMdl playdateStatus) {
+        this.playdateStatus = playdateStatus;
+    }
 
     // end: getters and setters
 
