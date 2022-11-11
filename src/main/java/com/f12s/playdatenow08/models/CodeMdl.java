@@ -33,13 +33,28 @@ public class CodeMdl {
 
     private String description;
 
+    private float guiDisplayOrder;
+
     // end: entity-specific table fields
 
     // begin: joins
 
     // join playdate
-    @OneToMany(mappedBy="codeMdl", fetch = FetchType.LAZY)
-    private List<PlaydateMdl> playdateList;
+    // below whacked 632pm
+//    @OneToMany(mappedBy="codeMdl", fetch = FetchType.LAZY)
+//    private List<PlaydateMdl> playdateList;
+
+    // added 632pm
+    // join playdate - locationType
+    @OneToMany(mappedBy="locationType", fetch = FetchType.LAZY)
+    private List<PlaydateMdl> playdateListlocationType;
+
+    // join playdate - locationType
+    @OneToMany(mappedBy="playdateStatus", fetch = FetchType.LAZY)
+    private List<PlaydateMdl> playdateListplaydateStatus;
+
+    // JRF 20221110: I don't think above two do anything for app at present.  We aren't every trying to get a list of playdates according to on of these mappings.
+    // furthermore, I think the app runs just fine even if these don't exist.  But not gonna mess with it right now.
 
     // begin: new stuff nov 9th
 
@@ -127,30 +142,14 @@ public class CodeMdl {
     public void setDescription(String description) {
         this.description = description;
     }
-
-//    public List<CodeMdl> getCodeList() {
-//        return codeList;
+//
+//    public List<PlaydateMdl> getPlaydateList() {
+//        return playdateList;
 //    }
 //
-//    public void setCodeList(List<CodeMdl> codeList) {
-//        this.codeList = codeList;
+//    public void setPlaydateList(List<PlaydateMdl> playdateList) {
+//        this.playdateList = playdateList;
 //    }
-
-    //    public List<CodeMdl> getCodeList() {
-//        return codeList;
-//    }
-//
-//    public void setCodeList(List<CodeMdl> codeList) {
-//        this.codeList = codeList;
-//    }
-
-    public List<PlaydateMdl> getPlaydateList() {
-        return playdateList;
-    }
-
-    public void setPlaydateList(List<PlaydateMdl> playdateList) {
-        this.playdateList = playdateList;
-    }
 
     public UserMdl getCreatedByUserMdl() {
         return createdByUserMdl;
@@ -168,14 +167,30 @@ public class CodeMdl {
         this.codecategoryMdl = codecategoryMdl;
     }
 
-// end: getters and setters
+    public float getGuiDisplayOrder() {
+        return guiDisplayOrder;
+    }
 
+    public void setGuiDisplayOrder(float guiDisplayOrder) {
+        this.guiDisplayOrder = guiDisplayOrder;
+    }
 
+    public List<PlaydateMdl> getPlaydateListlocationType() {
+        return playdateListlocationType;
+    }
 
+    public void setPlaydateListlocationType(List<PlaydateMdl> playdateListlocationType) {
+        this.playdateListlocationType = playdateListlocationType;
+    }
 
+    public List<PlaydateMdl> getPlaydateListplaydateStatus() {
+        return playdateListplaydateStatus;
+    }
 
+    public void setPlaydateListplaydateStatus(List<PlaydateMdl> playdateListplaydateStatus) {
+        this.playdateListplaydateStatus = playdateListplaydateStatus;
+    }
 
-
-
+    // end: getters and setters
 
 } // end mdl

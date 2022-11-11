@@ -62,26 +62,15 @@ public class UserMdl {
 
     private String zipCode;
 
-
     // end entity-specific fields
 
     // begin: joins
 
-    // (1) joins for spring security
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private List<RoleMdl> roleMdl;
-
-    // (2) joins to have "createdBy" be captured in a col in foreign table
+    // (1) joins to have "createdBy" be captured in foreign table
 
     // join playdate
     @OneToMany(mappedBy="userMdl", fetch = FetchType.LAZY)
     private List<PlaydateMdl> playdateList;
-
 
     // join rsvp
     @OneToMany(mappedBy="userMdl", fetch = FetchType.LAZY)
@@ -95,12 +84,21 @@ public class UserMdl {
     @OneToMany(mappedBy="createdByUserMdl", fetch = FetchType.LAZY)
     private List<CodeMdl> codeList;
 
-    // (3) joins to put other cols on a user record
+    // (2) joins to put other tables' cols on this mdl
 
     // join stateterritory table
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="stateterritory_id")
     private StateterritoryMdl stateterritoryMdl;
+
+    // (3) joins for spring security
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<RoleMdl> roleMdl;
 
     // end: joins
 

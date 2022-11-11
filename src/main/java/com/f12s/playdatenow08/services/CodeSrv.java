@@ -16,8 +16,10 @@ public class CodeSrv {
     // returns all
     public List<CodeMdl> returnAll() {return codeRpo.findAll(); }
 
-    public List<CodeMdl> locationTypeList(Long x) {
-        return codeRpo.locationTypeList(x);
+//    public List<CodeMdl> locationTypeList(Long x) {
+    public List<CodeMdl> targetedCodeList(Long x) {
+//        return codeRpo.locationTypeList(x);
+        return codeRpo.targetedCodeList(x);
     }
 
 

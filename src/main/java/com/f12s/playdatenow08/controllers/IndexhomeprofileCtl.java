@@ -239,8 +239,10 @@ public class IndexhomeprofileCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
+        // (1) deliver list of user records to page
         List<UserMdl> profileList = userSrv.returnAll();
         model.addAttribute("profileList", profileList);
+
         return "profile/list.jsp";
     }
 
@@ -331,13 +333,11 @@ public class IndexhomeprofileCtl {
 //        System.out.println(userProfileObj.getStateterritoryMdl().getId());
 
         // (6) create+send the list of stateTerritory to the page, for drop-down purposes
-
         List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
         model.addAttribute("stateterritoryList", stateterritoryList);
 
         return "profile/edit.jsp";
     }
-
 
     // for future clean-up: this entire method has authUserObj being sent to update srv, but shoudl really just be the userObject from the page's userID value.
     // above entails updated the @postMapping../path/ to include the id of the profile.  bad move to have ever removed that.
@@ -381,8 +381,12 @@ public class IndexhomeprofileCtl {
         // (3) run the service to save the updated object
         userSrv.updateUserProfile(authUserObj, result);
 
-        if (result.hasErrors() ) {
-            // (4) send the as-is object to the page, so static values can be used (createdAt, Id, etc.)
+        if (!result.hasErrors() ) {
+            return "redirect:/profile/" + authUserObj.getId();
+
+        } else {
+
+            // (a) send the as-is object to the page, so static values can be used (createdAt, Id, etc.)
             model.addAttribute("userProfileId", userProfileId);
             model.addAttribute("userProfileCreatedAt", userProfileCreatedAt);
 
@@ -392,19 +396,14 @@ public class IndexhomeprofileCtl {
 
 //            System.out.println("intendedStateTerritoryObj:" + intendedStateTerritoryObj);
 
-// (6) create+send the list of stateTerritory to the page, for drop-down purposes
-
+            // (b) create+send the list of stateTerritory to the page, for drop-down purposes
             List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
             model.addAttribute("stateterritoryList", stateterritoryList);
 
-
             return "profile/edit.jsp";
 
-        } else {
-            return "redirect:/profile/" + authUserObj.getId();
         }
     }
 
-// end of methods
-}
+} // end of methods
 

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" import="java.util.Date"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.Date"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -9,9 +8,9 @@
 <jsp:include page="/WEB-INF/include/header.jsp" />
 <jsp:include page="/WEB-INF/include/pageLayoutTop.jsp" />
 
-<c:if test="${permissionErrorMsg != null}">
-  <div class="alert alert-warning" role="alert">
-      ${permissionErrorMsg}
+<c:if test="${validationErrorMsg != null}">
+  <div class="alert alert-danger" role="alert">
+      ${validationErrorMsg}
   </div>
 </c:if>
 <div id="playdateCard" class="card p-3 d-md-flex justify-content-start">
@@ -37,9 +36,15 @@
 
   <div class="row mt-3">
     <div id="playdateInfoCol" class="col">
+
+<%--      <div class="card p-2 m-0 border-0">--%>
+<%--        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Event Status</p>--%>
+<%--        <p class="m-0">${playdate.eventStatus}</p>--%>
+<%--      </div>--%>
+
       <div class="card p-2 m-0 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Event Status</p>
-        <p class="m-0">${playdate.eventStatus}</p>
+        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Playdate Status</p>
+        <p class="m-0">${playdate.playdateStatus.displayValue}</p>
       </div>
 
       <c:if test="${playdate.eventName.length() > 0}">
@@ -50,8 +55,18 @@
       </c:if>
 
       <div class="card p-2 m-0 border-0">
+        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Location Type</p>
+        <p class="m-0">${playdate.locationType.displayValue}</p>
+      </div>
+
+      <div class="card p-2 m-0 border-0">
         <p class="m-0 text-secondary" style="font-size: 0.8rem;">Location</p>
         <p class="m-0" style="font-size: 2rem;">${playdate.locationName}</p>
+      </div>
+
+      <div class="card p-2 m-0 border-0">
+        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Address</p>
+        <p class="m-0">${playdate.locationAddy}</p>
       </div>
 
       <div class="card p-2 border-0">
@@ -61,8 +76,8 @@
       </div>
 
       <div class="card p-2 m-0 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Address</p>
-        <p class="m-0">${playdate.locationAddy}</p>
+        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Start Time</p>
+        <p class="m-0">${playdate.startTimeTxt}</p>
       </div>
 
       <c:choose>
@@ -81,20 +96,20 @@
         <pre style="white-space: pre-wrap">${playdate.eventDescription}</pre>
       </div>
 
-      <div class="card p-2 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Max. Number kids</p>
-        <p class="m-0">${playdate.maxCountKids}</p>
-      </div>
+<%--      <div class="card p-2 border-0">--%>
+<%--        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Max. Number kids</p>--%>
+<%--        <p class="m-0">${playdate.maxCountKids}</p>--%>
+<%--      </div>--%>
 
-      <div class="card p-2 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Count Rsvp</p>
-        <p class="m-0">${rsvpCount}</p>
-      </div>
+<%--      <div class="card p-2 border-0">--%>
+<%--        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Count Rsvp</p>--%>
+<%--        <p class="m-0">${rsvpCount}</p>--%>
+<%--      </div>--%>
 
-      <div class="card p-2 border-0">
-        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Sum Rsvp - rsvpInt</p>
-        <p class="m-0">${sumRsvpDotRsvpInt}</p>
-      </div>
+<%--      <div class="card p-2 border-0">--%>
+<%--        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Sum Rsvp - rsvpInt</p>--%>
+<%--        <p class="m-0">${sumRsvpDotRsvpInt}</p>--%>
+<%--      </div>--%>
 
     </div><!-- end playdateInfoCol -->
 
@@ -137,7 +152,6 @@
         </div>
 
         <form:form action='/rsvp/edit' method='post' modelAttribute='rsvp'>
-
           <form:input type="hidden" path="id" />
 
           <div class="form-floating mb-3">
@@ -211,8 +225,7 @@
   </div><!-- end row -->
 
   <div id="rsvpListRow" class="row m-1">
-    <table
-            class="table table-striped table-hover table-responsive mt-2 caption-top">
+    <table class="table table-striped table-hover table-responsive mt-2 caption-top">
       <caption class="text-dark" style="font-size: 1.5rem;">Rsvp List</caption>
       <thead class="border-top-0">
       <tr>
@@ -238,4 +251,8 @@
 
   </div><!-- end rsvpListRow -->
 </div><!-- end playdateCard -->
-<jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />
+<%--<jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />--%>
+<jsp:include page="/WEB-INF/include/pageLayoutBottomCommon.jsp" />
+
+</body>
+</html>
