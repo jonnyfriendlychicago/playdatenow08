@@ -126,6 +126,13 @@
     }  // end function: initMap
 </script>
 
+<script>
+    function myFunction() {
+        document.getElementById("changeThis").innerHTML = "Paragraph changed.";
+    }
+</script>
+
+
 </head>
 
 <jsp:include page="/WEB-INF/include/bodyDesign.jsp" />
@@ -147,6 +154,27 @@
     </div>
 
     <div id="mapCard1" class="card p-2 m-2 border-0" style="height: 20rem"></div>
+
+    <div class="card">
+        <div id="cardBody1" class="card-body">
+          <h5 class="card-title">Your Home</h5>
+          <p id="changeThis" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <button type="button" onclick="myFunction()">Try it</button>
+
+        </div>
+                                            <%--        <img src="/img/usa.jpeg" class="card-img-top" alt="...">--%>
+                                            <%--        <div id="mapCard1" class="card-img-top" ></div>--%>
+<%--        <div id="mapCard1" class="card p-2 m-2 border-0" style="height: 20rem"></div>--%>
+                                            <%--        <ul class="list-group list-group-flush">--%>
+                                            <%--          <li class="list-group-item">An item</li>--%>
+                                            <%--          <li class="list-group-item">A second item</li>--%>
+                                            <%--          <li class="list-group-item">A third item</li>--%>
+                                            <%--        </ul>--%>
+                                            <%--        <div class="card-body">--%>
+                                            <%--          <a href="#" class="card-link">Card link</a>--%>
+                                            <%--          <a href="#" class="card-link">Another link</a>--%>
+                                            <%--        </div>--%>
+    </div>
 
 </div> <!-- end playdateList -->
 

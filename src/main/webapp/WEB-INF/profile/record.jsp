@@ -248,7 +248,7 @@
               </c:otherwise>
             </c:choose>
             </a></td>
-            <td>${record.eventStatuslookup.displayValue}
+            <td>${record.playdateStatus.displayValue}
             <td><fmt:formatDate value="${record.eventDate}"
                                 pattern="MMMM dd" />, <fmt:formatDate
                     value="${record.eventDate}" pattern="yyyy" /> @

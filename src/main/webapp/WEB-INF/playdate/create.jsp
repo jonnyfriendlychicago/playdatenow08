@@ -1,9 +1,57 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" import="java.util.Date"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.Date"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<jsp:include page="/WEB-INF/include/head.jsp" />
+<%--<jsp:include page="/WEB-INF/include/head.jsp" />--%>
+<jsp:include page="/WEB-INF/include/headCommon.jsp" />
+
+<%--<script>--%>
+<%--    function myFunction() {--%>
+<%--        document.getElementById("conditionalFieldContainer1").innerHTML = "Paragraph changed.";--%>
+<%--    }--%>
+<%--</script>--%>
+
+<%--above works, now trying below--%>
+<%--below is a mess, can't handle form:input stuff--%>
+
+<%--<script>--%>
+<%--    function myFunction(locationTypeSelector) {--%>
+
+<%--        if (locationTypeSelector == 1){--%>
+<%--            document.getElementById("conditionalFieldContainer1").innerHTML = "<h1>selector 1 clicked.</h1>";--%>
+<%--        } else {--%>
+<%--            document.getElementById("conditionalFieldContainer1").innerHTML =--%>
+<%--            '<div class="form-floating mb-3">' +--%>
+<%--            '<form:input path="locationName" type="text" class="form-control" id="locationName" placeholder="locationName" />' +--%>
+<%--            '<form:label path="locationName" for="locationName">Location Name</form:label>' +--%>
+<%--            '</div>';--%>
+<%--        }--%>
+<%--    }--%>
+<%--</script>--%>
+
+<%--below is attempt to use hidden on/off--%>
+<script>
+    function myFunction(locationTypeSelector) {
+
+        if (locationTypeSelector == 1){
+            document.getElementById("locationNameContainer").removeAttribute("class");
+            document.getElementById("locationNameContainer").setAttribute("class", "form-floating mb-3 collapse");
+
+            document.getElementById("locationAddyContainer").removeAttribute("class");
+            document.getElementById("locationAddyContainer").setAttribute("class", "form-floating mb-3 collapse");
+        } else {
+            document.getElementById("locationNameContainer").removeAttribute("class");
+            document.getElementById("locationNameContainer").setAttribute("class", "form-floating mb-3");
+
+            document.getElementById("locationAddyContainer").removeAttribute("class");
+            document.getElementById("locationAddyContainer").setAttribute("class", "form-floating mb-3");
+        }
+    }
+</script>
+
+
+</head>
+
 <jsp:include page="/WEB-INF/include/bodyDesign.jsp" />
 <jsp:include page="/WEB-INF/include/header.jsp" />
 <jsp:include page="/WEB-INF/include/pageLayoutTop.jsp" />
@@ -66,31 +114,85 @@
           <p class="text-danger"><form:errors path="eventName" />
   </div>
 
-    <div class="form-floating mb-3">
-        <form:select
-                path="locationType"
-                class="form-control"
-                id="codeMdl"
-                placeholder="locationType">
-<%--            <form:option value="0" path="locationType">(none)</form:option>--%>
-            <%--            <c:forEach items="${codeList}" var="record">--%>
+<%--    <div class="form-floating mb-3">--%>
+<%--        <form:select--%>
+<%--                path="locationType"--%>
+<%--                class="form-control"--%>
+<%--                id="locationType"--%>
+<%--                placeholder="locationType">--%>
+<%--            <c:forEach items="${locationTypeList}" var="record">--%>
+<%--                <c:choose>--%>
+<%--                    <c:when test="${record == playdate.locationType}">--%>
+<%--                        <form:option value="${record.id}" path="locationType"--%>
+<%--                                     selected="true">${record.displayValue}</form:option>--%>
+<%--                    </c:when>--%>
+<%--                    <c:otherwise>--%>
+<%--                        <form:option value="${record.id}" path="locationType">${record.displayValue}</form:option>--%>
+<%--                    </c:otherwise>--%>
+<%--                </c:choose>--%>
+<%--            </c:forEach>--%>
+<%--        </form:select>--%>
+<%--        <form:label path="locationType" for="locationType">Location Type</form:label>--%>
+<%--        <p class="text-danger"><form:errors path="locationType" />--%>
+<%--    </div>--%>
+
+<%--    above is original drop-down list--%>
+<%--    <div>--%>
+<%--        <form:label path="locationType">Location Type: </form:label>--%>
+<%--        <form:radiobutton path="locationType" value="1" label="one redone B" />--%>
+<%--        <form:radiobutton path="locationType" value="2" label="two baby" />--%>
+<%--    </div>--%>
+
+<%--    above works, but isnt' styled, not sure how--%>
+<%--    below is my attempt to style above... AND IT WORKS!!!!--%>
+
+<%--        <div id = "collectionOfRadios">--%>
+<%--            <form:label path="locationType">Location Type: </form:label>--%>
+<%--            <div class="form-check">--%>
+<%--                <form:radiobutton--%>
+<%--                        path="locationType"--%>
+<%--                        class="form-check-input"--%>
+<%--                        id="1"--%>
+<%--                        value="1"--%>
+<%--                        label="one redone"--%>
+<%--                />--%>
+<%--            </div>--%>
+<%--            <div class="form-check">--%>
+<%--                <form:radiobutton--%>
+<%--                        path="locationType"--%>
+<%--                        class="form-check-input"--%>
+<%--                        id="2"--%>
+<%--                        value="2"--%>
+<%--                        label="two baby"--%>
+<%--                        checked="true"--%>
+<%--                />--%>
+<%--            </div>--%>
+<%--       </div> &lt;%&ndash; end collectionOfRadios&ndash;%&gt;--%>
+
+<%--    NEXT STEP: make above work as a jsp loop for the values!   insert a bunch of records in the code table to see if/how this list wraps--%>
+
+    <div id = "collectionOfRadios">
+        <form:label path="locationType">Location Type: </form:label>
+        <p class="text-danger"><form:errors path="locationType" />
             <c:forEach items="${locationTypeList}" var="record">
                 <c:choose>
                     <c:when test="${record == playdate.locationType}">
-                        <form:option value="${record.id}" path="locationType"
-                                     selected="true">${record.displayValue}</form:option>
+                        <div class="form-check form-check-inline">
+                            <form:radiobutton path="locationType" class="form-check-input" id="locationTypeSelector${record.id}" value="${record.id}" label="${record.displayValue}" checked="true" onclick="myFunction(${record.id})"/>
+                        </div>
                     </c:when>
                     <c:otherwise>
-                        <form:option value="${record.id}" path="locationType">${record.displayValue}</form:option>
+                        <div class="form-check form-check-inline">
+                            <form:radiobutton path="locationType" class="form-check-input" id="locationTypeSelector${record.id}" value="${record.id}" label="${record.displayValue}" onclick="myFunction(${record.id})"/>
+                        </div>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
-        </form:select>
-        <form:label path="locationType" for="locationType">Location Type</form:label>
-        <p class="text-danger"><form:errors path="locationType" />
-    </div>
+    </div> <%-- end collectionOfRadios--%>
 
-    <div class="form-floating mb-3">
+<%--    <div id="conditionalFieldContainer1"></div>--%>
+
+    <div id="locationNameContainer" class="form-floating mb-3 collapse" >
           <form:input
                   path="locationName"
                   type="text"
@@ -98,11 +200,11 @@
                   id="locationName"
                   placeholder="locationName" />
           <form:label path="locationName" for="locationName">Location Name</form:label>
-          <div id="locationHelp" class="form-text">Examples: Our Home or Central Park or Gertie's Ice Cream, etc.</div>
+          <div id="locationHelp" class="form-text">Examples: Central Park or Gertie's Ice Cream, etc.</div>
           <p class="text-danger"><form:errors path="locationName" />
-        </div>
+    </div>
 
-    <div class="form-floating mb-3">
+    <div id="locationAddyContainer" class="form-floating mb-3 collapse">
         <form:input
                 path="locationAddy"
                 type="text"
@@ -113,17 +215,16 @@
         <p class="text-danger"><form:errors path="locationAddy" />
     </div>
 
-        <div class="form-floating mb-3">
-          <form:input
-                  path="eventDate"
-                  type="date"
-                  class="form-control"
-                  id="eventDate"
-                  placeholder="eventDate" />
-          <form:label path="eventDate" for="eventDate">Event Date</form:label>
-          <p class="text-danger"><form:errors path="eventDate" />
-          </p>
-        </div>
+    <div class="form-floating mb-3">
+      <form:input
+              path="eventDate"
+              type="date"
+              class="form-control"
+              id="eventDate"
+              placeholder="eventDate" />
+      <form:label path="eventDate" for="eventDate">Event Date</form:label>
+      <p class="text-danger"><form:errors path="eventDate" /></p>
+    </div>
 
         <div class="form-floating mb-3">
           <form:select
@@ -195,7 +296,9 @@
                     id="kidCount"
                     placeholder="kidCount"
                     min="1"
-                    step="1" />
+                    step="1"
+                    value="1"
+            />
             <form:label path="kidCount" for="kidCount"># of Kids</form:label>
             <p class="text-danger"><form:errors path="kidCount" />
           </div>
@@ -208,7 +311,9 @@
                     id="adultCount"
                     placeholder="adultCount"
                     min="1"
-                    step="1" />
+                    step="1"
+                    value="1"
+            />
             <form:label path="adultCount" for="adultCount"># of Adults</form:label>
             <p class="text-danger"><form:errors path="adultCount" />
           </div>
@@ -234,4 +339,11 @@
     </div><!-- end bottomButtonTray -->
   </form:form><!-- end playdateEditForm -->
 </div> <!-- end playdateCard -->
-<jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />
+<%--<jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />--%>
+<jsp:include page="/WEB-INF/include/pageLayoutBottomCommon.jsp" />
+
+
+
+
+</body>
+</html>

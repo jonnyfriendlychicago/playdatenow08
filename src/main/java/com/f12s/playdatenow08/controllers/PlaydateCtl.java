@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import com.f12s.playdatenow08.models.*;
 import com.f12s.playdatenow08.pojos.PlaydateUserUnionRsvpUser;
 import com.f12s.playdatenow08.services.*;
+import com.f12s.playdatenow08.validator.PlaydateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,10 @@ public class PlaydateCtl {
 
     @Autowired
     private CodeSrv codeSrv;
+
+    // adding below to mimic the userValidator program
+    @Autowired
+    private PlaydateValidator playdateValidator;
 
 
     @GetMapping("/playdate")
@@ -90,6 +95,9 @@ public class PlaydateCtl {
 
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
+
+        // adding below to mimic the userValidator program; i think it's Obj, b/c that's what's in @ModelAttribute
+        playdateValidator.validate(playdateObj, result);
 
         if(!result.hasErrors()) {
 
