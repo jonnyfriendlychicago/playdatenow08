@@ -33,16 +33,25 @@ public class UserValidator implements Validator {
 
         Optional<UserMdl> userObjWithSameEmail = Optional.ofNullable(userRpo.findByEmail(userMdl.getEmail()));
 
-        Optional<UserMdl> userObjWithSameUserName = Optional.ofNullable(userRpo.findByUserName(userMdl.getUserName()));
+//        Optional<UserMdl> userObjWithSameUserName = Optional.ofNullable(userRpo.findByUserName(userMdl.getUserName()));
 
         // Reject if email exists in db
         if(userObjWithSameEmail.isPresent()) {
             errors.rejectValue("email", "Match");
         }
 
+        // moved here
+        Optional<UserMdl> userObjWithSameUserName = Optional.ofNullable(userRpo.findByUserName(userMdl.getUserName()));
+
         // Reject if username exists in db
         if(userObjWithSameUserName.isPresent()) {
             errors.rejectValue("userName", "Match");
+        }
+
+        // JRF here trying to add a validation for userName size
+
+        if (userMdl.getUserName().length() < 3) {
+            errors.rejectValue("userName", "Size");
         }
     }
 

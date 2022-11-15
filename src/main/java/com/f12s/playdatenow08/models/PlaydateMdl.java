@@ -41,7 +41,7 @@ public class PlaydateMdl {
 
     private String eventName;
 
-    @NotBlank(message="Location Name required.")
+//    @NotBlank(message="Location Name required.")
     private String locationName;
 
     @NotBlank(message="Location Address required.")
@@ -96,6 +96,7 @@ public class PlaydateMdl {
     // join code table, for locationtype
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="locationType")
+    @NotNull (message = "what's the location type, butthead?")
     private CodeMdl locationType;
 
     // join code table, for eventStatus
