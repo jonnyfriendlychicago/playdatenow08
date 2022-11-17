@@ -110,7 +110,7 @@
                   id="eventName"
                   placeholder="eventName" />
           <form:label path="eventName" for="playdateName">Playdate Name</form:label>
-          <div id="eventNameHelp" class="form-text">If left blank, your event will be listed as "Playdate."" Suggestion: enter a descriptive name (e.g., arts & crafts, bike ride, scooters, legos, etc.).</div>
+          <div id="eventNameHelp" class="form-text">If left blank, your event will be listed as "Playdate." Suggestion: enter a descriptive name (e.g., arts & crafts, bike ride, scooters, legos, etc.).</div>
           <p class="text-danger"><form:errors path="eventName" />
   </div>
 
@@ -171,7 +171,7 @@
 
 <%--    NEXT STEP: make above work as a jsp loop for the values!   insert a bunch of records in the code table to see if/how this list wraps--%>
 
-    <div id = "collectionOfRadios">
+    <div id = "collectionOfRadios"  class = "mb-3">
         <form:label path="locationType">Location Type: </form:label>
         <p class="text-danger"><form:errors path="locationType" />
             <c:forEach items="${locationTypeList}" var="record">
@@ -232,7 +232,8 @@
                   class="form-control"
                   id="startTimeTxt"
                   placeholder="startTimeTxt">
-            <c:forEach items="${startTimeList}" var="record">
+              <form:option value="select" path="startTimeTxt">select...</form:option>
+              <c:forEach items="${startTimeList}" var="record">
               <form:option value="${record}" path="startTimeTxt">${record}</form:option>
             </c:forEach>
           </form:select>

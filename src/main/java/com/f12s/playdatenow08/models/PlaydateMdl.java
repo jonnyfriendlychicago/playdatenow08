@@ -44,20 +44,20 @@ public class PlaydateMdl {
 //    @NotBlank(message="Location Name required.")
     private String locationName;
 
-    @NotBlank(message="Location Address required.")
+//    @NotBlank(message="Location Address required.")
     private String locationAddy;
 
-    @NotNull(message="Date is required.")
+//    @NotNull(message="Date is required.")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date eventDate;
 
-    @NotBlank(message="Start Time required.")
+//    @NotBlank(message="Start Time required.")
     private String startTimeTxt;
 
     private String eventDescription;
 
-    @NotNull (message = "Max Kids Count must be 1 or greater.")
-    @Min(value =1, message="Max Kids Count must be 1 or greater.")
+//    @NotNull (message = "Max Kids Count must be 1 or greater.")
+//    @Min(value =1, message="Max Kids Count must be 1 or greater.")
     private Integer maxCountKids;
 
     //	@NotNull (message = "Max Adults Count must be 1 or greater.")
@@ -70,12 +70,12 @@ public class PlaydateMdl {
     @NotBlank(message="RSVP status is required.")
     private String rsvpStatus;
 
-    @NotNull (message = "Minimum one child on the RSVP")
-    @Min(value =1, message="Minimum one child on the RSVP.")
+//    @NotNull (message = "Minimum one child on the RSVP")
+//    @Min(value =1, message="Minimum one child on the RSVP.")
     private Integer kidCount;
 
-    @NotNull (message = "Minimum one adult on the RSVP")
-    @Min(value =1, message="Minimum one adult on the RSVP.")
+//    @NotNull (message = "Minimum one adult on the RSVP")
+//    @Min(value =1, message="Minimum one adult on the RSVP.")
     private Integer adultCount;
 
     private String comment;
@@ -96,7 +96,7 @@ public class PlaydateMdl {
     // join code table, for locationtype
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="locationType")
-    @NotNull (message = "what's the location type, butthead?")
+//    @NotNull (message = "what's the location type, butthead?")
     private CodeMdl locationType;
 
     // join code table, for eventStatus
