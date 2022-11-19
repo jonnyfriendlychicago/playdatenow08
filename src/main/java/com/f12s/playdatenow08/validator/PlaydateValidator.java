@@ -4,9 +4,11 @@ package com.f12s.playdatenow08.validator;
 // above replaced by below
 import com.f12s.playdatenow08.models.CodeMdl;
 import com.f12s.playdatenow08.models.PlaydateMdl;
+import com.f12s.playdatenow08.models.StateterritoryMdl;
 import com.f12s.playdatenow08.repositories.PlaydateRpo;
 import com.f12s.playdatenow08.repositories.UserRpo;
 import com.f12s.playdatenow08.services.CodeSrv;
+import com.f12s.playdatenow08.services.StateterritorySrv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -21,9 +23,11 @@ public class PlaydateValidator implements Validator {
     @Autowired
     private PlaydateRpo playdateRpo;
 
-    // trying to get list of codes we csn iterate thru
     @Autowired
     private CodeSrv codeSrv;
+
+    @Autowired
+    private StateterritorySrv stateterritorySrv;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -146,6 +150,8 @@ public class PlaydateValidator implements Validator {
             errors.rejectValue("adultCount", "Size");
         }
 
+        // locationType
+        // fyi, this ought to never be invoked as createNew has a default selection
         if (
                 playdateMdl.getLocationType() == null
         ) {
@@ -153,33 +159,109 @@ public class PlaydateValidator implements Validator {
 
         }
 
-        // locationType is somewhereElse... required related fields:
+        // if locationType is somewhereElse... required related fields:
+
+        // locationName
         if (
                 playdateMdl.getLocationType() != null &&
                         playdateMdl.getLocationType().getId() == 2 &&
                         playdateMdl.getLocationName().length() == 0
         ) {
-            errors.rejectValue("locationName", "LocationTypeLocationNameCombo");
+            errors.rejectValue("locationName", "locationNameLocationTypeCombo");
         }
+
+        // below now a deprecated field
+//        // locationAddy
+//        if (
+//                playdateMdl.getLocationType() != null &&
+//                        playdateMdl.getLocationType().getId() == 2 &&
+//                        playdateMdl.getLocationAddy().length() == 0
+//        ) {
+//            errors.rejectValue("locationAddy", "locationAddyLocationTypeCombo");
+//        }
+
+        // addressLine1
+        if (
+                playdateMdl.getLocationType() != null &&
+                        playdateMdl.getLocationType().getId() == 2 &&
+                        playdateMdl.getAddressLine1().length() == 0
+        ) {
+            errors.rejectValue("addressLine1", "addressLine1LocationTypeCombo");
+        }
+
+        // below field presently not in service for playdate model
+//        // addressLine2
+//        if (
+//                playdateMdl.getLocationType() != null &&
+//                        playdateMdl.getLocationType().getId() == 2 &&
+//                        playdateMdl.getAddressLine2().length() == 0
+//        ) {
+//            errors.rejectValue("addressLine2", "addressLine2LocationTypeCombo");
+//        }
+
+        // city
+        if (
+                playdateMdl.getLocationType() != null &&
+                        playdateMdl.getLocationType().getId() == 2 &&
+                        playdateMdl.getCity().length() == 0
+        ) {
+            errors.rejectValue("city", "cityLocationTypeCombo");
+        }
+
+        // stateterritory
+        // (1) instantiate essential variable
+        int stateterritoryValid = 0;
+        // (2) check to see if join at all
+        if (
+                playdateMdl.getStateterritoryMdl() == null
+        ) {
+            System.out.println("Invalid stateterritory selection; value does not join to lookup table.");
+        } else {
+            // (1) get list of valid objects
+            List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
+            // (2b) iterate through the list, looking for objects that match user entry
+            int b = 0;
+
+            for (b = 0; b < stateterritoryList.size(); b++) {
+                // all printStatements herein for initial testing purposes only
+                System.out.print("item: " + b + "\n");
+                System.out.print("playdateMdl.getStateterritoryMdl().getAbbreviation(): " + playdateMdl.getStateterritoryMdl().getAbbreviation() + "\n");
+                System.out.print("stateterritoryList.get(b).getAbbreviation(): " + stateterritoryList.get(b).getAbbreviation() + "\n");
+
+                if (
+                        !playdateMdl.getStateterritoryMdl().getAbbreviation().equals( stateterritoryList.get(b).getAbbreviation() )
+                ) {
+                    System.out.println("entry does not match this list item");
+                    System.out.println("stateterritoryValid: " + stateterritoryValid);
+                } else {
+                    stateterritoryValid = 1;
+                    System.out.println("stateterritoryValid achieved!");
+                    System.out.println("stateterritoryValid: " + stateterritoryValid);
+                    System.out.println("we're done!");
+                    break;
+                }
+            } // end for-loop
+        } // end else
 
         if (
                 playdateMdl.getLocationType() != null &&
                         playdateMdl.getLocationType().getId() == 2 &&
-                        playdateMdl.getLocationAddy().length() == 0
+                        stateterritoryValid == 0
         ) {
-            errors.rejectValue("locationAddy", "LocationTypeLocationAddyCombo");
+            errors.rejectValue("stateterritoryMdl", "stateterritoryMdlLocationTypeCombo");
+//            System.out.println("we are ready to join and display an error msg...");
         }
 
-        // combo: locationType and related fields
+        // below field presently not in service for playdate model
+//        // zipCode
 //        if (
-//                playdateMdl.getLocationType().getId() != null  &&  playdateMdl.getLocationType().getId() == 2 && playdateMdl.getLocationAddy().length() == 0
-////
+//                playdateMdl.getLocationType() != null &&
+//                        playdateMdl.getLocationType().getId() == 2 &&
+//                        playdateMdl.getZipCode().length() == 0
 //        ) {
-//            System.out.println("on playdateValidator...");
-//            System.out.println("playdateMdl.getLocationType().getId(): " + playdateMdl.getLocationType().getId());
-//            System.out.println("playdateMdl.getLocationAddy().length(): " + playdateMdl.getLocationAddy().length());
-//            errors.rejectValue("locationType", "Match");
+//            errors.rejectValue("zipCode", "zipCodeLocationTypeCombo");
 //        }
+
 
 
 

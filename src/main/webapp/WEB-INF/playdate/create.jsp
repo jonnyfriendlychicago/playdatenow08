@@ -12,14 +12,45 @@
             document.getElementById("locationNameContainer").removeAttribute("class");
             document.getElementById("locationNameContainer").setAttribute("class", "form-floating mb-3 collapse");
 
-            document.getElementById("locationAddyContainer").removeAttribute("class");
-            document.getElementById("locationAddyContainer").setAttribute("class", "form-floating mb-3 collapse");
+            // document.getElementById("locationAddyContainer").removeAttribute("class");
+            // document.getElementById("locationAddyContainer").setAttribute("class", "form-floating mb-3 collapse");
+
+            document.getElementById("addressLine1Container").removeAttribute("class");
+            document.getElementById("addressLine1Container").setAttribute("class", "form-floating mb-3 collapse");
+
+            // document.getElementById("addressLine2Container").removeAttribute("class");
+            // document.getElementById("addressLine2Container").setAttribute("class", "form-floating mb-3 collapse");
+
+            document.getElementById("cityContainer").removeAttribute("class");
+            document.getElementById("cityContainer").setAttribute("class", "form-floating mb-3 collapse");
+
+            document.getElementById("stateterritoryContainer").removeAttribute("class");
+            document.getElementById("stateterritoryContainer").setAttribute("class", "form-floating mb-3 collapse");
+
+            // document.getElementById("zipCodeContainer").removeAttribute("class");
+            // document.getElementById("zipCodeContainer").setAttribute("class", "form-floating mb-3 collapse");
+
         } else {
             document.getElementById("locationNameContainer").removeAttribute("class");
             document.getElementById("locationNameContainer").setAttribute("class", "form-floating mb-3");
 
-            document.getElementById("locationAddyContainer").removeAttribute("class");
-            document.getElementById("locationAddyContainer").setAttribute("class", "form-floating mb-3");
+            // document.getElementById("locationAddyContainer").removeAttribute("class");
+            // document.getElementById("locationAddyContainer").setAttribute("class", "form-floating mb-3");
+
+            document.getElementById("addressLine1Container").removeAttribute("class");
+            document.getElementById("addressLine1Container").setAttribute("class", "form-floating mb-3 ");
+
+            // document.getElementById("addressLine2Container").removeAttribute("class");
+            // document.getElementById("addressLine2Container").setAttribute("class", "form-floating mb-3 ");
+
+            document.getElementById("cityContainer").removeAttribute("class");
+            document.getElementById("cityContainer").setAttribute("class", "form-floating mb-3 ");
+
+            document.getElementById("stateterritoryContainer").removeAttribute("class");
+            document.getElementById("stateterritoryContainer").setAttribute("class", "form-floating mb-3 ");
+
+            // document.getElementById("zipCodeContainer").removeAttribute("class");
+            // document.getElementById("zipCodeContainer").setAttribute("class", "form-floating mb-3 ");
         }
     }
 </script>
@@ -34,15 +65,15 @@
     <div class="alert alert-danger mt-3" role="alert">${validationErrorMsg}</div>
 </c:if>
 
-<div id="playdateCard" class="card p-3 mt-3 d-md-flex justify-content-start bg-warning">
+<div id="playdateCard" class="card p-3 mt-3 d-md-flex justify-content-start"> <%--bg-warning--%>
 
-    <div id="creatorOrganizerTopButton" class="d-flex justify-content-end bg-info align-items-center">
+    <div id="creatorOrganizerTopButton" class="d-flex justify-content-end align-items-center px-3"> <%--bg-info--%>
         <a href="/playdate"><button class="btn btn-secondary">Cancel</button></a>
     </div>
 
     <form:form action='/playdate/new' method='post' modelAttribute='playdate'>
 
-    <div id="eventDeetsAndRsvpRow" class="row bg-success pt-3">
+    <div id="eventDeetsAndRsvpRow" class="row py-3"> <%--bg-success--%>
         <div id="playdateInfoCol" class="col">
 
             <div class="form-floating mb-3">
@@ -81,9 +112,16 @@
             <div id = "collectionOfRadios"  class = "mb-3">
                 <form:label path="locationType">Location Type:</form:label>
                 <br>
-                    <div class="container bg-danger d-flex justify-content-center">
+                    <div class="container d-flex justify-content-center"> <%--bg-danger --%>
                     <c:forEach items="${locationTypeList}" var="record">
                         <c:choose>
+                            <%--below gives us a default selection for first display of 'create new'; take this out if no default is desired, and error msgs will take care of non-selection--%>
+                            <c:when test="${playdate.locationType == null && record.code == 'ourHome'}">
+                                <div class="form-check form-check-inline">
+                                    <form:radiobutton path="locationType" class="form-check-input" id="locationTypeSelector${record.id}" value="${record.id}" label="${record.displayValue}" checked="true" onclick="myFunction(${record.id})"/>
+                                </div>
+                            </c:when>
+
                             <c:when test="${record == playdate.locationType}">
                                 <div class="form-check form-check-inline">
                                     <form:radiobutton path="locationType" class="form-check-input" id="locationTypeSelector${record.id}" value="${record.id}" label="${record.displayValue}" checked="true" onclick="myFunction(${record.id})"/>
@@ -119,23 +157,127 @@
                 <p class="text-danger"><form:errors path="locationName" />
             </div>
 
+<%--            <c:choose>--%>
+<%--            <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">--%>
+<%--            <div id="locationAddyContainer" class="form-floating mb-3 collapse">--%>
+<%--            </c:when>--%>
+<%--            <c:otherwise>--%>
+<%--            <div id="locationAddyContainer" class="form-floating mb-3 ">--%>
+<%--            </c:otherwise>--%>
+<%--            </c:choose>--%>
+<%--                <form:input--%>
+<%--                    path="locationAddy"--%>
+<%--                    type="text"--%>
+<%--                    class="form-control"--%>
+<%--                    id="locationAddy"--%>
+<%--                    placeholder="locationAddy" />--%>
+<%--                <form:label path="locationAddy" for="locationAddy">Location Address</form:label>--%>
+<%--                <p class="text-danger"><form:errors path="locationAddy" />--%>
+<%--            </div>--%>
+
             <c:choose>
             <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">
-            <div id="locationAddyContainer" class="form-floating mb-3 collapse">
+            <div id="addressLine1Container" class="form-floating mb-3 collapse">
             </c:when>
             <c:otherwise>
-            <div id="locationAddyContainer" class="form-floating mb-3 ">
+            <div id="addressLine1Container" class="form-floating mb-3 ">
             </c:otherwise>
             </c:choose>
                 <form:input
-                    path="locationAddy"
-                    type="text"
-                    class="form-control"
-                    id="locationAddy"
-                    placeholder="locationAddy" />
-                <form:label path="locationAddy" for="locationAddy">Location Address</form:label>
-                <p class="text-danger"><form:errors path="locationAddy" />
+                        path="addressLine1"
+                        type="text"
+                        class="form-control"
+                        id="addressLine1"
+                        placeholder="addressLine1" />
+                <form:label path="addressLine1" for="addressLine1">Address</form:label>
+                <p class="text-danger"><form:errors path="addressLine1" />
             </div>
+
+<%--            <c:choose>--%>
+<%--            <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">--%>
+<%--            <div id="addressLine2Container" class="form-floating mb-3 collapse">--%>
+<%--            </c:when>--%>
+<%--            <c:otherwise>--%>
+<%--            <div id="addressLine2Container" class="form-floating mb-3 ">--%>
+<%--                </c:otherwise>--%>
+<%--                </c:choose>--%>
+<%--                <form:input--%>
+<%--                        path="addressLine2"--%>
+<%--                        type="text"--%>
+<%--                        class="form-control"--%>
+<%--                        id="addressLine2"--%>
+<%--                        placeholder="addressLine2" />--%>
+<%--                <form:label path="addressLine2" for="addressLine2">Address Line 2</form:label>--%>
+<%--                <p class="text-danger"><form:errors path="addressLine2" />--%>
+<%--            </div>--%>
+
+            <c:choose>
+            <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">
+            <div id="cityContainer" class="form-floating mb-3 collapse">
+            </c:when>
+            <c:otherwise>
+            <div id="cityContainer" class="form-floating mb-3 ">
+            </c:otherwise>
+            </c:choose>
+                <form:input
+                        path="city"
+                        type="text"
+                        class="form-control"
+                        id="city"
+                        placeholder="city" />
+                <form:label path="city" for="city">City</form:label>
+                <p class="text-danger"><form:errors path="city" />
+            </div>
+
+            <c:choose>
+            <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">
+            <div id="stateterritoryContainer" class="form-floating mb-3 collapse">
+            </c:when>
+            <c:otherwise>
+            <div id="stateterritoryContainer" class="form-floating mb-3 ">
+            </c:otherwise>
+            </c:choose>
+                <form:select
+                        path="stateterritoryMdl"
+                        class="form-control"
+                        id="stateterritoryMdl"
+                        placeholder="stateterritoryMdl">
+                    <form:option value="0" path="stateterritoryMdl">(none)</form:option>
+                    <c:forEach items="${stateterritoryList}" var="record">
+                        <c:choose>
+                            <c:when test="${record == playdate.stateterritoryMdl}">
+<%--                            <c:when test="${record == intendedStateTerritoryObj}">--%>
+                                <%--                                above replaced by below--%>
+                                <%--                                <c:when test="${record == userProfileObj.stateterritoryMdl  }">--%>
+                                <form:option value="${record.id}" path="stateterritoryMdl" selected="true">${record.abbreviation}</form:option>
+                            </c:when>
+                            <c:otherwise>
+                                <form:option value="${record.id}" path="stateterritoryMdl">${record.abbreviation}</form:option>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </form:select>
+                <form:label path="stateterritoryMdl" for="stateterritoryMdl">State/Territory</form:label>
+                <p class="text-danger"><form:errors path="stateterritoryMdl" />
+            </div>
+
+<%--            <c:choose>--%>
+<%--            <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">--%>
+<%--            <div id="zipCodeContainer" class="form-floating mb-3 collapse">--%>
+<%--            </c:when>--%>
+<%--            <c:otherwise>--%>
+<%--            <div id="zipCodeContainer" class="form-floating mb-3 ">--%>
+<%--                </c:otherwise>--%>
+<%--                </c:choose>--%>
+<%--                <form:input--%>
+<%--                        path="zipCode"--%>
+<%--                        type="text"--%>
+<%--                        class="form-control"--%>
+<%--                        id="zipCode"--%>
+<%--                        placeholder="zipCode" />--%>
+<%--                <form:label path="zipCode" for="zipCode">Zip Code</form:label>--%>
+<%--                <p class="text-danger"><form:errors path="zipCode" />--%>
+<%--            </div>--%>
 
             <div class="form-floating mb-3">
                 <form:input
@@ -175,7 +317,7 @@
                 <p class="text-danger"><form:errors path="eventDescription" />
             </div>
 
-            <div class="form-floating mb-3">
+            <div class="form-floating ">
                 <form:input
                       path="maxCountKids"
                       type="number"
@@ -193,79 +335,78 @@
 
         <div id="rsvpEtcCol" class="col">
 
-        <div id="rsvpCard" class="card p-3 d-md-flex justify-content-start">
-          <p class="m-0 text-center" style="font-size: 1.25rem;">Your RSVP</p>
+            <div id="rsvpCard" class="card p-3">
 
-          <div class="form-floating mb-3">
-            <form:select
-                    path="rsvpStatus"
-                    class="form-control"
-                    id="rsvpStatus"
-                    placeholder="rsvpStatus">
-              <form:option value="In" path="rsvpStatus">In</form:option>
-              <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>
-              <form:option value="Out" path="rsvpStatus">Out</form:option>
-            </form:select>
-            <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
-            <p class="text-danger"><form:errors path="rsvpStatus" />
-          </div>
+                <p class="m-0 text-center" style="font-size: 1.25rem;">Your RSVP</p>
 
-          <div class="form-floating mb-3">
-            <form:input
-                    path="kidCount"
-                    type="number"
-                    class="form-control"
-                    id="kidCount"
-                    placeholder="kidCount"
-                    min="1"
-                    step="1"
-                    value="1"
-            />
-            <form:label path="kidCount" for="kidCount"># of Kids</form:label>
-            <p class="text-danger"><form:errors path="kidCount" />
-          </div>
+                <div class="form-floating mb-3">
+                    <form:select
+                        path="rsvpStatus"
+                        class="form-control"
+                        id="rsvpStatus"
+                        placeholder="rsvpStatus">
+                        <form:option value="In" path="rsvpStatus">In</form:option>
+                        <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>
+                        <form:option value="Out" path="rsvpStatus">Out</form:option>
+                    </form:select>
+                    <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
+                    <p class="text-danger"><form:errors path="rsvpStatus" />
+                </div>
 
-          <div class="form-floating mb-3">
-            <form:input
-                    path="adultCount"
-                    type="number"
-                    class="form-control"
-                    id="adultCount"
-                    placeholder="adultCount"
-                    min="1"
-                    step="1"
-                    value="1"
-            />
-            <form:label path="adultCount" for="adultCount"># of Adults</form:label>
-            <p class="text-danger"><form:errors path="adultCount" />
-          </div>
+                <div class="form-floating mb-3">
+                    <form:input
+                        path="kidCount"
+                        type="number"
+                        class="form-control"
+                        id="kidCount"
+                        placeholder="kidCount"
+                        min="1"
+                        step="1"
+                        value="1"
+                    />
+                    <form:label path="kidCount" for="kidCount"># of Kids</form:label>
+                    <p class="text-danger"><form:errors path="kidCount" />
+                </div>
 
-          <div class="form-floating mb-3">
-            <form:textarea
-                    path="comment"
-                    type="text"
-                    class="form-control"
-                    id="comment"
-                    placeholder="comment"
-                    style="height: 10rem;" />
-            <form:label path="comment" for="comment">Comment</form:label>
-            <p class="text-danger"><form:errors path="comment" />
-          </div>
-        </div><!-- end rsvpCard -->
-      </div><!-- end rsvpEtcCol-->
+                <div class="form-floating mb-3">
+                    <form:input
+                        path="adultCount"
+                        type="number"
+                        class="form-control"
+                        id="adultCount"
+                        placeholder="adultCount"
+                        min="1"
+                        step="1"
+                        value="1"
+                    />
+                    <form:label path="adultCount" for="adultCount"># of Adults</form:label>
+                    <p class="text-danger"><form:errors path="adultCount" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <form:textarea
+                        path="comment"
+                        type="text"
+                        class="form-control"
+                        id="comment"
+                        placeholder="comment"
+                        style="height: 10rem;" />
+                    <form:label path="comment" for="comment">Comment</form:label>
+                    <p class="text-danger"><form:errors path="comment" />
+                </div>
+
+            </div><!-- end rsvpCard -->
+        </div><!-- end rsvpEtcCol-->
     </div><!-- end eventDeetsAndRsvpRow -->
-    <div id="bottomButtonTray" class="d-flex justify-content-center">
-      <div>
-        <button type="submit" class="btn btn-primary w-100">Create New Playdate</button>
-      </div>
+
+    <div id="bottomButtonTray" class="d-flex justify-content-center"> <%--bg-secondary--%>
+        <button type="submit" class="btn btn-primary">Create New Playdate</button>
     </div><!-- end bottomButtonTray -->
-  </form:form><!-- end playdateEditForm -->
+
+    </form:form><!-- end playdateEditForm -->
 </div> <!-- end playdateCard -->
-<%--<jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />--%>
+
 <jsp:include page="/WEB-INF/include/pageLayoutBottomCommon.jsp" />
-
-
-
 
 </body>
 </html>

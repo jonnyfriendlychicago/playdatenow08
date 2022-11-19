@@ -81,6 +81,10 @@ public class PlaydateCtl {
         List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
         model.addAttribute("playdateStatusList", playdateStatusList);
 
+        // (2) create+send the list of stateTerritory to the page, for drop-down purposes
+        List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
+        model.addAttribute("stateterritoryList", stateterritoryList);
+
 //        System.out.println(playdateObj.getLocationType());
 
         return "playdate/create.jsp";
