@@ -81,11 +81,8 @@ public class PlaydateCtl {
         List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
         model.addAttribute("playdateStatusList", playdateStatusList);
 
-        // (2) create+send the list of stateTerritory to the page, for drop-down purposes
         List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
         model.addAttribute("stateterritoryList", stateterritoryList);
-
-//        System.out.println(playdateObj.getLocationType());
 
         return "playdate/create.jsp";
     }
@@ -210,6 +207,62 @@ public class PlaydateCtl {
         model.addAttribute("openKidsSpots", openKidsSpots);
         // end: calculate various RSVP-related stats.
 
+        // (4) concatenate all non-null address components saved by user, then deliver to page for gma
+
+        String homeAddy = "";
+        if (authUserObj.getAddressLine1() != null && authUserObj.getAddressLine1().length() > 0 ) {homeAddy += authUserObj.getAddressLine1();}
+        if (authUserObj.getAddressLine2() != null && authUserObj.getAddressLine2().length() > 0 ) {
+            if (homeAddy.length() > 0) {homeAddy += " ";}
+            homeAddy += authUserObj.getAddressLine2();
+        }
+        if (authUserObj.getCity() != null && authUserObj.getCity().length() > 0 ) {
+            if (homeAddy.length() > 0) {homeAddy += " ";}
+            homeAddy += authUserObj.getCity();}
+        if (authUserObj.getStateterritoryMdl() != null ) {
+            if (homeAddy.length() > 0) {homeAddy += " ";}
+            homeAddy += authUserObj.getStateterritoryMdl().getAbbreviation();}
+        if (authUserObj.getZipCode() != null && authUserObj.getZipCode().length() > 0 ) {
+            if (homeAddy.length() > 0) {homeAddy += " ";}
+            homeAddy += authUserObj.getZipCode();}
+
+        System.out.println("homeAddy: " + homeAddy);
+
+        String playdateAddy = "";
+        if (playdateObj.getAddressLine1() != null && playdateObj.getAddressLine1().length() > 0 ) {playdateAddy += playdateObj.getAddressLine1();}
+        if (playdateObj.getAddressLine2() != null && playdateObj.getAddressLine2().length() > 0 ) {
+            if (playdateAddy.length() > 0) {playdateAddy += " ";}
+            playdateAddy += playdateObj.getAddressLine2();
+        }
+        if (playdateObj.getCity() != null && playdateObj.getCity().length() > 0 ) {
+            if (playdateAddy.length() > 0) {playdateAddy += " ";}
+            playdateAddy += playdateObj.getCity();}
+        if (playdateObj.getStateterritoryMdl() != null ) {
+            if (playdateAddy.length() > 0) {playdateAddy += " ";}
+            playdateAddy += playdateObj.getStateterritoryMdl().getAbbreviation();}
+        if (playdateObj.getZipCode() != null && playdateObj.getZipCode().length() > 0 ) {
+            if (playdateAddy.length() > 0) {playdateAddy += " ";}
+            playdateAddy += playdateObj.getZipCode();}
+
+        System.out.println("playdateAddy: " + playdateAddy);
+
+        System.out.println("playdateObj.getLocationType().getCode(): " + playdateObj.getLocationType().getCode());
+
+        String playdateAddySendThis = "";
+        if (
+                playdateObj.getLocationType().getCode().equals("ourHome")
+        ) {
+            playdateAddySendThis = homeAddy;
+        } else {
+            playdateAddySendThis = playdateAddy;
+        }
+
+        System.out.println("playdateAddySendThis: " + playdateAddySendThis);
+
+
+
+//        model.addAttribute("homeAddy", homeAddy);
+        model.addAttribute("homeAddy", playdateAddySendThis);
+
         return "playdate/record.jsp";
     }
 
@@ -227,15 +280,8 @@ public class PlaydateCtl {
         PlaydateMdl playdateObj = playdateSrv.findById(playdateId);
         model.addAttribute("playdate", playdateObj); // note: this addAttVar is not kosher, should be 'playdateObj' or better yet: asisPlaydateObj; will need to refactor this later.  'playdateObj' is a var/term currently used different way on postMapping
 
-//        // (2) deliver lists for drop-down fields
-//        String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
-//        model.addAttribute("startTimeList", startTimeList );
-//
-//        List<CodeMdl> codeList = codeSrv.returnAll();
-//        model.addAttribute("codeList", codeList);
-
         // (2) deliver lists for drop-down fields
-        String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
+        String[] startTimeList = {"8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
         model.addAttribute("startTimeList", startTimeList );
 
         Long codeCategoryIdForPlaydateLocationTypeCodes = Long.valueOf(1);
@@ -245,6 +291,9 @@ public class PlaydateCtl {
         Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
         List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
         model.addAttribute("playdateStatusList", playdateStatusList);
+
+        List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
+        model.addAttribute("stateterritoryList", stateterritoryList);
 
         // (3) deliver list of unioned rsvp records for child record table
         List<PlaydateUserUnionRsvpUser> playdateRsvpList = rsvpSrv.playdateRsvpList(playdateId);
@@ -322,7 +371,11 @@ public class PlaydateCtl {
             return "redirect:/playdate/" + playdateObj.getId();
         }
 
-        // (3) if not errors detected, proceed with update
+        // (3) run the validation on submitted values
+//        playdateValidator.validate(playdateObj, result);
+        playdateValidator.validate(playdateMdl, result);
+
+        // (4) if not errors detected, proceed with update
         if (!result.hasErrors()) {
             // (a) update the incoming playdate object by re-attaching any attribute of the object/record not managed by the form.
             playdateMdl.setUserMdl(playdateObj.getUserMdl());
@@ -338,13 +391,6 @@ public class PlaydateCtl {
 
             // (1) playdateObj already constituted in steps above, so not repeated here.
 
-//            // (2) deliver lists for drop-down fields
-//            String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
-//            model.addAttribute("startTimeList", startTimeList );
-//
-//            List<CodeMdl> codeList = codeSrv.returnAll();
-//            model.addAttribute("codeList", codeList);
-
             // (2) deliver lists for drop-down fields
             String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
             model.addAttribute("startTimeList", startTimeList );
@@ -356,6 +402,9 @@ public class PlaydateCtl {
             Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
             List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
             model.addAttribute("playdateStatusList", playdateStatusList);
+
+            List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
+            model.addAttribute("stateterritoryList", stateterritoryList);
 
             // (3) deliver list of unioned rsvp records for child record table
             Long playdateId = playdateMdl.getId(); // this is needed here, because the id is not being supplied by path variable

@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<%--<jsp:include page="/WEB-INF/include/head.jsp" />--%>
 <jsp:include page="/WEB-INF/include/headCommon.jsp" />
 
 <script>
@@ -54,7 +53,6 @@
         }
     }
 </script>
-
 </head>
 
 <jsp:include page="/WEB-INF/include/bodyDesign.jsp" />
@@ -121,7 +119,6 @@
                                     <form:radiobutton path="locationType" class="form-check-input" id="locationTypeSelector${record.id}" value="${record.id}" label="${record.displayValue}" checked="true" onclick="myFunction(${record.id})"/>
                                 </div>
                             </c:when>
-
                             <c:when test="${record == playdate.locationType}">
                                 <div class="form-check form-check-inline">
                                     <form:radiobutton path="locationType" class="form-check-input" id="locationTypeSelector${record.id}" value="${record.id}" label="${record.displayValue}" checked="true" onclick="myFunction(${record.id})"/>
@@ -404,6 +401,7 @@
     </div><!-- end bottomButtonTray -->
 
     </form:form><!-- end playdateEditForm -->
+
 </div> <!-- end playdateCard -->
 
 <jsp:include page="/WEB-INF/include/pageLayoutBottomCommon.jsp" />

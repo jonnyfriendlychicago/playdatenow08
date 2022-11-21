@@ -89,6 +89,18 @@
                     <p class="text-danger"><form:errors path="aboutMe" />
                 </div>
 
+                <div class="form-floating mb-3">
+                    <form:input
+                            path="homeName"
+                            type="text"
+                            class="form-control"
+                            id="homeName"
+                            placeholder="homeName" />
+                    <form:label path="homeName" for="homeName">Home Name</form:label>
+                    <div id="eventNameHelp" class="form-text">When you create a playdate with 'our home' selected as the location, the Home Name you save here will appear to your invitees.  For example, Smith-Jones Home, Jon & Mei's, Casa de Carmen, etc.</div>
+                    <p class="text-danger"><form:errors path="homeName" />
+                </div>
+
             </div><!-- end playdateInfoCol -->
 
             <div id="rsvpEtcCol" class="col">

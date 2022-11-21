@@ -33,6 +33,8 @@ public class UserUpdateDto {
 
     private String zipCode;
 
+    private String homeName;
+
     // begin joins
 
     // join stateterritory table
@@ -114,6 +116,14 @@ public class UserUpdateDto {
 
     public void setStateterritoryMdl(StateterritoryMdl stateterritoryMdl) {
         this.stateterritoryMdl = stateterritoryMdl;
+    }
+
+    public String getHomeName() {
+        return homeName;
+    }
+
+    public void setHomeName(String homeName) {
+        this.homeName = homeName;
     }
 
     // end: getters/setters

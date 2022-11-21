@@ -315,6 +315,7 @@ public class IndexhomeprofileCtl {
         userUpdateObj.setCity(userProfileObj.getCity());
         userUpdateObj.setStateterritoryMdl(userProfileObj.getStateterritoryMdl());
         userUpdateObj.setZipCode(userProfileObj.getZipCode());
+        userUpdateObj.setHomeName(userProfileObj.getHomeName());
 
         // (4) send non-changing static attributes to the page, so static values can be used (createdAt, Id, etc.)
         model.addAttribute("userProfileId", userProfileId); // need for cancel button; this derives from path variable, not sure if this line needed.
@@ -370,6 +371,7 @@ public class IndexhomeprofileCtl {
         authUserObj.setCity(userUpdateObj.getCity() );
         authUserObj.setStateterritoryMdl(userUpdateObj.getStateterritoryMdl());
         authUserObj.setZipCode(userUpdateObj.getZipCode() );
+        authUserObj.setHomeName(userUpdateObj.getHomeName());
 
         // all of below was intended to cleanly set the fk for stateterritory_id as null... but using 0 as the incoming value for "no selection" seems to do the trick, so whatever!
 //        if (userUpdateObj.getStateterritoryMdl().getId() == Long.valueOf(99) ) {
