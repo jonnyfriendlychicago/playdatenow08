@@ -62,6 +62,8 @@ public class UserMdl {
 
     private String zipCode;
 
+    private String homeName;
+
     // end entity-specific fields
 
     // begin: joins
@@ -283,6 +285,14 @@ public class UserMdl {
 
     public void setCodeList(List<CodeMdl> codeList) {
         this.codeList = codeList;
+    }
+
+    public String getHomeName() {
+        return homeName;
+    }
+
+    public void setHomeName(String homeName) {
+        this.homeName = homeName;
     }
 
     // end: getters and setters
