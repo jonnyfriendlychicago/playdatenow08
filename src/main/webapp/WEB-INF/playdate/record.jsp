@@ -91,7 +91,9 @@
                 } // end if-props
             };  // end function addMarkers
         } // end function: buildMapFromGeo
+
     }  // end function: initMap
+
 </script>
 </head>
 <jsp:include page="/WEB-INF/include/bodyDesign.jsp" />
@@ -99,11 +101,11 @@
 <jsp:include page="/WEB-INF/include/pageLayoutTop.jsp" />
 
 <c:if test="${permissionErrorMsg != null}">
-    <div class="alert alert-warning" role="alert">${permissionErrorMsg}</div>
+    <div class="alert alert-warning mt-3" role="alert">${permissionErrorMsg}</div>
 </c:if>
 
 <c:if test="${successMsg != null}">
-    <div class="alert alert-success" role="success">${successMsg}</div>
+    <div class="alert alert-success mt-3" role="success">${successMsg}</div>
 </c:if>
 
 <div id="playdateCard" class="card p-3 d-md-flex justify-content-start mt-3">
