@@ -380,17 +380,17 @@
                     <p class="text-danger"><form:errors path="adultCount" />
                 </div>
 
-                <div class="form-floating mb-3">
-                    <form:textarea
-                        path="comment"
-                        type="text"
-                        class="form-control"
-                        id="comment"
-                        placeholder="comment"
-                        style="height: 10rem;" />
-                    <form:label path="comment" for="comment">Comment</form:label>
-                    <p class="text-danger"><form:errors path="comment" />
-                </div>
+<%--                <div class="form-floating mb-3">--%>
+<%--                    <form:textarea--%>
+<%--                        path="comment"--%>
+<%--                        type="text"--%>
+<%--                        class="form-control"--%>
+<%--                        id="comment"--%>
+<%--                        placeholder="comment"--%>
+<%--                        style="height: 10rem;" />--%>
+<%--                    <form:label path="comment" for="comment">Comment</form:label>--%>
+<%--                    <p class="text-danger"><form:errors path="comment" />--%>
+<%--                </div>--%>
 
             </div><!-- end rsvpCard -->
         </div><!-- end rsvpEtcCol-->

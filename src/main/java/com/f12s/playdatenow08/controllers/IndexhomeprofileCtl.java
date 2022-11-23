@@ -1,9 +1,7 @@
 package com.f12s.playdatenow08.controllers;
 
 import com.f12s.playdatenow08.dataTransferObjects.UserUpdateDto;
-import com.f12s.playdatenow08.models.PlaydateMdl;
-import com.f12s.playdatenow08.models.StateterritoryMdl;
-import com.f12s.playdatenow08.models.UserMdl;
+import com.f12s.playdatenow08.models.*;
 import com.f12s.playdatenow08.services.PlaydateSrv;
 import com.f12s.playdatenow08.services.StateterritorySrv;
 import com.f12s.playdatenow08.services.UserSrv;
@@ -232,7 +230,8 @@ public class IndexhomeprofileCtl {
     // view all profile
     @GetMapping("/profile")
     public String displayProfileAll(
-            Model model
+            @ModelAttribute("soConObj") SocialconnectionMdl soConObj // enables delivery of RSVP record on the page
+            , Model model
             , Principal principal
     ) {
 
@@ -242,6 +241,10 @@ public class IndexhomeprofileCtl {
         // (1) deliver list of user records to page
         List<UserMdl> profileList = userSrv.returnAll();
         model.addAttribute("profileList", profileList);
+
+        // beginning here, we are delivering a form to this page to create socialconnection records, as a proof of concept;
+        // let's put the post process in a new controller: SocialconnectionCtl
+        // envisioning that the form-display migth occur on any number of pages/jsps; will put the post/error in new controller so that's isolated.
 
         return "profile/list.jsp";
     }

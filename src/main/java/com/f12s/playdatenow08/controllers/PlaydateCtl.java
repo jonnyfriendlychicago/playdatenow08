@@ -124,6 +124,9 @@ public class PlaydateCtl {
             List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
             model.addAttribute("playdateStatusList", playdateStatusList);
 
+            List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
+            model.addAttribute("stateterritoryList", stateterritoryList);
+
             // (2) deliver error message
             model.addAttribute("validationErrorMsg", "Uh-oh! Please fix the errors noted below and submit again.  (Or cancel.)");
 
@@ -243,10 +246,6 @@ public class PlaydateCtl {
             if (playdateAddy.length() > 0) {playdateAddy += " ";}
             playdateAddy += playdateObj.getZipCode();}
 
-        System.out.println("playdateAddy: " + playdateAddy);
-
-        System.out.println("playdateObj.getLocationType().getCode(): " + playdateObj.getLocationType().getCode());
-
         String playdateAddySendThis = "";
         if (
                 playdateObj.getLocationType().getCode().equals("ourHome")
@@ -256,11 +255,6 @@ public class PlaydateCtl {
             playdateAddySendThis = playdateAddy;
         }
 
-        System.out.println("playdateAddySendThis: " + playdateAddySendThis);
-
-
-
-//        model.addAttribute("homeAddy", homeAddy);
         model.addAttribute("homeAddy", playdateAddySendThis);
 
         return "playdate/record.jsp";

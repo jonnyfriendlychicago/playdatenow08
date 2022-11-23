@@ -86,6 +86,15 @@ public class UserMdl {
     @OneToMany(mappedBy="createdByUserMdl", fetch = FetchType.LAZY)
     private List<CodeMdl> codeList;
 
+    // new: trying to make social happen
+
+    // join socialconnection
+    @OneToMany(mappedBy="useroneUserMdl", fetch = FetchType.LAZY) // the mappedBy should be the same name as the col in other table (yes?)
+    private List<SocialconnectionMdl> useroneSocialconnectionList;
+
+    @OneToMany(mappedBy="usertwoUserMdl", fetch = FetchType.LAZY) // the mappedBy should be the same name as the col in other table (yes?)
+    private List<SocialconnectionMdl> usertwoSocialconnectionList;
+
     // (2) joins to put other tables' cols on this mdl
 
     // join stateterritory table
@@ -294,6 +303,23 @@ public class UserMdl {
     public void setHomeName(String homeName) {
         this.homeName = homeName;
     }
+
+    public List<SocialconnectionMdl> getUseroneSocialconnectionList() {
+        return useroneSocialconnectionList;
+    }
+
+    public void setUseroneSocialconnectionList(List<SocialconnectionMdl> useroneSocialconnectionList) {
+        this.useroneSocialconnectionList = useroneSocialconnectionList;
+    }
+
+    public List<SocialconnectionMdl> getUsertwoSocialconnectionList() {
+        return usertwoSocialconnectionList;
+    }
+
+    public void setUsertwoSocialconnectionList(List<SocialconnectionMdl> usertwoSocialconnectionList) {
+        this.usertwoSocialconnectionList = usertwoSocialconnectionList;
+    }
+
 
     // end: getters and setters
 
