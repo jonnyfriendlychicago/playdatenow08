@@ -12,7 +12,7 @@ public interface PlaydateRpo extends CrudRepository<PlaydateMdl, Long> {
 
     List<PlaydateMdl> findAll();
 
-    PlaydateMdl findByIdIs(Long id);
+//    PlaydateMdl findByIdIs(Long id);
 
     @Query(
             value= "SELECT p.* FROM playdatenow08.playdate p WHERE p.createdBy_id LIKE :keyword and event_date >= curdate() order by p.event_date desc"
