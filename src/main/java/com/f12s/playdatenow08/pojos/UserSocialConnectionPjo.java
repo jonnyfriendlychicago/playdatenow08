@@ -3,6 +3,11 @@ package com.f12s.playdatenow08.pojos;
 import java.util.Date;
 
 public interface UserSocialConnectionPjo {
+    Integer getRelationInitiator();
+    String getSoconStatusEnhanced();
+    String getSoconStatus();
+    Integer getSoconStatusCodeId();
+    String getStateName();
     Integer getId();
     Integer getStatusRelationToAuthUser();
     String getAboutMe();

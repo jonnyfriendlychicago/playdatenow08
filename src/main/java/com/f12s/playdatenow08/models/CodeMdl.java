@@ -25,8 +25,6 @@ public class CodeMdl {
 
     private String code;
 
-//    private String codeType;
-
     private String displayValue;
 
     private String description;
@@ -37,22 +35,22 @@ public class CodeMdl {
 
     // begin: joins
 
-    // (1) putting other table ids into cols on this table
-    // begin: new stuff nov 9th
+    // (1) joins to put records from other tables on this table
 
     // join user table for createdBy field
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="created_by_user")
-    private UserMdl createdByUserMdl;
+//    private UserMdl createdByUserMdl;
+    private UserMdl createdByUser;
 
     // lookup for codecategory field
     @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name="codecategory_id")
-    @JoinColumn(name="codecategory")
+    @JoinColumn(name="codecategory") // note: as this is the only field in code table that looks up to codecategory table, we don't include an internally descriptive prefix on the col name
 //    private CodecategoryMdl codecategoryMdl; // remember that the latter value here is the "mappedBy" value on the joined table!
     private CodecategoryMdl codecategory; // remember that the latter value here is the "mappedBy" value on the joined table!
 
-    // (2) table-cols that pull this table's records
+    // (2) table-cols that pull records from this table
 
     // join playdate - locationType
     @OneToMany(mappedBy="locationType", fetch = FetchType.LAZY)
@@ -117,14 +115,6 @@ public class CodeMdl {
         this.code = code;
     }
 
-//    public String getCodeType() {
-//        return codeType;
-//    }
-//
-//    public void setCodeType(String codeType) {
-//        this.codeType = codeType;
-//    }
-
     public String getDisplayValue() {
         return displayValue;
     }
@@ -149,13 +139,22 @@ public class CodeMdl {
 //        this.playdateList = playdateList;
 //    }
 
-    public UserMdl getCreatedByUserMdl() {
-        return createdByUserMdl;
+//    public UserMdl getCreatedByUserMdl() {
+//        return createdByUserMdl;
+//    }
+//
+//    public void setCreatedByUserMdl(UserMdl createdByUserMdl) {
+//        this.createdByUserMdl = createdByUserMdl;
+//    }
+
+    public UserMdl getCreatedByUser() {
+        return createdByUser;
     }
 
-    public void setCreatedByUserMdl(UserMdl createdByUserMdl) {
-        this.createdByUserMdl = createdByUserMdl;
+    public void setCreatedByUser(UserMdl createdByUser) {
+        this.createdByUser = createdByUser;
     }
+
 
 //    public CodecategoryMdl getCodecategoryMdl() {
 //        return codecategoryMdl;
@@ -204,6 +203,8 @@ public class CodeMdl {
     public void setPlaydateListplaydateStatus(List<PlaydateMdl> playdateListplaydateStatus) {
         this.playdateListplaydateStatus = playdateListplaydateStatus;
     }
+
+
 
     // end: getters and setters
 

@@ -30,14 +30,18 @@ public class CodecategoryMdl {
 
     // end: entity-specific table fields
 
-    // begin: joins
+    // BEGIN: joins
+
+    // (1) joins to put other table records on this table
 
     // join user table
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="created_by_user")
-    private UserMdl createdByUserMdl;
+//    private UserMdl createdByUserMdl;
+    private UserMdl createdByUser;
 
-    // be the codecategory lookup for codeMdl
+    // (2) table-cols that pull records from this table
+
 //    @OneToMany(mappedBy="codecategoryMdl", fetch = FetchType.LAZY)
     @OneToMany(mappedBy="codecategory", fetch = FetchType.LAZY)
     private List<CodeMdl> codeList;
@@ -99,12 +103,21 @@ public class CodecategoryMdl {
         this.description = description;
     }
 
-    public UserMdl getCreatedByUserMdl() {
-        return createdByUserMdl;
+//    public UserMdl getCreatedByUserMdl() {
+//        return createdByUserMdl;
+//    }
+//
+//    public void setCreatedByUserMdl(UserMdl createdByUserMdl) {
+//        this.createdByUserMdl = createdByUserMdl;
+//    }
+
+
+    public UserMdl getCreatedByUser() {
+        return createdByUser;
     }
 
-    public void setCreatedByUserMdl(UserMdl createdByUserMdl) {
-        this.createdByUserMdl = createdByUserMdl;
+    public void setCreatedByUser(UserMdl createdByUser) {
+        this.createdByUser = createdByUser;
     }
 
     public List<CodeMdl> getCodeList() {

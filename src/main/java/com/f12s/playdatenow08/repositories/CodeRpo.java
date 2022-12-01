@@ -13,6 +13,12 @@ public interface CodeRpo extends CrudRepository<CodeMdl, Long> {
 
     List<CodeMdl> findAll();
 
+//    PlaydateMdl findByIdIs(Long id);
+
+    CodeMdl findByIdIs(Long id); // I think this line is junk.  12/1
+
+    CodeMdl findCodeMdlByCode(String code);
+
 //
 //    @Query(
 //            value= "SELECT c.* FROM playdatenow08.code c where c.codecategory_id = :keyword order by c.gui_display_order"

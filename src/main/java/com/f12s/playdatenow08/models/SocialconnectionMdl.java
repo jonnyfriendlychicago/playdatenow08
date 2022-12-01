@@ -108,7 +108,15 @@ public class SocialconnectionMdl {
         this.usertwoUserMdl = usertwoUserMdl;
     }
 
-// end: getters and setters
+    public CodeMdl getSoconStatus() {
+        return soconStatus;
+    }
+
+    public void setSoconStatus(CodeMdl soconStatus) {
+        this.soconStatus = soconStatus;
+    }
+
+    // end: getters and setters
 
 
 

@@ -23,14 +23,8 @@ public class UserMdl {
 
     // begin: entity-specific fields
 
-    //    @NotEmpty(message="Username required.")
-//    @Size(min=8, max=128, message="Username must be between 3 and 30 characters.")
-    // above lines nuked for springSec
     private String userName;
 
-    //    @NotEmpty(message="Email required.")
-//    @Email(message="Please enter a valid email.")
-    // above lines nuked for springSec
     private String email;
 
     private String firstName;
@@ -39,17 +33,10 @@ public class UserMdl {
 
     private Date lastLogin; // added for springSec
 
-    //    @NotEmpty(message="Password required.")
-//    @Size(min=8, max=128, message="Password must be between 8 and 20 characters.")
-    // above lines whacked for springSec, also added line below which doesn't seem right, but copied from BP
-    @Size(min=3)
+//    @Size(min=3)
     private String password;
 
     @Transient
-//    @NotEmpty(message="Confirm Password is required!")  // this is not necessary
-//    @Size(min=3, max=128, message="Confirm Password must match password") // this is not necessary
-//    private String confirm;
-    // above line replaced by below; BP calls the field "passwordConfirm"
     private String passwordConfirm;
 
     private String aboutMe;
@@ -68,7 +55,18 @@ public class UserMdl {
 
     // begin: joins
 
-    // (1) joins to have "createdBy" be captured in foreign table
+    // (2) joins to make this table listable from other tables
+
+    // join codecategory
+//    @OneToMany(mappedBy="createdByUserMdl", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="createdByUser", fetch = FetchType.LAZY)
+//    private List<CodecategoryMdl> codecategoryList;
+    private List<CodecategoryMdl> codecategoryCreatedbyList;
+
+    // join code
+//    @OneToMany(mappedBy="createdByUserMdl", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="createdByUser", fetch = FetchType.LAZY)
+    private List<CodeMdl> codeList;
 
     // join playdate
     @OneToMany(mappedBy="userMdl", fetch = FetchType.LAZY)
@@ -78,13 +76,7 @@ public class UserMdl {
     @OneToMany(mappedBy="userMdl", fetch = FetchType.LAZY)
     private List<RsvpMdl> rsvpList;
 
-    // join codecategory
-    @OneToMany(mappedBy="createdByUserMdl", fetch = FetchType.LAZY)
-    private List<CodecategoryMdl> codecategoryList;
 
-    // join code
-    @OneToMany(mappedBy="createdByUserMdl", fetch = FetchType.LAZY)
-    private List<CodeMdl> codeList;
 
     // new: trying to make social happen
 
@@ -280,12 +272,21 @@ public class UserMdl {
 
     public void setStateterritoryMdl(StateterritoryMdl stateterritoryMdl) {this.stateterritoryMdl = stateterritoryMdl;}
 
-    public List<CodecategoryMdl> getCodecategoryList() {
-        return codecategoryList;
+//    public List<CodecategoryMdl> getCodecategoryList() {
+//        return codecategoryList;
+//    }
+//
+//    public void setCodecategoryList(List<CodecategoryMdl> codecategoryList) {
+//        this.codecategoryList = codecategoryList;
+//    }
+
+
+    public List<CodecategoryMdl> getCodecategoryCreatedbyList() {
+        return codecategoryCreatedbyList;
     }
 
-    public void setCodecategoryList(List<CodecategoryMdl> codecategoryList) {
-        this.codecategoryList = codecategoryList;
+    public void setCodecategoryCreatedbyList(List<CodecategoryMdl> codecategoryCreatedbyList) {
+        this.codecategoryCreatedbyList = codecategoryCreatedbyList;
     }
 
     public List<CodeMdl> getCodeList() {
