@@ -8,7 +8,11 @@
 <jsp:include page="/WEB-INF/include/header.jsp" />
 <jsp:include page="/WEB-INF/include/pageLayoutTop.jsp" />
 
-<h3>sections to do: My Friends; Sent Requests; Invitations; Blocked List;</h3>
+<%--<h3>sections to do: My Friends; Sent Requests; Invitations; Blocked List;</h3>--%>
+<c:if test="${permissionErrorMsg != null}">
+    <div class="alert alert-warning mt-3" role="alert">${permissionErrorMsg}</div>
+</c:if>
+
 <div id = "profileCardArrayNew" class="container bg-info">
     <h2>Sent Requests</h2>
     <c:forEach var="record" items="${userSocialConnectionListSent}">
@@ -90,35 +94,19 @@
                             </h5>
                             <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>
                             <p>relationInitiator: ${record.relationInitiator}</p>
-
+                            <p>socialconnectionId: ${record.socialconnectionId}</p>
 
                             <c:if test="${record.city.length() > 0}">
                                 <p>${record.city}, ${record.stateName}</p>
                             </c:if>
                         </div>
                         <div class="col-sm-3 d-flex justify-content-end">
-                            <c:choose>
-                                <c:when test="${record.soconStatusEnhanced == 'authUserRecord'}">
-                                    <p>This is your profile.</p>
-                                </c:when>
-                                <c:when test="${record.soconStatusEnhanced == 'requestPending'}">
-                                    <form:form action='/socialconnection/create' method='post' modelAttribute='soConObj'>
-                                        <%--                                when we got a min, let's put the record.id in the path, so we can remove the hidden input.  just cleaner, it seems.  Also, need added ctl validation for the value--%>
-                                        <form:input type="hidden" path="usertwoUserMdl" value="${record.id}"/>
-                                        <button type="submit" class="btn btn-primary disabled">Add Friend</button>
-                                        <p>Friend request awaits response.</p>
-                                    </form:form>
-                                </c:when>
-                                <c:otherwise>
-                                    <form:form action='/socialconnection/create' method='post' modelAttribute='soConObj'>
-                                        <%--                                when we got a min, let's put the record.id in the path, so we can remove the hidden input.  just cleaner, it seems.  Also, need added ctl validation for the value--%>
-                                        <form:input type="hidden" path="usertwoUserMdl" value="${record.id}"/>
-                                        <button type="submit" class="btn btn-primary">Add Friend</button>
-                                        <p>(This is the default!)</p>
-                                    </form:form>
-                                </c:otherwise>
-                            </c:choose>
-                                <%--                            <p>some</p>--%>
+                            <form:form action='/connection/accept/${record.socialconnectionId}' method='post' modelAttribute='soConObj'>
+                                <button type="submit" class="btn btn-primary me-2">Accept</button>
+                            </form:form>
+                            <form:form action='/connection/decline/${record.socialconnectionId}' method='post' modelAttribute='soConObj'>
+                                <button type="submit" class="btn btn-secondary">Decline</button>
+                            </form:form>
                         </div>
                     </div> <%-- end row--%>
                 </div> <%-- end container--%>
