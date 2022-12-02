@@ -21,7 +21,7 @@ public class SocialconnectionMdl {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
 
-    private Integer status;
+//    private Integer status;
 
     // begin entity-specific fields
 
@@ -29,6 +29,10 @@ public class SocialconnectionMdl {
     // join user table, first time
 
     // begin: joins
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="soconstatus_code")
+    private CodeMdl soconStatus;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userone") // 2022.11.27: in near future, rename this: initiatorUser, which will result in field being named 'initiator_user' in the db, which is accurate
     private UserMdl useroneUserMdl; // I think... going forward, this second value should always be the same as the joincolunn name
@@ -38,8 +42,8 @@ public class SocialconnectionMdl {
     private UserMdl usertwoUserMdl; // I think... going forward, this second value should always be the same as the joincolunn name
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="soconstatus_code")
-    private CodeMdl soconStatus;
+    @JoinColumn(name="blocker_user_id")  // 2022.11.27: in near future, rename this: respondentUser, see discussion above
+    private UserMdl blockerUser; // I think... going forward, this second value should always be the same as the joincolunn name
 
     // placeholder for second join col
 
@@ -84,13 +88,13 @@ public class SocialconnectionMdl {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+//    public Integer getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(Integer status) {
+//        this.status = status;
+//    }
 
     public UserMdl getUseroneUserMdl() {
         return useroneUserMdl;
@@ -114,6 +118,14 @@ public class SocialconnectionMdl {
 
     public void setSoconStatus(CodeMdl soconStatus) {
         this.soconStatus = soconStatus;
+    }
+
+    public UserMdl getBlockerUser() {
+        return blockerUser;
+    }
+
+    public void setBlockerUser(UserMdl blockerUser) {
+        this.blockerUser = blockerUser;
     }
 
     // end: getters and setters

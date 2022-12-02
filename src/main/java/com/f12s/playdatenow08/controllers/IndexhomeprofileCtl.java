@@ -250,11 +250,6 @@ public class IndexhomeprofileCtl {
         List<UserSocialConnectionPjo> userSocialConnectionList = userSrv.userSocialConnectionList(authUserObj.getId());
         model.addAttribute("userSocialConnectionList", userSocialConnectionList);
 
-
-        // beginning here, we are delivering a form to this page to create socialconnection records, as a proof of concept;
-        // let's put the post process in a new controller: SocialconnectionCtl
-        // envisioning that the form-display migth occur on any number of pages/jsps; will put the post/error in new controller so that's isolated.
-
         return "profile/list.jsp";
     }
 
