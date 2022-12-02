@@ -7,6 +7,7 @@ public interface UserSocialConnectionPjo {
 //    String getSoconStatus();
 //    Integer getSoconStatusCodeId();
     String getSoconStatusEnhanced();
+    Integer getSocialconnectionId();
     Integer getRelationInitiator();
     // below are all of the userMdl fields
     Integer getId();

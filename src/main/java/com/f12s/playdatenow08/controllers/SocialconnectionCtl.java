@@ -1,9 +1,6 @@
 package com.f12s.playdatenow08.controllers;
 
-import com.f12s.playdatenow08.models.CodeMdl;
-import com.f12s.playdatenow08.models.RsvpMdl;
-import com.f12s.playdatenow08.models.SocialconnectionMdl;
-import com.f12s.playdatenow08.models.UserMdl;
+import com.f12s.playdatenow08.models.*;
 import com.f12s.playdatenow08.pojos.UserSocialConnectionPjo;
 import com.f12s.playdatenow08.services.CodeSrv;
 import com.f12s.playdatenow08.services.SocialconnectionSrv;
@@ -13,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -65,7 +61,6 @@ public class SocialconnectionCtl {
 
     }
 
-    // adding new
     // view all profile
     @GetMapping("/connection")
     public String displayConnectionAll(
@@ -101,8 +96,93 @@ public class SocialconnectionCtl {
         return "connection/list.jsp";
     }
 
+    @PostMapping("/connection/accept/{id}")
+    public String acceptConnection(
+            @PathVariable("id") Long socialconnectionId
+            , Principal principal
+            , RedirectAttributes redirectAttributes
+    ) {
 
+        // authentication boilerplate for all mthd
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
+        // no model attributes here b/c no resulting page we are rending
 
+        // (1) get the object from the path variable
+        SocialconnectionMdl socialconnectionObj = socialconnectionSrv.findById(socialconnectionId);
 
+        // (2) get objects for validation
+        UserMdl socialconnectionUserTwo = socialconnectionObj.getUsertwoUserMdl();
+        CodeMdl requestPendingCodeObj = codeSrv.findCodeMdlByCode("requestPending");
+
+        // (3a) validate: is current user the recipient of a request?
+        if(
+                !authUserObj.equals(socialconnectionUserTwo)
+        ) {
+            redirectAttributes.addFlashAttribute("permissionErrorMsg", "This request can only be responded to by its intended invitation recipient.");
+            return "redirect:/connection/" ;
+        }
+
+        // (3b) validate: is request presently in pending status?
+        if(
+//            socialconnectionObj.getSoconStatus().getCode() != "requestPending" // this line is not working; something about how the getCode format and the quoted text don't equate
+            !socialconnectionObj.getSoconStatus().equals(requestPendingCodeObj)
+
+        ) {
+            redirectAttributes.addFlashAttribute("permissionErrorMsg", "Present relationship status does not allow accepting/declining of request.");
+            return "redirect:/connection/" ;
+        }
+
+        // (4) update the object to have the intended soConStatus value
+        socialconnectionObj.setSoconStatus(codeSrv.findCodeMdlByCode("friends"));
+
+        // (5) run the update service on the object
+        socialconnectionSrv.update(socialconnectionObj);
+
+        return "redirect:/connection/";
+    }
+
+    @PostMapping("/connection/decline/{id}")
+    public String declineConnection(
+            @PathVariable("id") Long socialconnectionId
+            , Principal principal
+            , RedirectAttributes redirectAttributes
+    ) {
+
+        // authentication boilerplate for all mthd
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
+        // no model attributes here b/c no resulting page we are rending
+
+        // (1) get the object from the path variable
+        SocialconnectionMdl socialconnectionObj = socialconnectionSrv.findById(socialconnectionId);
+
+        // (2) get objects for validation
+        UserMdl socialconnectionUserTwo = socialconnectionObj.getUsertwoUserMdl();
+        CodeMdl requestPendingCodeObj = codeSrv.findCodeMdlByCode("requestPending");
+
+        // (3a) validate: is current user the recipient of a request?
+        if(
+                !authUserObj.equals(socialconnectionUserTwo)
+        ) {
+            redirectAttributes.addFlashAttribute("permissionErrorMsg", "This request can only be responded to by its intended invitation recipient.");
+            return "redirect:/connection/" ;
+        }
+
+        // no idea why below isn't working presently... screw it (for now)
+        // (3b) validate: is request presently in pending status?
+        if(
+            !socialconnectionObj.getSoconStatus().equals(requestPendingCodeObj)
+        ) {
+            redirectAttributes.addFlashAttribute("permissionErrorMsg", "Present relationship status does not allow accepting/declining request.");
+            return "redirect:/connection/" ;
+        }
+
+        // (4) update the object to have the intended soConStatus value
+        socialconnectionObj.setSoconStatus(codeSrv.findCodeMdlByCode("requestRejected"));
+
+        // (5) run the update service on the object
+        socialconnectionSrv.update(socialconnectionObj);
+
+        return "redirect:/connection/";
+    }
 
 } // end cvtl
