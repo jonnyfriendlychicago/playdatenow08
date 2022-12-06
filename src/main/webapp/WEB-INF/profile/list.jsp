@@ -32,6 +32,7 @@
                             </h5>
                             <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>
                             <p>relationInitiator: ${record.relationInitiator}</p>
+                            <p>socialconnectionId: ${record.socialconnectionId}</p>
 
 
                             <c:if test="${record.city.length() > 0}">

@@ -42,8 +42,16 @@ public class SocialconnectionMdl {
     private UserMdl usertwoUserMdl; // I think... going forward, this second value should always be the same as the joincolunn name
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="blocker_user_id")  // 2022.11.27: in near future, rename this: respondentUser, see discussion above
+    @JoinColumn(name="blocker_user_id")  //
     private UserMdl blockerUser; // I think... going forward, this second value should always be the same as the joincolunn name
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="initiator_user_id")  // added 2022.12.04, think this will support newly evolved design/model.
+    private UserMdl initiatorUser; // I think... going forward, this second value should always be the same as the joincolunn name
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="responder_user_id")  // added 2022.12.04, think this will support newly evolved design/model.
+    private UserMdl responderUser; // I think... going forward, this second value should always be the same as the joincolunn name
 
     // placeholder for second join col
 
@@ -127,6 +135,23 @@ public class SocialconnectionMdl {
     public void setBlockerUser(UserMdl blockerUser) {
         this.blockerUser = blockerUser;
     }
+
+    public UserMdl getInitiatorUser() {
+        return initiatorUser;
+    }
+
+    public void setInitiatorUser(UserMdl initiatorUser) {
+        this.initiatorUser = initiatorUser;
+    }
+
+    public UserMdl getResponderUser() {
+        return responderUser;
+    }
+
+    public void setResponderUser(UserMdl responderUser) {
+        this.responderUser = responderUser;
+    }
+
 
     // end: getters and setters
 

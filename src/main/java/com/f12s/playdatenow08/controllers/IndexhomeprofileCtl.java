@@ -66,7 +66,6 @@ public class IndexhomeprofileCtl {
             , Model model
     ) {
 
-
         if (isAuthenticated()) {return "redirect:/home";} // if already authenticated, redirect away from /login path-page
 
         if(error != null) {
@@ -112,7 +111,7 @@ public class IndexhomeprofileCtl {
             return "register.jsp";
         }
 
-        // will this be the first user record?  if so, Make it... SUPER ADMIN!
+        // run the service to create the record, and one more thing real quick: will this be the first user record?  if so, Make it... SUPER ADMIN!
         if(userSrv.allUsers().size()==0) {
 //        	userSrv.newUser(userMdl, "ROLE_SUPER_ADMIN");  // this line temporarily replaced with below line, so that all users are the same
             userSrv.newUser(userMdl, "ROLE_USER");
@@ -123,7 +122,6 @@ public class IndexhomeprofileCtl {
         // Log in new user with the password we stored before encrypting it.  NOTE: the method listed immed below is built right after this mthd concludes
         authWithHttpServletRequest(request, userMdl.getEmail(), password);
         redirectAttributes.addFlashAttribute("successMsg", "Congratulations on joining PlayDateNOW!  Take a minute now (or later...) to complete your profile.");
-//        return "redirect:/playdate";
         return "redirect:/home";
     }
 

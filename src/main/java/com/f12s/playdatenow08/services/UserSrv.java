@@ -139,7 +139,10 @@ public class UserSrv{
     // (4) relations to authUser: friends
     public List<UserSocialConnectionPjo> userSocialConnectionListFriends(Long x) {return userRpo.userSocialConnectionListFriends(x);}
 
-    // (4) relations to authUser: blocked
+    // (5) relations to authUser: requestCancelled
+    public List<UserSocialConnectionPjo> userSocialConnectionListRequestCancelled(Long x) {return userRpo.userSocialConnectionListRequestCancelled(x);}
+
+    // (6) relations to authUser: blocked
     public List<UserSocialConnectionPjo> userSocialConnectionListBlocked(Long x) {return userRpo.userSocialConnectionListBlocked(x);}
 // end srv
 }

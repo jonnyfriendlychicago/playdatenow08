@@ -8,7 +8,6 @@
 <jsp:include page="/WEB-INF/include/header.jsp" />
 <jsp:include page="/WEB-INF/include/pageLayoutTop.jsp" />
 
-<%--<h3>sections to do: My Friends; Sent Requests; Invitations; Blocked List;</h3>--%>
 <c:if test="${permissionErrorMsg != null}">
     <div class="alert alert-warning mt-3" role="alert">${permissionErrorMsg}</div>
 </c:if>
@@ -33,37 +32,19 @@
                                     </c:choose>
                                 </a>
                             </h5>
-                            <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>
-                            <p>relationInitiator: ${record.relationInitiator}</p>
-
+                            <p>initiatorUser: ${record.initiatorUser}</p>
+                            <p>socialconnectionId: ${record.socialconnectionId}</p>
 
                             <c:if test="${record.city.length() > 0}">
                             <p>${record.city}, ${record.stateName}</p>
                             </c:if>
                         </div>
                         <div class="col-sm-3 d-flex justify-content-end">
-                            <c:choose>
-                                <c:when test="${record.soconStatusEnhanced == 'authUserRecord'}">
-                                    <p>This is your profile.</p>
-                                </c:when>
-                                <c:when test="${record.soconStatusEnhanced == 'requestPending'}">
-                                    <form:form action='/socialconnection/create' method='post' modelAttribute='soConObj'>
-                                        <%--                                when we got a min, let's put the record.id in the path, so we can remove the hidden input.  just cleaner, it seems.  Also, need added ctl validation for the value--%>
-                                        <form:input type="hidden" path="usertwoUserMdl" value="${record.id}"/>
-                                        <button type="submit" class="btn btn-primary disabled">Add Friend</button>
-                                        <p>Friend request awaits response.</p>
-                                    </form:form>
-                                </c:when>
-                                <c:otherwise>
-                                    <form:form action='/socialconnection/create' method='post' modelAttribute='soConObj'>
-                                        <%--                                when we got a min, let's put the record.id in the path, so we can remove the hidden input.  just cleaner, it seems.  Also, need added ctl validation for the value--%>
-                                        <form:input type="hidden" path="usertwoUserMdl" value="${record.id}"/>
-                                        <button type="submit" class="btn btn-primary">Add Friend</button>
-                                        <p>(This is the default!)</p>
-                                    </form:form>
-                                </c:otherwise>
-                            </c:choose>
-<%--                            <p>some</p>--%>
+<%--                            <form:form action='/connection/cancel/${record.socialconnectionId}' method='post' modelAttribute='soConObj'>--%>
+                            <form:form action='/connection/cancel/${record.socialconnectionId}' method='post' >
+<%--                            note: there is no modelAttribute needed here, b/c there is no object being generated/received/sent; just passing the id--%>
+                                <button type="submit" class="btn btn-primary me-2">Cancel Request</button>
+                            </form:form>
                         </div>
                     </div> <%-- end row--%>
                </div> <%-- end container--%>
@@ -92,10 +73,7 @@
                                     </c:choose>
                                 </a>
                             </h5>
-                            <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>
-                            <p>relationInitiator: ${record.relationInitiator}</p>
                             <p>socialconnectionId: ${record.socialconnectionId}</p>
-
                             <c:if test="${record.city.length() > 0}">
                                 <p>${record.city}, ${record.stateName}</p>
                             </c:if>
@@ -135,8 +113,8 @@
                                     </c:choose>
                                 </a>
                             </h5>
-                            <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>
-                            <p>relationInitiator: ${record.relationInitiator}</p>
+                                <%--                            <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>--%>
+                                <%--                            <p>relationInitiator: ${record.relationInitiator}</p>--%>
 
 
                             <c:if test="${record.city.length() > 0}">
@@ -160,8 +138,7 @@
                                     <form:form action='/socialconnection/create' method='post' modelAttribute='soConObj'>
                                         <%--                                when we got a min, let's put the record.id in the path, so we can remove the hidden input.  just cleaner, it seems.  Also, need added ctl validation for the value--%>
                                         <form:input type="hidden" path="usertwoUserMdl" value="${record.id}"/>
-                                        <button type="submit" class="btn btn-primary">Add Friend</button>
-                                        <p>(This is the default!)</p>
+                                        <button type="submit" class="btn btn-primary">Unfriend</button>
                                     </form:form>
                                 </c:otherwise>
                             </c:choose>
@@ -174,9 +151,50 @@
     </c:forEach>
 </div>
 
+<div id = "profileCardArrayNew" class="container bg-secondary">
+    <h2>Cancelled Requests</h2>
+    <c:forEach var="record" items="${userSocialConnectionListRequestCancelled}">
+        <div id="userCard" class="card m-2">
+            <div id="cardbody1" class="card-body">
+                <div id="container" class="container">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h5 class="card-title fw-bold">
+                                <a class="text-decoration-none link-dark" href="/profile/${record.id}">
+                                    <c:choose>
+                                        <c:when test="${record.firstName.length() > 0 || record.lastName.length() >0}">
+                                            ${record.firstName} ${record.lastName} (${record.userName})
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${record.userName}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </a>
+                            </h5>
+<%--                            <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>--%>
+<%--                            <p>relationInitiator: ${record.relationInitiator}</p>--%>
+                            <p>socialconnectionId: ${record.socialconnectionId}</p>
 
-<div id = "profileCardArrayNew" class="container bg-danger">
-    <h2>Blocked Users</h2>
+                            <c:if test="${record.city.length() > 0}">
+                                <p>${record.city}, ${record.stateName}</p>
+                            </c:if>
+                        </div>
+                        <div class="col-sm-3 d-flex justify-content-end">
+                            <form:form action='/connection/reactivaterequest/${record.socialconnectionId}' method='post' >
+                                <button type="submit" class="btn btn-primary me-2">Reactivate Request</button>
+                            </form:form>
+
+                        </div>
+                    </div> <%-- end row--%>
+                </div> <%-- end container--%>
+            </div> <%--end cardbody1--%>
+        </div> <%-- end userCard --%>
+    </c:forEach>
+</div>
+
+
+<div id = "profileCardArrayNew" class="container bg-primary">
+    <h2>Declined Requests -- placeholder</h2>
     <c:forEach var="record" items="${userSocialConnectionListFriends}">
         <div id="userCard" class="card m-2">
             <div id="cardbody1" class="card-body">
@@ -195,8 +213,8 @@
                                     </c:choose>
                                 </a>
                             </h5>
-                            <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>
-                            <p>relationInitiator: ${record.relationInitiator}</p>
+                                <%--                            <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>--%>
+                                <%--                            <p>relationInitiator: ${record.relationInitiator}</p>--%>
 
 
                             <c:if test="${record.city.length() > 0}">
@@ -220,8 +238,7 @@
                                     <form:form action='/socialconnection/create' method='post' modelAttribute='soConObj'>
                                         <%--                                when we got a min, let's put the record.id in the path, so we can remove the hidden input.  just cleaner, it seems.  Also, need added ctl validation for the value--%>
                                         <form:input type="hidden" path="usertwoUserMdl" value="${record.id}"/>
-                                        <button type="submit" class="btn btn-primary">Add Friend</button>
-                                        <p>(This is the default!)</p>
+                                        <button type="submit" class="btn btn-primary">Unfriend</button>
                                     </form:form>
                                 </c:otherwise>
                             </c:choose>
@@ -233,6 +250,68 @@
         </div> <%-- end userCard --%>
     </c:forEach>
 </div>
+
+
+
+
+<%--<div id = "profileCardArrayNew" class="container bg-danger">--%>
+<%--    <h2>Blocked Users</h2>--%>
+<%--    <c:forEach var="record" items="${userSocialConnectionListFriends}">--%>
+<%--        <div id="userCard" class="card m-2">--%>
+<%--            <div id="cardbody1" class="card-body">--%>
+<%--                <div id="container" class="container">--%>
+<%--                    <div class="row">--%>
+<%--                        <div class="col-sm-9">--%>
+<%--                            <h5 class="card-title fw-bold">--%>
+<%--                                <a class="text-decoration-none link-dark" href="/profile/${record.id}">--%>
+<%--                                    <c:choose>--%>
+<%--                                        <c:when test="${record.firstName.length() > 0 || record.lastName.length() >0}">--%>
+<%--                                            ${record.firstName} ${record.lastName} (${record.userName})--%>
+<%--                                        </c:when>--%>
+<%--                                        <c:otherwise>--%>
+<%--                                            ${record.userName}--%>
+<%--                                        </c:otherwise>--%>
+<%--                                    </c:choose>--%>
+<%--                                </a>--%>
+<%--                            </h5>--%>
+<%--                            <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>--%>
+<%--                            <p>relationInitiator: ${record.relationInitiator}</p>--%>
+
+
+<%--                            <c:if test="${record.city.length() > 0}">--%>
+<%--                                <p>${record.city}, ${record.stateName}</p>--%>
+<%--                            </c:if>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-sm-3 d-flex justify-content-end">--%>
+<%--                            <c:choose>--%>
+<%--                                <c:when test="${record.soconStatusEnhanced == 'authUserRecord'}">--%>
+<%--                                    <p>This is your profile.</p>--%>
+<%--                                </c:when>--%>
+<%--                                <c:when test="${record.soconStatusEnhanced == 'requestPending'}">--%>
+<%--                                    <form:form action='/socialconnection/create' method='post' modelAttribute='soConObj'>--%>
+<%--                                        &lt;%&ndash;                                when we got a min, let's put the record.id in the path, so we can remove the hidden input.  just cleaner, it seems.  Also, need added ctl validation for the value&ndash;%&gt;--%>
+<%--                                        <form:input type="hidden" path="usertwoUserMdl" value="${record.id}"/>--%>
+<%--                                        <button type="submit" class="btn btn-primary disabled">Add Friend</button>--%>
+<%--                                        <p>Friend request awaits response.</p>--%>
+<%--                                    </form:form>--%>
+<%--                                </c:when>--%>
+<%--                                <c:otherwise>--%>
+<%--                                    <form:form action='/socialconnection/create' method='post' modelAttribute='soConObj'>--%>
+<%--                                        &lt;%&ndash;                                when we got a min, let's put the record.id in the path, so we can remove the hidden input.  just cleaner, it seems.  Also, need added ctl validation for the value&ndash;%&gt;--%>
+<%--                                        <form:input type="hidden" path="usertwoUserMdl" value="${record.id}"/>--%>
+<%--                                        <button type="submit" class="btn btn-primary">Add Friend</button>--%>
+<%--                                        <p>(This is the default!)</p>--%>
+<%--                                    </form:form>--%>
+<%--                                </c:otherwise>--%>
+<%--                            </c:choose>--%>
+<%--                                &lt;%&ndash;                            <p>some</p>&ndash;%&gt;--%>
+<%--                        </div>--%>
+<%--                    </div> &lt;%&ndash; end row&ndash;%&gt;--%>
+<%--                </div> &lt;%&ndash; end container&ndash;%&gt;--%>
+<%--            </div> &lt;%&ndash;end cardbody1&ndash;%&gt;--%>
+<%--        </div> &lt;%&ndash; end userCard &ndash;%&gt;--%>
+<%--    </c:forEach>--%>
+<%--</div>--%>
 
 <jsp:include page="/WEB-INF/include/pageLayoutBottom.jsp" />
 
