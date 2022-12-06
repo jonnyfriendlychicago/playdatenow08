@@ -24,6 +24,10 @@ public interface UserSocialConnectionPjo {
     String getUserName();
     String getHomeName();
 
+    // new thing trying with sent stuff
+    Integer getBlockerUser();
+    Integer getInitiatorUser();
+
 } // end pojo
 
 

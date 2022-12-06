@@ -90,6 +90,12 @@ public class UserMdl {
     @OneToMany(mappedBy="blockerUser", fetch = FetchType.LAZY) // the mappedBy should be the same name as the col in other table (yes?)
     private List<SocialconnectionMdl> blockerSocialconnectionList;
 
+    @OneToMany(mappedBy="initiatorUser", fetch = FetchType.LAZY) // the mappedBy should be the same name as the col in other table (yes?)
+    private List<SocialconnectionMdl> initiatorSocialconnectionList;
+
+    @OneToMany(mappedBy="responderUser", fetch = FetchType.LAZY) // the mappedBy should be the same name as the col in other table (yes?)
+    private List<SocialconnectionMdl> responderSocialconnectionList;
+
     // (2) joins to put other tables' cols on this mdl
 
     // join stateterritory table
@@ -332,6 +338,22 @@ public class UserMdl {
         this.blockerSocialconnectionList = blockerSocialconnectionList;
     }
 
-// end: getters and setters
+    public List<SocialconnectionMdl> getInitiatorSocialconnectionList() {
+        return initiatorSocialconnectionList;
+    }
+
+    public void setInitiatorSocialconnectionList(List<SocialconnectionMdl> initiatorSocialconnectionList) {
+        this.initiatorSocialconnectionList = initiatorSocialconnectionList;
+    }
+
+    public List<SocialconnectionMdl> getResponderSocialconnectionList() {
+        return responderSocialconnectionList;
+    }
+
+    public void setResponderSocialconnectionList(List<SocialconnectionMdl> responderSocialconnectionList) {
+        this.responderSocialconnectionList = responderSocialconnectionList;
+    }
+
+    // end: getters and setters
 
 }

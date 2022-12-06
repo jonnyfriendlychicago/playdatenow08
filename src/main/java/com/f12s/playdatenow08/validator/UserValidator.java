@@ -17,7 +17,7 @@ public class UserValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
         return UserMdl.class.equals(clazz);
-    }
+    } // 2022.12.05: to this day, I'm still befuddled as to how this method works.  Same confusion regarding the "@Override" stuff in method below
 
     @Override
     public void validate(
