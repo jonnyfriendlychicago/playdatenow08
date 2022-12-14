@@ -60,8 +60,11 @@ public class CodeMdl {
     @OneToMany(mappedBy="playdateStatus", fetch = FetchType.LAZY)
     private List<PlaydateMdl> playdateListplaydateStatus;
 
-    @OneToMany(mappedBy="soconStatus", fetch = FetchType.LAZY)
-    private List<SocialconnectionMdl> socialconnectionListsoconStatus;
+//    @OneToMany(mappedBy="soconStatus", fetch = FetchType.LAZY)
+//    private List<SocialconnectionMdl> socialconnectionListsoconStatus;
+
+    @OneToMany(mappedBy="soconstatusCode", fetch = FetchType.LAZY)
+    private List<SocialconnectionMdl> socialconnectionListSoconstatusCode;
 
     // JRF 20221110: I don't think above two , no, three, do anything for app at present.  We aren't every trying to get a list of playdates according to on of these mappings.
     // furthermore, I think the app runs just fine even if these don't exist.  But not gonna mess with it right now.
@@ -172,13 +175,13 @@ public class CodeMdl {
         this.codecategory = codecategory;
     }
 
-    public List<SocialconnectionMdl> getSocialconnectionListsoconStatus() {
-        return socialconnectionListsoconStatus;
-    }
-
-    public void setSocialconnectionListsoconStatus(List<SocialconnectionMdl> socialconnectionListsoconStatus) {
-        this.socialconnectionListsoconStatus = socialconnectionListsoconStatus;
-    }
+//    public List<SocialconnectionMdl> getSocialconnectionListsoconStatus() {
+//        return socialconnectionListsoconStatus;
+//    }
+//
+//    public void setSocialconnectionListsoconStatus(List<SocialconnectionMdl> socialconnectionListsoconStatus) {
+//        this.socialconnectionListsoconStatus = socialconnectionListsoconStatus;
+//    }
 
     public float getGuiDisplayOrder() {
         return guiDisplayOrder;
@@ -204,6 +207,13 @@ public class CodeMdl {
         this.playdateListplaydateStatus = playdateListplaydateStatus;
     }
 
+    public List<SocialconnectionMdl> getSocialconnectionListSoconstatusCode() {
+        return socialconnectionListSoconstatusCode;
+    }
+
+    public void setSocialconnectionListSoconstatusCode(List<SocialconnectionMdl> socialconnectionListSoconstatusCode) {
+        this.socialconnectionListSoconstatusCode = socialconnectionListSoconstatusCode;
+    }
 
 
     // end: getters and setters

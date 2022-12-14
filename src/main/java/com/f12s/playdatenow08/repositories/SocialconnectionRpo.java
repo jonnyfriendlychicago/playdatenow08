@@ -15,16 +15,31 @@ public interface SocialconnectionRpo extends CrudRepository<SocialconnectionMdl,
 
     // 2022.12.05: trying to get "find soCon if it exists
 
+//    @Query(
+//            value=
+//                    " select sc.* from playdatenow08.socialconnection sc where sc.userone = :incomingUserA and sc.usertwo = :incomingUserB "
+//                    + " union all "
+//                    + " select sc.* from playdatenow08.socialconnection sc where sc.userone = :incomingUserB and sc.usertwo = :incomingUserA "
+//            , nativeQuery = true)
+//    SocialconnectionMdl existingSoConBaby(Long incomingUserA, Long incomingUserB);
+
     @Query(
             value=
-                    " select sc.* from playdatenow08.socialconnection sc where sc.userone = :incomingUserA and sc.usertwo = :incomingUserB "
-                    + " union all "
-                    + " select sc.* from playdatenow08.socialconnection sc where sc.userone = :incomingUserB and sc.usertwo = :incomingUserA "
+                    " select "
+                            + "sc.* from playdatenow08.socialconnection sc where sc.initiator_user_id = :incomingUserA and sc.responder_user_id = :incomingUserB "
+                            + " union all "
+                            + " select sc.* from playdatenow08.socialconnection sc where sc.initiator_user_id = :incomingUserB and sc.responder_user_id = :incomingUserA "
             , nativeQuery = true)
     SocialconnectionMdl existingSoConBaby(Long incomingUserA, Long incomingUserB);
 
+    // below, checker for soCon
 
-//    List<SocialconnectionMdl> existsSocialconnectionMdlByUseroneUserMdlAndUsertwoUserMdl(Long keyword);
+    @Query(
+            value=
+                    " select "
+                            + "sc.* from playdatenow08.socialconnection sc where sc.id = :soConIdFromForm "
+            , nativeQuery = true)
+    SocialconnectionMdl soConFromForm(Long soConIdFromForm);
 
 
 }

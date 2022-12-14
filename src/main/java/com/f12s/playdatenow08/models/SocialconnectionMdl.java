@@ -30,8 +30,9 @@ public class SocialconnectionMdl {
 
     // begin: joins
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="soconstatus_code")
-    private CodeMdl soconStatus;
+    @JoinColumn(name="soconstatus_code_id")
+//    private CodeMdl soconStatus;
+    private CodeMdl soconstatusCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userone") // 2022.11.27: in near future, rename this: initiatorUser, which will result in field being named 'initiator_user' in the db, which is accurate
@@ -120,12 +121,25 @@ public class SocialconnectionMdl {
         this.usertwoUserMdl = usertwoUserMdl;
     }
 
-    public CodeMdl getSoconStatus() {
-        return soconStatus;
+//    public CodeMdl getSoconStatus() {
+//        return soconStatus;
+//    }
+//
+//    public void setSoconStatus(CodeMdl soconStatus) {
+//        this.soconStatus = soconStatus;
+//    }
+//
+//    public UserMdl getBlockerUser() {
+//        return blockerUser;
+//    }
+
+
+    public CodeMdl getSoconstatusCode() {
+        return soconstatusCode;
     }
 
-    public void setSoconStatus(CodeMdl soconStatus) {
-        this.soconStatus = soconStatus;
+    public void setSoconstatusCode(CodeMdl soconstatusCode) {
+        this.soconstatusCode = soconstatusCode;
     }
 
     public UserMdl getBlockerUser() {
