@@ -22,7 +22,7 @@
                     <a class="nav-link" href="/playdate">Playdates</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/connection">Relates</a>
+                    <a class="nav-link" href="/connection">Connections</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">Members</a>

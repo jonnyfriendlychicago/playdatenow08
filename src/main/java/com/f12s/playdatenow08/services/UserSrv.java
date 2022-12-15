@@ -130,20 +130,18 @@ public class UserSrv{
 //    public List<UserSocialConnectionPjo> userSocialConnectionList(Long x) {return userRpo.userSocialConnectionList(x);}
     public List<UserSocialConnectionPjo> userSocialConnectionList(Long authUserId) {return userRpo.userSocialConnectionList( authUserId );}
 
-    // (6) relations to authUser: blocked
+    // (2) relations to authUser: blocked
     public List<UserSocialConnectionPjo> userSocialConnectionListBlocked(Long x) {return userRpo.userSocialConnectionListBlocked(x);}
 
 
-    // (2) relations to authUser: sent requests
+    // (3) relations to authUser: sent requests
     public List<UserSocialConnectionPjo> userSocialConnectionListSent(Long authUserId) {return userRpo.userSocialConnectionListSent(authUserId);}
 
-    // working thru below
-
-    // (3) relations to authUser: received requests
+    // (4) relations to authUser: received requests
     public List<UserSocialConnectionPjo> userSocialConnectionListReceived(Long authUserId) {return userRpo.userSocialConnectionListReceived( authUserId );}
 
-//    // (4) relations to authUser: friends
-//    public List<UserSocialConnectionPjo> userSocialConnectionListFriends(Long x) {return userRpo.userSocialConnectionListFriends(x);}
+    // (5) relations to authUser: friends
+    public List<UserSocialConnectionPjo> userSocialConnectionListFriends(Long authUserId) {return userRpo.userSocialConnectionListFriends(authUserId);}
 //
 //    // (5) relations to authUser: requestCancelled
 //    public List<UserSocialConnectionPjo> userSocialConnectionListRequestCancelled(Long x) {return userRpo.userSocialConnectionListRequestCancelled(x);}

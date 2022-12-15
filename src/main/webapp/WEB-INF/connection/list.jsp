@@ -97,9 +97,108 @@
     </c:forEach>
 </div>
 
+<div id = "profileCardArrayNew" class="container bg-info">
+    <h2>Received Requests</h2>
+    <c:forEach var="record" items="${userSocialConnectionListReceived}">
+        <div id="userCard" class="card m-2">
+            <div id="cardbody1" class="card-body">
+                <div id="container" class="container">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h5 class="card-title fw-bold">
+                                <a class="text-decoration-none link-dark" href="/profile/${record.id}">
+                                    <c:choose>
+                                        <c:when test="${record.firstName.length() > 0 || record.lastName.length() >0}">
+                                            ${record.firstName} ${record.lastName} (${record.userName})
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${record.userName}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </a>
+                            </h5>
+                            <p>initiatorUser: ${record.initiatorUser}</p>
+                            <p>socialconnectionId: ${record.socialconnectionId}</p>
+
+                            <c:if test="${record.city.length() > 0}">
+                                <p>${record.city}, ${record.stateName}</p>
+                            </c:if>
+                        </div>
+                        <div class="col-sm-3 d-flex justify-content-end">
+<%--                            --%>
+<%--                            <form:form action='/socialconnection/unblock' method='post' modelAttribute='soConObjForm'>--%>
+<%--                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
+<%--                                <button type="submit" class="btn btn-secondary me-2">Unblock</button>--%>
+<%--                            </form:form>--%>
+
+                            <form:form action='/socialconnection/accept' method='post' modelAttribute='soConObjForm'>
+                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
+                                <button type="submit" class="btn btn-primary me-2">Accept</button>
+                            </form:form>
+
+                            <form:form action='/socialconnection/decline' method='post' modelAttribute='soConObjForm'>
+                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
+                                <button type="submit" class="btn btn-secondary me-2">Decline</button>
+                            </form:form>
+
+                        </div>
+                    </div> <%-- end row--%>
+                </div> <%-- end container--%>
+            </div> <%--end cardbody1--%>
+        </div> <%-- end userCard --%>
+    </c:forEach>
+</div>
+
+
+<div id = "profileCardArrayNew" class="container bg-info">
+    <h2>Friends</h2>
+    <c:forEach var="record" items="${userSocialConnectionListFriends}">
+        <div id="userCard" class="card m-2">
+            <div id="cardbody1" class="card-body">
+                <div id="container" class="container">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h5 class="card-title fw-bold">
+                                <a class="text-decoration-none link-dark" href="/profile/${record.id}">
+                                    <c:choose>
+                                        <c:when test="${record.firstName.length() > 0 || record.lastName.length() >0}">
+                                            ${record.firstName} ${record.lastName} (${record.userName})
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${record.userName}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </a>
+                            </h5>
+                            <p>initiatorUser: ${record.initiatorUser}</p>
+                            <p>socialconnectionId: ${record.socialconnectionId}</p>
+
+                            <c:if test="${record.city.length() > 0}">
+                                <p>${record.city}, ${record.stateName}</p>
+                            </c:if>
+                        </div>
+                        <div class="col-sm-3 d-flex justify-content-end">
+
+<%--                            <form:form action='/socialconnection/unblock' method='post' modelAttribute='soConObjForm'>--%>
+<%--                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
+<%--                                <button type="submit" class="btn btn-secondary me-2">Unblock</button>--%>
+<%--                            </form:form>--%>
+                                <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>
+                                    <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
+                                    <button type="submit" class="btn btn-info me-2">Unfriend</button>
+                                </form:form>
+
+                        </div>
+                    </div> <%-- end row--%>
+                </div> <%-- end container--%>
+            </div> <%--end cardbody1--%>
+        </div> <%-- end userCard --%>
+    </c:forEach>
+</div>
+
 
 <%--<div id = "profileCardArrayNew" class="container bg-warning">--%>
-<%--    <h2>New Received Requests</h2>--%>
+<%--    <h2> Received Requests</h2>--%>
 <%--    <c:forEach var="record" items="${userSocialConnectionListReceived}">--%>
 <%--        <div id="userCard" class="card m-2">--%>
 <%--            <div id="cardbody1" class="card-body">--%>

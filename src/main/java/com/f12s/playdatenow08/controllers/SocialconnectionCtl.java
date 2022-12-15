@@ -60,13 +60,14 @@ public class SocialconnectionCtl {
         List<UserSocialConnectionPjo> userSocialConnectionListSent = userSrv.userSocialConnectionListSent(authUserObj.getId());
         model.addAttribute("userSocialConnectionListSent", userSocialConnectionListSent);
 
-//        List<UserSocialConnectionPjo> userSocialConnectionListReceived = userSrv.userSocialConnectionListReceived(authUserObj.getId());
-//        model.addAttribute("userSocialConnectionListReceived", userSocialConnectionListReceived);
+        List<UserSocialConnectionPjo> userSocialConnectionListReceived = userSrv.userSocialConnectionListReceived(authUserObj.getId());
+        model.addAttribute("userSocialConnectionListReceived", userSocialConnectionListReceived);
+
+        List<UserSocialConnectionPjo> userSocialConnectionListFriends = userSrv.userSocialConnectionListFriends(authUserObj.getId());
+        model.addAttribute("userSocialConnectionListFriends", userSocialConnectionListFriends);
 
         // working thru below
 //
-//        List<UserSocialConnectionPjo> userSocialConnectionListFriends = userSrv.userSocialConnectionListFriends(authUserObj.getId());
-//        model.addAttribute("userSocialConnectionListFriends", userSocialConnectionListFriends);
 //
 //        List<UserSocialConnectionPjo> userSocialConnectionListRequestCancelled = userSrv.userSocialConnectionListRequestCancelled(authUserObj.getId());
 //        model.addAttribute("userSocialConnectionListRequestCancelled", userSocialConnectionListRequestCancelled);
