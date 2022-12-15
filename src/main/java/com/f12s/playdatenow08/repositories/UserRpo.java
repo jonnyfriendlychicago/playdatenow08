@@ -22,8 +22,9 @@ public interface UserRpo extends CrudRepository<UserMdl, Long> {
     List<UserMdl> findAll();
 
     // (1) all users list
-
-    // below is my attempt to exclude blockety-blocks
+    // note: excludes any user records that join a soCon record on userRecord+AuthUser where the blocker column has a value.
+    // the union selection 'ur' is identical to 'ur2' except that 'ur2' contains only those records with a blocker value
+    // this mega query is boilerplate for all other mega queries in this Rpo
     @Query(
             value =
                     "select "
@@ -35,7 +36,6 @@ public interface UserRpo extends CrudRepository<UserMdl, Long> {
                             + " when (code.code = 'requestPending' and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
                             + " when code.code = 'friends' then 'friends'  "
                             + " when code.code = 'blocked' then 'blocked'  "
-                            + " when code.code is not null then code.code "
                             + " else  'soConError' end as soconStatusEnhanced, "
                             + " ur.socialconnectionId as socialconnectionId "
                             + " from playdatenow08.user u "
@@ -58,19 +58,47 @@ public interface UserRpo extends CrudRepository<UserMdl, Long> {
             , nativeQuery = true)
     List<UserSocialConnectionPjo> userSocialConnectionList(Long authUserId);
 
-//    // below is my attempt to exclude blockety-blocks
+    // (2) relations to authUser: blockedBy
+
+    // difference between all users query and this query: (a) ur is a join, not a left join (b) ur includes where clause: blocked by is authUser (c) b/c aforementioned, no need to fail-join with a ur2
+    @Query(
+            value =
+                    "select "
+                            + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
+                            + " , case "
+                            + " when u.id = :authUserId then 'authUserRecord' "
+                            + " when (ur.relatedUserId is null or code.code = 'soConReset') then 'noRelation' "
+                            + " when (code.code = 'requestPending' and :authUserId = ur.initiatorUserId) then 'authUserSentRequest'  "
+                            + " when (code.code = 'requestPending' and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
+                            + " when code.code = 'friends' then 'friends'  "
+                            + " when code.code = 'blocked' then 'blocked'  "
+                            + " else  'soConError' end as soconStatusEnhanced, "
+                            + " ur.socialconnectionId as socialconnectionId "
+                            + " from playdatenow08.user u "
+                            + " left join playdatenow08.stateterritory st on u.stateterritory_id = st.id "
+                            + " join "
+                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId and sc.blocker_user_id = :authUserId"
+                            + " union all "
+                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId and sc.blocker_user_id = :authUserId"
+                            + " ) ur on u.id = ur.relatedUserId"
+                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
+                            + " order by u.id desc"
+            , nativeQuery = true)
+    List<UserSocialConnectionPjo> userSocialConnectionListBlocked(Long authUserId);
+
+    // below is old, above is refactor attempt
+//    // difference between all users query and this query: (a) ur2 has blocker = auth user and (b) left join to ur2 followed by a 'where jr2 join occurs'
 //    @Query(
 //            value =
 //                    "select "
 //                            + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
 //                            + " , case "
 //                            + " when u.id = :authUserId then 'authUserRecord' "
-//                            + " when (ur.relatedUserId is null or ur.soconStatusCodeId = 12) then 'noRelation' "
-//                            + " when (ur.soconStatusCodeId = 6 and :authUserId = ur.initiatorUserId) then 'authUserSentRequest'  "
-//                            + " when (ur.soconStatusCodeId = 6 and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
-//                            + " when ur.soconStatusCodeId = 9 then 'friends'  "
-//                            + " when ur.soconStatusCodeId = 11 then 'blocked'  "
-//                            + " when code.code is not null then code.code "
+//                            + " when (ur.relatedUserId is null or code.code = 'soConReset') then 'noRelation' "
+//                            + " when (code.code = 'requestPending' and :authUserId = ur.initiatorUserId) then 'authUserSentRequest'  "
+//                            + " when (code.code = 'requestPending' and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
+//                            + " when code.code = 'friends' then 'friends'  "
+//                            + " when code.code = 'blocked' then 'blocked'  "
 //                            + " else  'soConError' end as soconStatusEnhanced, "
 //                            + " ur.socialconnectionId as socialconnectionId "
 //                            + " from playdatenow08.user u "
@@ -83,44 +111,43 @@ public interface UserRpo extends CrudRepository<UserMdl, Long> {
 //                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
 //
 //                            + " left join "
-//                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId and sc.blocker_user_id is not null"
+//                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId and sc.blocker_user_id = :authUserId"
 //                            + " union all "
-//                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId and sc.blocker_user_id is not null"
+//                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId and sc.blocker_user_id = :authUserId"
 //                            + " ) ur2 on u.id = ur2.relatedUserId"
-//                            + " where ur2.socialconnectionId is null"
+//                            + " where ur2.socialconnectionId is not null"
 //
 //                            + " order by u.id desc"
 //            , nativeQuery = true)
-//    List<UserSocialConnectionPjo> userSocialConnectionList(Long authUserId);
+//    List<UserSocialConnectionPjo> userSocialConnectionListBlocked(Long authUserId);
 
-
-    // below working great before we start to excluded blockity-blocks from list
-//    @Query(
-//            value =
-//                    "select "
-//                            + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
-//                            + " , case "
-//                            + " when u.id = :authUserId then 'authUserRecord' "
-//                            + " when (ur.relatedUserId is null or ur.soconStatusCodeId = 12) then 'noRelation' "
-//                            + " when (ur.soconStatusCodeId = 6 and :authUserId = ur.initiatorUserId) then 'authUserSentRequest'  "
-//                            + " when (ur.soconStatusCodeId = 6 and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
-//                            + " when ur.soconStatusCodeId = 9 then 'friends'  "
-//                            + " when code.code is not null then code.code "
-//                            + " else  'soConError' end as soconStatusEnhanced, "
-//                            + " ur.socialconnectionId as socialconnectionId "
-//                            + " from playdatenow08.user u "
-//                            + " left join playdatenow08.stateterritory st on u.stateterritory_id = st.id "
-//                            + " left join "
-//                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId "
-//                            + " union all "
-//                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId "
-//                            + " ) ur on u.id = ur.relatedUserId"
-//                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
-//                            + " order by u.id desc"
-//            , nativeQuery = true)
-//    List<UserSocialConnectionPjo> userSocialConnectionList(Long authUserId);
-
-    // (2) relations to authUser: sent requests
+    // (3) relations to authUser: sent requests
+    // diff between this and blocked: (a) in ur, where clause targets initiator, not blocker (b) first-tier where clause points to requestPending (in contrast, blocker query doesn't care about that)
+    @Query(
+            value =
+                    "select "
+                            + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
+                            + " , case "
+                            + " when u.id = :authUserId then 'authUserRecord' "
+                            + " when (ur.relatedUserId is null or code.code = 'soConReset') then 'noRelation' "
+                            + " when (code.code = 'requestPending' and :authUserId = ur.initiatorUserId) then 'authUserSentRequest'  "
+                            + " when (code.code = 'requestPending' and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
+                            + " when code.code = 'friends' then 'friends'  "
+                            + " when code.code = 'blocked' then 'blocked'  "
+                            + " else  'soConError' end as soconStatusEnhanced, "
+                            + " ur.socialconnectionId as socialconnectionId "
+                            + " from playdatenow08.user u "
+                            + " left join playdatenow08.stateterritory st on u.stateterritory_id = st.id "
+                            + " join "
+                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId and sc.initiator_user_id = :authUserId"
+                            + " union all "
+                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId and sc.initiator_user_id = :authUserId"
+                            + " ) ur on u.id = ur.relatedUserId"
+                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
+                            + " where code.code = 'requestPending' "
+                            + " order by u.id desc"
+            , nativeQuery = true)
+    List<UserSocialConnectionPjo> userSocialConnectionListSent(Long authUserId);
 
 //    @Query(
 //            value =
@@ -153,85 +180,34 @@ public interface UserRpo extends CrudRepository<UserMdl, Long> {
 //            , nativeQuery = true)
 //    List<UserSocialConnectionPjo> userSocialConnectionListSent(Long authUserId);
 
-    // (5) relations to authUser: blocked
 
-    @Query(
-            value =
-                    "select "
-                            + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
-                            + " , case "
-                            + " when u.id = :authUserId then 'authUserRecord' "
-                            + " when (ur.relatedUserId is null or ur.soconStatusCodeId = 12) then 'noRelation' "
-                            + " when (ur.soconStatusCodeId = 6 and :authUserId = ur.initiatorUserId) then 'authUserSentRequest'  "
-                            + " when (ur.soconStatusCodeId = 6 and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
-                            + " when ur.soconStatusCodeId = 9 then 'friends'  "
-                            + " when ur.soconStatusCodeId = 11 then 'blocked'  "
-                            + " when code.code is not null then code.code "
-                            + " else  'soConError' end as soconStatusEnhanced, "
-                            + " ur.socialconnectionId as socialconnectionId "
-                            + " from playdatenow08.user u "
-                            + " left join playdatenow08.stateterritory st on u.stateterritory_id = st.id "
-                            + " left join "
-                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId "
-                            + " union all "
-                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId "
-                            + " ) ur on u.id = ur.relatedUserId"
-                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
 
-                            + " left join "
-                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId and sc.blocker_user_id = :authUserId"
-                            + " union all "
-                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId and sc.blocker_user_id = :authUserId"
-                            + " ) ur2 on u.id = ur2.relatedUserId"
-                            + " where ur2.socialconnectionId is not null"
-
-                            + " order by u.id desc"
-            , nativeQuery = true)
-    List<UserSocialConnectionPjo> userSocialConnectionListBlocked(Long authUserId);
-
-    // old blocked
-
+    // (1) sent list
 //    @Query(
 //            value =
 //                    "select "
-//
-//                            + " ur.socialconnectionId as socialconnectionId, ur.relationInitiator as relationInitiator, "
 //                            + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
-//
-//                            + " from (select sc.id as socialconnectionId, sc.userone as relationInitiator, sc.usertwo as relatedUser, sc.soconstatus_code as soconStatusCodeId from playdatenow08.socialconnection sc where userone = :keyword union all select sc.id as socialconnectionId, sc.userone as relationInitiator, sc.userone as relatedUser, sc.soconstatus_code as soconStatusCodeId from playdatenow08.socialconnection sc where usertwo  = :keyword ) ur "
-//                            + " join playdatenow08.user u on ur.relatedUser = u.id "
+//                            + " , case "
+//                            + " when u.id = :authUserId then 'authUserRecord' "
+//                            + " when (ur.relatedUserId is null or ur.soconStatusCodeId = 12) then 'noRelation' "
+//                            + " when (ur.soconStatusCodeId = 6 and :authUserId = ur.initiatorUserId) then 'authUserSentRequest'  "
+//                            + " when (ur.soconStatusCodeId = 6 and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
+//                            + " when ur.soconStatusCodeId = 9 then 'friends'  "
+//                            + " when code.code is not null then code.code "
+//                            + " else  'soConError' end as soconStatusEnhanced, "
+//                            + " ur.socialconnectionId as socialconnectionId "
+//                            + " from playdatenow08.user u "
 //                            + " left join playdatenow08.stateterritory st on u.stateterritory_id = st.id "
-//                            + " left join playdatenow08.code c on ur.soconStatusCodeId = c.id "
-//                            + " where c.code = 'blocked' "
+//                            + " left join "
+//                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId "
+//                            + " union all "
+//                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId "
+//                            + " ) ur on u.id = ur.relatedUserId"
+//                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
+//                            + " where ur.soconStatusCodeId = 6 and :authUserId = ur.initiatorUserId "
+//                            + " order by u.id desc"
 //            , nativeQuery = true)
-//    List<UserSocialConnectionPjo> userSocialConnectionListBlocked(Long keyword);
-
-    // (1) sent list
-    @Query(
-            value =
-                    "select "
-                            + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
-                            + " , case "
-                            + " when u.id = :authUserId then 'authUserRecord' "
-                            + " when (ur.relatedUserId is null or ur.soconStatusCodeId = 12) then 'noRelation' "
-                            + " when (ur.soconStatusCodeId = 6 and :authUserId = ur.initiatorUserId) then 'authUserSentRequest'  "
-                            + " when (ur.soconStatusCodeId = 6 and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
-                            + " when ur.soconStatusCodeId = 9 then 'friends'  "
-                            + " when code.code is not null then code.code "
-                            + " else  'soConError' end as soconStatusEnhanced, "
-                            + " ur.socialconnectionId as socialconnectionId "
-                            + " from playdatenow08.user u "
-                            + " left join playdatenow08.stateterritory st on u.stateterritory_id = st.id "
-                            + " left join "
-                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId "
-                            + " union all "
-                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId "
-                            + " ) ur on u.id = ur.relatedUserId"
-                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
-                            + " where ur.soconStatusCodeId = 6 and :authUserId = ur.initiatorUserId "
-                            + " order by u.id desc"
-            , nativeQuery = true)
-    List<UserSocialConnectionPjo> userSocialConnectionListSent(Long authUserId);
+//    List<UserSocialConnectionPjo> userSocialConnectionListSent(Long authUserId);
 
 
 
@@ -279,39 +255,93 @@ public interface UserRpo extends CrudRepository<UserMdl, Long> {
 //            , nativeQuery = true)
 //    List<UserSocialConnectionPjo> userSocialConnectionList(Long authUserId);
 
-    // (3) relations to authUser: received requests
+    // (4) relations to authUser: received requests
 
+    // diff between this and sent: (a) in ur, where clause targets responder... that's it! and yes, the where clauses totally redundant, will clean up later
     @Query(
             value =
                     "select "
-                            + " case when u.id = :keyword then 'authUserRecord' when ur.relatedUser is null then 'noRelation' when c.code is not null then c.code else  'soConError' end as soconStatusEnhanced, "
-                            + " ur.socialconnectionId as socialconnectionId, ur.relationInitiator as relationInitiator, "
                             + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
-
-                            + " from (select sc.id as socialconnectionId, sc.userone as relationInitiator, sc.usertwo as relatedUser, sc.soconstatus_code as soconStatusCodeId from playdatenow08.socialconnection sc where userone = :keyword union all select sc.id as socialconnectionId, sc.userone as relationInitiator, sc.userone as relatedUser, sc.soconstatus_code as soconStatusCodeId from playdatenow08.socialconnection sc where usertwo  = :keyword ) ur "
-                            + " join playdatenow08.user u on ur.relatedUser = u.id "
+                            + " , case "
+                            + " when u.id = :authUserId then 'authUserRecord' "
+                            + " when (ur.relatedUserId is null or code.code = 'soConReset') then 'noRelation' "
+                            + " when (code.code = 'requestPending' and :authUserId = ur.initiatorUserId) then 'authUserSentRequest'  "
+                            + " when (code.code = 'requestPending' and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
+                            + " when code.code = 'friends' then 'friends'  "
+                            + " when code.code = 'blocked' then 'blocked'  "
+                            + " else  'soConError' end as soconStatusEnhanced, "
+                            + " ur.socialconnectionId as socialconnectionId "
+                            + " from playdatenow08.user u "
                             + " left join playdatenow08.stateterritory st on u.stateterritory_id = st.id "
-                            + " left join playdatenow08.code c on ur.soconStatusCodeId = c.id "
-                            + " where c.code = 'requestPending' and ur.relationInitiator <> :keyword  "
+                            + " join "
+                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId and sc.responder_user_id = :authUserId"
+                            + " union all "
+                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId and sc.responder_user_id = :authUserId"
+                            + " ) ur on u.id = ur.relatedUserId"
+                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
+                            + " where code.code = 'requestPending' "
+                            + " order by u.id desc"
             , nativeQuery = true)
-    List<UserSocialConnectionPjo> userSocialConnectionListReceived(Long keyword);
+    List<UserSocialConnectionPjo> userSocialConnectionListReceived(Long authUserId);
 
-    // (4) relations to authUser: friends
+    // below super old
+//    @Query(
+//            value =
+//                    "select "
+//                            + " case when u.id = :keyword then 'authUserRecord' when ur.relatedUser is null then 'noRelation' when c.code is not null then c.code else  'soConError' end as soconStatusEnhanced, "
+//                            + " ur.socialconnectionId as socialconnectionId, ur.relationInitiator as relationInitiator, "
+//                            + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
+//
+//                            + " from (select sc.id as socialconnectionId, sc.userone as relationInitiator, sc.usertwo as relatedUser, sc.soconstatus_code as soconStatusCodeId from playdatenow08.socialconnection sc where userone = :keyword union all select sc.id as socialconnectionId, sc.userone as relationInitiator, sc.userone as relatedUser, sc.soconstatus_code as soconStatusCodeId from playdatenow08.socialconnection sc where usertwo  = :keyword ) ur "
+//                            + " join playdatenow08.user u on ur.relatedUser = u.id "
+//                            + " left join playdatenow08.stateterritory st on u.stateterritory_id = st.id "
+//                            + " left join playdatenow08.code c on ur.soconStatusCodeId = c.id "
+//                            + " where c.code = 'requestPending' and ur.relationInitiator <> :keyword  "
+//            , nativeQuery = true)
+//    List<UserSocialConnectionPjo> userSocialConnectionListReceived(Long keyword);
 
+    // (5) relations to authUser: friends
     @Query(
             value =
                     "select "
-                            + " case when u.id = :keyword then 'authUserRecord' when ur.relatedUser is null then 'noRelation' when c.code is not null then c.code else  'soConError' end as soconStatusEnhanced, "
-                            + " ur.socialconnectionId as socialconnectionId, ur.relationInitiator as relationInitiator, "
                             + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
-
-                            + " from (select sc.id as socialconnectionId, sc.userone as relationInitiator, sc.usertwo as relatedUser, sc.soconstatus_code as soconStatusCodeId from playdatenow08.socialconnection sc where userone = :keyword union all select sc.id as socialconnectionId, sc.userone as relationInitiator, sc.userone as relatedUser, sc.soconstatus_code as soconStatusCodeId from playdatenow08.socialconnection sc where usertwo  = :keyword ) ur "
-                            + " join playdatenow08.user u on ur.relatedUser = u.id "
+                            + " , case "
+                            + " when u.id = :authUserId then 'authUserRecord' "
+                            + " when (ur.relatedUserId is null or code.code = 'soConReset') then 'noRelation' "
+                            + " when (code.code = 'requestPending' and :authUserId = ur.initiatorUserId) then 'authUserSentRequest'  "
+                            + " when (code.code = 'requestPending' and :authUserId = ur.ResponderUserId) then 'authUserReceivedRequest'  "
+                            + " when code.code = 'friends' then 'friends'  "
+                            + " when code.code = 'blocked' then 'blocked'  "
+                            + " else  'soConError' end as soconStatusEnhanced, "
+                            + " ur.socialconnectionId as socialconnectionId "
+                            + " from playdatenow08.user u "
                             + " left join playdatenow08.stateterritory st on u.stateterritory_id = st.id "
-                            + " left join playdatenow08.code c on ur.soconStatusCodeId = c.id "
-                            + " where c.code = 'friends' "
+                            + " join "
+                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId "
+                            + " union all "
+                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId "
+                            + " ) ur on u.id = ur.relatedUserId"
+                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
+                            + " where code.code = 'friends' "
+                            + " order by u.id desc"
             , nativeQuery = true)
-    List<UserSocialConnectionPjo> userSocialConnectionListFriends(Long keyword);
+    List<UserSocialConnectionPjo> userSocialConnectionListFriends(Long authUserId);
+
+    // below super old
+//    @Query(
+//            value =
+//                    "select "
+//                            + " case when u.id = :keyword then 'authUserRecord' when ur.relatedUser is null then 'noRelation' when c.code is not null then c.code else  'soConError' end as soconStatusEnhanced, "
+//                            + " ur.socialconnectionId as socialconnectionId, ur.relationInitiator as relationInitiator, "
+//                            + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
+//
+//                            + " from (select sc.id as socialconnectionId, sc.userone as relationInitiator, sc.usertwo as relatedUser, sc.soconstatus_code as soconStatusCodeId from playdatenow08.socialconnection sc where userone = :keyword union all select sc.id as socialconnectionId, sc.userone as relationInitiator, sc.userone as relatedUser, sc.soconstatus_code as soconStatusCodeId from playdatenow08.socialconnection sc where usertwo  = :keyword ) ur "
+//                            + " join playdatenow08.user u on ur.relatedUser = u.id "
+//                            + " left join playdatenow08.stateterritory st on u.stateterritory_id = st.id "
+//                            + " left join playdatenow08.code c on ur.soconStatusCodeId = c.id "
+//                            + " where c.code = 'friends' "
+//            , nativeQuery = true)
+//    List<UserSocialConnectionPjo> userSocialConnectionListFriends(Long keyword);
 
     // (4) relations to authUser: cancelled requests
 
