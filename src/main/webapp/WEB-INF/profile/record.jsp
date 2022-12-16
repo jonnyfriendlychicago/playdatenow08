@@ -109,9 +109,56 @@
             <p class="m-0 text-secondary" style="font-size: 0.8rem;">Joined <fmt:formatDate value="${userProfile.createdAt}" pattern="EEEE" />, <fmt:formatDate value="${userProfile.createdAt}" pattern="MMMM dd" />, <fmt:formatDate value="${userProfile.createdAt}" pattern="yyyy" />, <fmt:formatDate value="${userProfile.createdAt}" pattern="h:mm a" /></p>
         </div>
         <div>
-            <c:if test="${userProfile.id == authUser.id}">
-            <a href="/profile/${userProfile.id}/edit"><button class="btn btn-primary mb-2">Edit</button></a>
-            </c:if>
+
+<%--            <c:if test="${userProfile.id == authUser.id}">--%>
+<%--            <a href="/profile/${userProfile.id}/edit"><button class="btn btn-primary mb-2">Edit (trad)</button></a>--%>
+<%--            </c:if>--%>
+
+            <c:choose>
+                <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'authUserRecord'}">
+                    <a href="/profile/${userProfile.id}/edit"><button class="btn btn-primary mb-2">Edit (newWay)</button></a>
+                </c:when>
+
+                <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'authUserSentRequest'}">
+                    <form:form action='/socialconnection/cancel' method='post' modelAttribute='soConObjForm'>
+                        <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>
+                        <button type="submit" class="btn btn-secondary me-2">Cancel Request</button>
+                    </form:form>
+                </c:when>
+
+                <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'authUserReceivedRequest'}">
+                    <form:form action='/socialconnection/accept' method='post' modelAttribute='soConObjForm'>
+                        <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>
+                        <button type="submit" class="btn btn-primary me-2">Accept Request</button>
+                    </form:form>
+
+                    <form:form action='/socialconnection/decline' method='post' modelAttribute='soConObjForm'>
+                        <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>
+                        <button type="submit" class="btn btn-secondary me-2">Decline Request</button>
+                    </form:form>
+                </c:when>
+
+                <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'friends'}">
+                    <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>
+                        <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>
+                        <button type="submit" class="btn btn-info me-2">Unfriend</button>
+                    </form:form>
+                </c:when>
+
+<%--                <c:when test="${record.soconStatusEnhanced == 'blocked'}">--%>
+<%--                    <form:form action='/socialconnection/unblock' method='post' modelAttribute='soConObjForm'>--%>
+<%--                        <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
+<%--                        <button type="submit" class="btn btn-warning me-2">Unblock</button>--%>
+<%--                    </form:form>--%>
+<%--                </c:when>--%>
+
+                <c:otherwise>
+                    <form:form action='/socialconnection/request' method='post' modelAttribute='soConObjForm'>
+                        <form:input type="hidden" path="responderUser" value="${userSocialConnectionPjo.id}"/>
+                        <button type="submit" class="btn btn-primary">Add Friend</button>
+                    </form:form>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div><!-- end joinedMgmtButtons -->
 

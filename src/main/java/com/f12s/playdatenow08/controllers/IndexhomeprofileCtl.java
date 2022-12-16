@@ -11,6 +11,7 @@ import com.f12s.playdatenow08.validator.UserValidator;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -258,6 +259,7 @@ public class IndexhomeprofileCtl {
     @GetMapping("/profile/{id}")
     public String displayProfile(
             @PathVariable("id") Long userProfileId
+            , @ModelAttribute("soConObjForm") SocialconnectionMdl soConObj // soCon action buttons won't work without this line
             , Principal principal
             , Model model
     ) {
@@ -266,18 +268,21 @@ public class IndexhomeprofileCtl {
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
         // 2022.12.15: note for future work: at present, EU can edit URL to have the id be literally anything, and as constructed, it returns a page with just blanks for all values; should redirect if not found.
+        // update on above; now that we've got this pjo running, the page will blow up.  get back to this.
 
-        // (1) grab the entire user object using the url parameter, then deliver to page
-        model.addAttribute("userProfile", userSrv.findById(userProfileId));
-
-        // (1b) grab the entire UserSocialConnectionPjo object using the url parameter and authenticated User info, then deliver to page
-
-
+        // (1) set up variables
         UserSocialConnectionPjo userSocialConnectionPjo = socialconnectionRpo.getOneUserSocialConnectionPjo(authUserObj.getId(), userProfileId);
 
+        // (2) check if user profile has been blocked by auth user, or if authUser is on the user profile's block list; if so, redirect
+        if (Objects.equals(userSocialConnectionPjo.getSoconStatusEnhanced(), "blocked")) {
+             return "redirect:/profile/";
+         }
+
+        // (3) deliver objects to page
+        model.addAttribute("userProfile", userSrv.findById(userProfileId));
         model.addAttribute("userSocialConnectionPjo", userSocialConnectionPjo);
 
-        // (2) concatenate all non-null address components saved by user, then deliver to page for gma
+        // (4) concatenate all non-null address components saved by user, then deliver to page for gma
         String homeAddy = "";
         if (authUserObj.getAddressLine1() != null && authUserObj.getAddressLine1().length() > 0 ) {homeAddy += authUserObj.getAddressLine1();}
         if (authUserObj.getAddressLine2() != null && authUserObj.getAddressLine2().length() > 0 ) {
@@ -295,7 +300,7 @@ public class IndexhomeprofileCtl {
             homeAddy += authUserObj.getZipCode();}
         model.addAttribute("homeAddy", homeAddy);
 
-        // (3) sent list of playdates, for display in table
+        // (5) sent list of playdates, for display in table
         List<PlaydateMdl> userHostedPlaydateListPast = playdateSrv.userHostedPlaydateListPast(userProfileId);
         model.addAttribute("userHostedPlaydateListPast", userHostedPlaydateListPast);
 
