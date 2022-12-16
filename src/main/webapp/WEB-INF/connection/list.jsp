@@ -58,7 +58,7 @@
 
 
 <div id = "profileCardArrayNew" class="container bg-info">
-    <h2>Blocked Stuff</h2>
+    <h2>Blocked Users</h2>
     <c:forEach var="record" items="${userSocialConnectionListBlocked}">
         <div id="userCard" class="card m-2">
             <div id="cardbody1" class="card-body">
@@ -183,10 +183,11 @@
 <%--                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
 <%--                                <button type="submit" class="btn btn-secondary me-2">Unblock</button>--%>
 <%--                            </form:form>--%>
-                                <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>
-                                    <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
-                                    <button type="submit" class="btn btn-info me-2">Unfriend</button>
-                                </form:form>
+
+<%--                                <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>--%>
+<%--                                    <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
+<%--                                    <button type="submit" class="btn btn-info me-2">Unfriend</button>--%>
+<%--                                </form:form>--%>
 
                         </div>
                     </div> <%-- end row--%>
