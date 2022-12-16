@@ -119,6 +119,11 @@
         <div id="playdateInfoCol" class="col">
 
             <div class="card p-2 border-0">
+                <p class="m-0 text-secondary" style="font-size: 0.8rem;">soconStatusEnhanced</p>
+                <p class="m-0">${userSocialConnectionPjo.soconStatusEnhanced}</p>
+            </div>
+
+            <div class="card p-2 border-0">
                 <p class="m-0 text-secondary" style="font-size: 0.8rem;">First name</p>
                 <p class="m-0">${userProfile.firstName}</p>
             </div>
