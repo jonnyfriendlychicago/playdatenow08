@@ -116,7 +116,7 @@
 
             <c:choose>
                 <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'authUserRecord'}">
-                    <a href="/profile/${userProfile.id}/edit"><button class="btn btn-primary mb-2">Edit (newWay)</button></a>
+                    <a href="/profile/${userProfile.id}/edit"><button class="btn btn-primary mb-2">Edit</button></a>
                 </c:when>
 
                 <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'authUserSentRequest'}">
@@ -129,20 +129,37 @@
                 <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'authUserReceivedRequest'}">
                     <form:form action='/socialconnection/accept' method='post' modelAttribute='soConObjForm'>
                         <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>
-                        <button type="submit" class="btn btn-primary me-2">Accept Request</button>
+                        <button type="submit" class="btn btn-primary me-2">Accept</button>
                     </form:form>
 
                     <form:form action='/socialconnection/decline' method='post' modelAttribute='soConObjForm'>
                         <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>
-                        <button type="submit" class="btn btn-secondary me-2">Decline Request</button>
+                        <button type="submit" class="btn btn-secondary me-2">Decline</button>
                     </form:form>
                 </c:when>
 
                 <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'friends'}">
-                    <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>
-                        <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>
-                        <button type="submit" class="btn btn-info me-2">Unfriend</button>
-                    </form:form>
+
+<%--                    <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>--%>
+<%--                        <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>--%>
+<%--                        <button type="submit" class="btn btn-info me-2">Unfriend</button>--%>
+<%--                    </form:form>--%>
+
+                    <div class="dropdown d-flex justify-content-end">
+                        <button class="btn btn-secondary dropdown-toggle my-3 me-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Friends
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>
+                                    <form:input type="hidden" path="id" value="${userSocialConnectionPjo.id}"/>
+                                    <button type="submit" class="dropdown-item">Unfriend</button>
+                                </form:form>
+                            </li>
+                        </ul>
+                    </div>
+
+
                 </c:when>
 
 <%--                <c:when test="${record.soconStatusEnhanced == 'blocked'}">--%>
@@ -159,6 +176,25 @@
                     </form:form>
                 </c:otherwise>
             </c:choose>
+
+<%--            <c:if test="${userSocialConnectionPjo.soconStatusEnhanced != 'authUserRecord'}">--%>
+<%--                <div class="dropdown">--%>
+<%--                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Advanced Options</button>--%>
+<%--                    <ul class="dropdown-menu">--%>
+<%--                        <li>--%>
+<%--&lt;%&ndash;                            <a class="dropdown-item" href="#">&ndash;%&gt;--%>
+<%--                                <form:form action='/socialconnection/block' method='post' modelAttribute='soConObjForm'>--%>
+<%--                                    <form:input type="hidden" path="responderUser" value="${userSocialConnectionPjo.id}"/>--%>
+<%--                                    <button type="submit" class="dropdown-item">Block</button>--%>
+<%--                                </form:form>--%>
+<%--&lt;%&ndash;                            </a>&ndash;%&gt;--%>
+<%--                        </li>--%>
+<%--&lt;%&ndash;                        <li><a class="dropdown-item" href="#">Another action</a></li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        <li><a class="dropdown-item" href="#">Something else here</a></li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        <li><button class="dropdown-item" type="button">Another action</button></li>&ndash;%&gt;--%>
+<%--                    </ul>--%>
+<%--                </div>--%>
+<%--            </c:if>--%>
         </div>
     </div><!-- end joinedMgmtButtons -->
 
@@ -213,6 +249,20 @@
                 <div id="cardBody1" class="card-body"></div> <!-- end cardBody1 -->
                 <div id="mapCard1" class="card p-2 m-2 border-0" style="height: 20rem"></div> <!-- end mapCard1 -->
             </div> <!-- end card -->
+
+            <c:if test="${userSocialConnectionPjo.soconStatusEnhanced != 'authUserRecord'}">
+                <div class="dropdown d-flex justify-content-end">
+                    <button class="btn btn-secondary dropdown-toggle my-3 me-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">Advanced Options</button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <form:form action='/socialconnection/block' method='post' modelAttribute='soConObjForm'>
+                                <form:input type="hidden" path="responderUser" value="${userSocialConnectionPjo.id}"/>
+                                <button type="submit" class="dropdown-item">Block</button>
+                            </form:form>
+                        </li>
+                    </ul>
+                </div>
+            </c:if>
 
         </div><!-- end homeEtcCol -->
     </div><!-- end row -->

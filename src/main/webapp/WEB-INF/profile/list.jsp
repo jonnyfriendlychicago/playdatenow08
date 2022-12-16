@@ -43,16 +43,17 @@
                         </div>
                         <div class="col-sm-3 d-flex justify-content-end">
 
-                            <c:choose>
-                                <c:when test="${record.soconStatusEnhanced == 'authUserRecord' || record.soconStatusEnhanced == 'blocked' }">
-                                </c:when>
-                                <c:otherwise>
-                                    <form:form action='/socialconnection/block' method='post' modelAttribute='soConObjForm'>
-                                        <form:input type="hidden" path="responderUser" value="${record.id}"/>
-                                        <button type="submit" class="btn btn-danger">Block</button>
-                                    </form:form>
-                                </c:otherwise>
-                            </c:choose>
+<%--                            <c:choose>--%>
+<%--                                <c:when test="${record.soconStatusEnhanced == 'authUserRecord' || record.soconStatusEnhanced == 'blocked' }">--%>
+<%--                                </c:when>--%>
+<%--                                <c:otherwise>--%>
+<%--                                    <form:form action='/socialconnection/block' method='post' modelAttribute='soConObjForm'>--%>
+<%--                                        <form:input type="hidden" path="responderUser" value="${record.id}"/>--%>
+<%--                                        <button type="submit" class="btn btn-danger">Block</button>--%>
+<%--                                    </form:form>--%>
+<%--                                </c:otherwise>--%>
+<%--                            </c:choose>--%>
+
 <%--                            <c:if test="${record.soconStatusEnhanced != 'blocked' || record.soconStatusEnhanced != 'authUserRecord'}">--%>
 <%--                                <form:form action='/socialconnection/block' method='post' modelAttribute='soConObjForm'>--%>
 <%--                                    <form:input type="hidden" path="responderUser" value="${record.id}"/>--%>
@@ -79,20 +80,21 @@
                                 <c:when test="${record.soconStatusEnhanced == 'authUserReceivedRequest'}">
                                     <form:form action='/socialconnection/accept' method='post' modelAttribute='soConObjForm'>
                                         <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
-                                        <button type="submit" class="btn btn-primary me-2">Accept Request</button>
+                                        <button type="submit" class="btn btn-primary me-2">Accept</button>
                                     </form:form>
 
                                     <form:form action='/socialconnection/decline' method='post' modelAttribute='soConObjForm'>
                                         <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
-                                        <button type="submit" class="btn btn-secondary me-2">Decline Request</button>
+                                        <button type="submit" class="btn btn-secondary me-2">Decline</button>
                                     </form:form>
                                 </c:when>
 
                                 <c:when test="${record.soconStatusEnhanced == 'friends'}">
-                                    <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>
-                                        <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
-                                        <button type="submit" class="btn btn-info me-2">Unfriend</button>
-                                    </form:form>
+<%--                                    <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>--%>
+<%--                                        <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
+<%--                                        <button type="submit" class="btn btn-info me-2">Unfriend</button>--%>
+<%--                                    </form:form>--%>
+                                    <p class="text-secondary">You are friends.</p>
                                 </c:when>
 
                                 <c:when test="${record.soconStatusEnhanced == 'blocked'}">
