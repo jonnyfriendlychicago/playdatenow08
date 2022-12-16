@@ -133,7 +133,6 @@ public class UserSrv{
     // (2) relations to authUser: blocked
     public List<UserSocialConnectionPjo> userSocialConnectionListBlocked(Long x) {return userRpo.userSocialConnectionListBlocked(x);}
 
-
     // (3) relations to authUser: sent requests
     public List<UserSocialConnectionPjo> userSocialConnectionListSent(Long authUserId) {return userRpo.userSocialConnectionListSent(authUserId);}
 

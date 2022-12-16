@@ -3,6 +3,7 @@ package com.f12s.playdatenow08.controllers;
 import com.f12s.playdatenow08.dataTransferObjects.UserUpdateDto;
 import com.f12s.playdatenow08.models.*;
 import com.f12s.playdatenow08.pojos.UserSocialConnectionPjo;
+import com.f12s.playdatenow08.repositories.SocialconnectionRpo;
 import com.f12s.playdatenow08.services.PlaydateSrv;
 import com.f12s.playdatenow08.services.StateterritorySrv;
 import com.f12s.playdatenow08.services.UserSrv;
@@ -43,6 +44,9 @@ public class IndexhomeprofileCtl {
 
     @Autowired
     private PlaydateSrv playdateSrv;
+
+    @Autowired
+    private SocialconnectionRpo socialconnectionRpo;
 
 // ********************************************************************
 // AUTHENTICATION METHODS
@@ -242,7 +246,7 @@ public class IndexhomeprofileCtl {
 
         // above deprecated a while ago by below
 
-        // (2) soCon list
+        // (2) deliver list of user records to page
         Long authUserId = authUserObj.getId();
 //        List<UserSocialConnectionPjo> userSocialConnectionList = userSrv.userSocialConnectionList(authUserObj.getId());
         List<UserSocialConnectionPjo> userSocialConnectionList = userSrv.userSocialConnectionList( authUserId );
@@ -261,8 +265,17 @@ public class IndexhomeprofileCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
+        // 2022.12.15: note for future work: at present, EU can edit URL to have the id be literally anything, and as constructed, it returns a page with just blanks for all values; should redirect if not found.
+
         // (1) grab the entire user object using the url parameter, then deliver to page
         model.addAttribute("userProfile", userSrv.findById(userProfileId));
+
+        // (1b) grab the entire UserSocialConnectionPjo object using the url parameter and authenticated User info, then deliver to page
+
+
+        UserSocialConnectionPjo userSocialConnectionPjo = socialconnectionRpo.getOneUserSocialConnectionPjo(authUserObj.getId(), userProfileId);
+
+        model.addAttribute("userSocialConnectionPjo", userSocialConnectionPjo);
 
         // (2) concatenate all non-null address components saved by user, then deliver to page for gma
         String homeAddy = "";
