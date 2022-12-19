@@ -12,16 +12,68 @@
     <div class="alert alert-warning mt-3" role="alert">${permissionErrorMsg}</div>
 </c:if>
 
+<%--<div id = "profileCardArrayNew" class="container bg-info">--%>
+<%--    <h2>Sent Requests</h2>--%>
+<%--    <c:forEach var="record" items="${userSocialConnectionListSent}">--%>
+<%--        <div id="userCard" class="card m-2">--%>
+<%--            <div id="cardbody1" class="card-body">--%>
+<%--                <div id="container" class="container">--%>
+<%--                    <div class="row">--%>
+<%--                        <div class="col-sm-9">--%>
+<%--                            <h5 class="card-title fw-bold">--%>
+<%--                                <a class="text-decoration-none link-dark" href="/profile/${record.id}">--%>
+<%--                                    <c:choose>--%>
+<%--                                        <c:when test="${record.firstName.length() > 0 || record.lastName.length() >0}">--%>
+<%--                                            ${record.firstName} ${record.lastName} (${record.userName})--%>
+<%--                                        </c:when>--%>
+<%--                                        <c:otherwise>--%>
+<%--                                            ${record.userName}--%>
+<%--                                        </c:otherwise>--%>
+<%--                                    </c:choose>--%>
+<%--                                </a>--%>
+<%--                            </h5>--%>
+<%--                            <p>initiatorUser: ${record.initiatorUser}</p>--%>
+<%--                            <p>socialconnectionId: ${record.socialconnectionId}</p>--%>
+
+<%--                            <c:if test="${record.city.length() > 0}">--%>
+<%--                            <p>${record.city}, ${record.stateName}</p>--%>
+<%--                            </c:if>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-sm-3 d-flex justify-content-end">--%>
+<%--&lt;%&ndash;                            <form:form action='/connection/cancel/${record.socialconnectionId}' method='post' modelAttribute='soConObj'>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <form:form action='/connection/cancel/${record.socialconnectionId}' method='post' >&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            note: there is no modelAttribute needed here, b/c there is no object being generated/received/sent; just passing the id&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                starting over here...&ndash;%&gt;--%>
+<%--                            <form:form action='/socialconnection/cancel' method='post' modelAttribute='soConObjForm'>--%>
+<%--                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
+<%--                                <form:input type="hidden" path="objectOrigin" value="connectionList"/>--%>
+<%--                                <button type="submit" class="btn btn-primary me-2">Cancel Request</button>--%>
+<%--                            </form:form>--%>
+<%--                        </div>--%>
+<%--                    </div> &lt;%&ndash; end row&ndash;%&gt;--%>
+<%--               </div> &lt;%&ndash; end container&ndash;%&gt;--%>
+<%--            </div> &lt;%&ndash;end cardbody1&ndash;%&gt;--%>
+<%--        </div> &lt;%&ndash; end userCard &ndash;%&gt;--%>
+<%--    </c:forEach>--%>
+<%--</div>--%>
+
 <div id = "profileCardArrayNew" class="container bg-info">
-    <h2>Sent Requests</h2>
-    <c:forEach var="record" items="${userSocialConnectionListSent}">
+    <h2>Blocked Users</h2>
+    <h4>Below are all users you have blocked.</h4>
+    <ul>
+        <li>You cannot access each other's profiles.</li>
+        <li>Your names will only appear to each other on playdates you've both been invited to by a mutual connection. </li>
+        <li>Clicking Unblock below will remove the block and redirect you to that user's profile.</li>
+        <li>Unblocking will not restore any previous connection status that might have existed (i.e., pending or friends accepted).</li>
+    </ul>
+    <c:forEach var="record" items="${userSocialConnectionListBlocked}">
         <div id="userCard" class="card m-2">
             <div id="cardbody1" class="card-body">
                 <div id="container" class="container">
                     <div class="row">
                         <div class="col-sm-9">
                             <h5 class="card-title fw-bold">
-                                <a class="text-decoration-none link-dark" href="/profile/${record.id}">
+<%--                                <a class="text-decoration-none link-dark" href="/profile/${record.id}">--%>
                                     <c:choose>
                                         <c:when test="${record.firstName.length() > 0 || record.lastName.length() >0}">
                                             ${record.firstName} ${record.lastName} (${record.userName})
@@ -30,36 +82,32 @@
                                             ${record.userName}
                                         </c:otherwise>
                                     </c:choose>
-                                </a>
+<%--                                </a>--%>
                             </h5>
                             <p>initiatorUser: ${record.initiatorUser}</p>
                             <p>socialconnectionId: ${record.socialconnectionId}</p>
 
                             <c:if test="${record.city.length() > 0}">
-                            <p>${record.city}, ${record.stateName}</p>
+                                <p>${record.city}, ${record.stateName}</p>
                             </c:if>
                         </div>
                         <div class="col-sm-3 d-flex justify-content-end">
-<%--                            <form:form action='/connection/cancel/${record.socialconnectionId}' method='post' modelAttribute='soConObj'>--%>
-<%--                            <form:form action='/connection/cancel/${record.socialconnectionId}' method='post' >--%>
-<%--                            note: there is no modelAttribute needed here, b/c there is no object being generated/received/sent; just passing the id--%>
-<%--                                starting over here...--%>
-                            <form:form action='/socialconnection/cancel' method='post' modelAttribute='soConObjForm'>
+                            <form:form action='/socialconnection/unblock' method='post' modelAttribute='soConObjForm'>
                                 <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
-                                <form:input type="hidden" path="objectOrigin" value="connectionList"/>
-                                <button type="submit" class="btn btn-primary me-2">Cancel Request</button>
+                                <form:input type="hidden" path="objectOrigin" value="profileRecord"/>
+                                <button type="submit" class="btn btn-secondary me-2">Unblock</button>
                             </form:form>
                         </div>
                     </div> <%-- end row--%>
-               </div> <%-- end container--%>
+                </div> <%-- end container--%>
             </div> <%--end cardbody1--%>
         </div> <%-- end userCard --%>
     </c:forEach>
 </div>
 
 <%--<div id = "profileCardArrayNew" class="container bg-info">--%>
-<%--    <h2>Blocked Users</h2>--%>
-<%--    <c:forEach var="record" items="${userSocialConnectionListBlocked}">--%>
+<%--    <h2>Received Requests</h2>--%>
+<%--    <c:forEach var="record" items="${userSocialConnectionListReceived}">--%>
 <%--        <div id="userCard" class="card m-2">--%>
 <%--            <div id="cardbody1" class="card-body">--%>
 <%--                <div id="container" class="container">--%>
@@ -85,11 +133,24 @@
 <%--                            </c:if>--%>
 <%--                        </div>--%>
 <%--                        <div class="col-sm-3 d-flex justify-content-end">--%>
-<%--                            <form:form action='/socialconnection/unblock' method='post' modelAttribute='soConObjForm'>--%>
+<%--&lt;%&ndash;                            &ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <form:form action='/socialconnection/unblock' method='post' modelAttribute='soConObjForm'>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <button type="submit" class="btn btn-secondary me-2">Unblock</button>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            </form:form>&ndash;%&gt;--%>
+
+<%--                            <form:form action='/socialconnection/accept' method='post' modelAttribute='soConObjForm'>--%>
 <%--                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
-<%--                                <form:input type="hidden" path="objectOrigin" value="profileRecord"/>--%>
-<%--                                <button type="submit" class="btn btn-secondary me-2">Unblock</button>--%>
+<%--                                <form:input type="hidden" path="objectOrigin" value="connectionList"/>--%>
+<%--                                <button type="submit" class="btn btn-primary me-2">Accept</button>--%>
 <%--                            </form:form>--%>
+
+<%--                            <form:form action='/socialconnection/decline' method='post' modelAttribute='soConObjForm'>--%>
+<%--                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
+<%--                                <form:input type="hidden" path="objectOrigin" value="connectionList"/>--%>
+<%--                                <button type="submit" class="btn btn-secondary me-2">Decline</button>--%>
+<%--                            </form:form>--%>
+
 <%--                        </div>--%>
 <%--                    </div> &lt;%&ndash; end row&ndash;%&gt;--%>
 <%--                </div> &lt;%&ndash; end container&ndash;%&gt;--%>
@@ -98,107 +159,53 @@
 <%--    </c:forEach>--%>
 <%--</div>--%>
 
-<div id = "profileCardArrayNew" class="container bg-info">
-    <h2>Received Requests</h2>
-    <c:forEach var="record" items="${userSocialConnectionListReceived}">
-        <div id="userCard" class="card m-2">
-            <div id="cardbody1" class="card-body">
-                <div id="container" class="container">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <h5 class="card-title fw-bold">
-                                <a class="text-decoration-none link-dark" href="/profile/${record.id}">
-                                    <c:choose>
-                                        <c:when test="${record.firstName.length() > 0 || record.lastName.length() >0}">
-                                            ${record.firstName} ${record.lastName} (${record.userName})
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${record.userName}
-                                        </c:otherwise>
-                                    </c:choose>
-                                </a>
-                            </h5>
-                            <p>initiatorUser: ${record.initiatorUser}</p>
-                            <p>socialconnectionId: ${record.socialconnectionId}</p>
 
-                            <c:if test="${record.city.length() > 0}">
-                                <p>${record.city}, ${record.stateName}</p>
-                            </c:if>
-                        </div>
-                        <div class="col-sm-3 d-flex justify-content-end">
-<%--                            --%>
-<%--                            <form:form action='/socialconnection/unblock' method='post' modelAttribute='soConObjForm'>--%>
-<%--                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
-<%--                                <button type="submit" class="btn btn-secondary me-2">Unblock</button>--%>
-<%--                            </form:form>--%>
+<%--<div id = "profileCardArrayNew" class="container bg-info">--%>
+<%--    <h2>Friends</h2>--%>
+<%--    <c:forEach var="record" items="${userSocialConnectionListFriends}">--%>
+<%--        <div id="userCard" class="card m-2">--%>
+<%--            <div id="cardbody1" class="card-body">--%>
+<%--                <div id="container" class="container">--%>
+<%--                    <div class="row">--%>
+<%--                        <div class="col-sm-9">--%>
+<%--                            <h5 class="card-title fw-bold">--%>
+<%--                                <a class="text-decoration-none link-dark" href="/profile/${record.id}">--%>
+<%--                                    <c:choose>--%>
+<%--                                        <c:when test="${record.firstName.length() > 0 || record.lastName.length() >0}">--%>
+<%--                                            ${record.firstName} ${record.lastName} (${record.userName})--%>
+<%--                                        </c:when>--%>
+<%--                                        <c:otherwise>--%>
+<%--                                            ${record.userName}--%>
+<%--                                        </c:otherwise>--%>
+<%--                                    </c:choose>--%>
+<%--                                </a>--%>
+<%--                            </h5>--%>
+<%--                            <p>initiatorUser: ${record.initiatorUser}</p>--%>
+<%--                            <p>socialconnectionId: ${record.socialconnectionId}</p>--%>
 
-                            <form:form action='/socialconnection/accept' method='post' modelAttribute='soConObjForm'>
-                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
-                                <form:input type="hidden" path="objectOrigin" value="connectionList"/>
-                                <button type="submit" class="btn btn-primary me-2">Accept</button>
-                            </form:form>
+<%--                            <c:if test="${record.city.length() > 0}">--%>
+<%--                                <p>${record.city}, ${record.stateName}</p>--%>
+<%--                            </c:if>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-sm-3 d-flex justify-content-end">--%>
 
-                            <form:form action='/socialconnection/decline' method='post' modelAttribute='soConObjForm'>
-                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
-                                <form:input type="hidden" path="objectOrigin" value="connectionList"/>
-                                <button type="submit" class="btn btn-secondary me-2">Decline</button>
-                            </form:form>
+<%--&lt;%&ndash;                            <form:form action='/socialconnection/unblock' method='post' modelAttribute='soConObjForm'>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <button type="submit" class="btn btn-secondary me-2">Unblock</button>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            </form:form>&ndash;%&gt;--%>
 
-                        </div>
-                    </div> <%-- end row--%>
-                </div> <%-- end container--%>
-            </div> <%--end cardbody1--%>
-        </div> <%-- end userCard --%>
-    </c:forEach>
-</div>
+<%--&lt;%&ndash;                                <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <button type="submit" class="btn btn-info me-2">Unfriend</button>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                </form:form>&ndash;%&gt;--%>
 
-
-<div id = "profileCardArrayNew" class="container bg-info">
-    <h2>Friends</h2>
-    <c:forEach var="record" items="${userSocialConnectionListFriends}">
-        <div id="userCard" class="card m-2">
-            <div id="cardbody1" class="card-body">
-                <div id="container" class="container">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <h5 class="card-title fw-bold">
-                                <a class="text-decoration-none link-dark" href="/profile/${record.id}">
-                                    <c:choose>
-                                        <c:when test="${record.firstName.length() > 0 || record.lastName.length() >0}">
-                                            ${record.firstName} ${record.lastName} (${record.userName})
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${record.userName}
-                                        </c:otherwise>
-                                    </c:choose>
-                                </a>
-                            </h5>
-                            <p>initiatorUser: ${record.initiatorUser}</p>
-                            <p>socialconnectionId: ${record.socialconnectionId}</p>
-
-                            <c:if test="${record.city.length() > 0}">
-                                <p>${record.city}, ${record.stateName}</p>
-                            </c:if>
-                        </div>
-                        <div class="col-sm-3 d-flex justify-content-end">
-
-<%--                            <form:form action='/socialconnection/unblock' method='post' modelAttribute='soConObjForm'>--%>
-<%--                                <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
-<%--                                <button type="submit" class="btn btn-secondary me-2">Unblock</button>--%>
-<%--                            </form:form>--%>
-
-<%--                                <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>--%>
-<%--                                    <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
-<%--                                    <button type="submit" class="btn btn-info me-2">Unfriend</button>--%>
-<%--                                </form:form>--%>
-
-                        </div>
-                    </div> <%-- end row--%>
-                </div> <%-- end container--%>
-            </div> <%--end cardbody1--%>
-        </div> <%-- end userCard --%>
-    </c:forEach>
-</div>
+<%--                        </div>--%>
+<%--                    </div> &lt;%&ndash; end row&ndash;%&gt;--%>
+<%--                </div> &lt;%&ndash; end container&ndash;%&gt;--%>
+<%--            </div> &lt;%&ndash;end cardbody1&ndash;%&gt;--%>
+<%--        </div> &lt;%&ndash; end userCard &ndash;%&gt;--%>
+<%--    </c:forEach>--%>
+<%--</div>--%>
 
 
 <%--<div id = "profileCardArrayNew" class="container bg-warning">--%>

@@ -73,13 +73,22 @@
                 <a class="nav-link dropdown-toggle text-light" href="#" data-bs-toggle="dropdown" aria-expanded="false">${authUserName}</a>
                 <ul class="dropdown-menu dropdown-menu-lg-end">
                     <li><a class="dropdown-item" href="/profile/${authUser.id}">Profile</a></li>
+<%--                    <li><hr class="dropdown-divider"></li>--%>
+                    <li><a class="dropdown-item" href="/settings">Settings</a></li>
                     <li><hr class="dropdown-divider"></li>
+<%--                    <li>--%>
+<%--                        <form id="logoutForm" method="POST" action="/logout">--%>
+<%--                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />--%>
+<%--                            <button type="submit" class="btn">Signout</button>--%>
+<%--                        </form>--%>
+<%--                    </li>--%>
                     <li>
-                        <form id="logoutForm" method="POST" action="/logout">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                            <%--                            <button type="submit" class="btn btn-light">Signout</button>--%>
-                            <button type="submit" class="btn">Signout</button>
-                        </form>
+                        <a class="dropdown-item">
+                            <form id="logoutForm" method="POST" action="/logout">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                <button type="submit" class="btn m-0 p-0">Signout</button>
+                            </form>
+                        </a>
                     </li>
                 </ul>
             </div>
