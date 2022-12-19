@@ -107,6 +107,7 @@
                                 <c:otherwise>
                                     <form:form action='/socialconnection/request' method='post' modelAttribute='soConObjForm'>
                                         <form:input type="hidden" path="responderUser" value="${record.id}"/>
+                                        <form:input type="hidden" path="objectOrigin" value="profileList"/>
                                         <button type="submit" class="btn btn-primary">Add Friend</button>
                                     </form:form>
                                 </c:otherwise>

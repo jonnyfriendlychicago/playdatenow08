@@ -25,6 +25,10 @@ public class SocialconnectionMdl {
 
     // begin entity-specific fields
 
+    @Transient
+//    private Integer objectOrigin;
+    private String objectOrigin;
+
     // end entity-specific fields
     // join user table, first time
 
@@ -166,6 +170,13 @@ public class SocialconnectionMdl {
         this.responderUser = responderUser;
     }
 
+    public String getObjectOrigin() {
+        return objectOrigin;
+    }
+
+    public void setObjectOrigin(String objectOrigin) {
+        this.objectOrigin = objectOrigin;
+    }
 
     // end: getters and setters
 

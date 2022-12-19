@@ -430,6 +430,24 @@ public class IndexhomeprofileCtl {
         }
     }
 
+    @GetMapping("/settings")
+    public String displayUserSettings(
+            @ModelAttribute("soConObjForm") SocialconnectionMdl soConObjForm
+            , Model model
+            , Principal principal
+    ) {
+
+        // authentication boilerplate for all mthd
+        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
+
+        // (1) soCon lists
+
+        List<UserSocialConnectionPjo> userSocialConnectionListBlocked = userSrv.userSocialConnectionListBlocked(authUserObj.getId());
+        model.addAttribute("userSocialConnectionListBlocked", userSocialConnectionListBlocked);
+
+        return "settings.jsp";
+    }
+
     @GetMapping("/error")
     public String displayError(
             Principal principal

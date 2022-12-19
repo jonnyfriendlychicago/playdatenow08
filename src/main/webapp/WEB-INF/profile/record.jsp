@@ -107,6 +107,7 @@
     <div id="joinedMgmtButtons" class="d-flex justify-content-between">
         <div class="card p-2 border-0">
             <p class="m-0 text-secondary" style="font-size: 0.8rem;">Joined <fmt:formatDate value="${userProfile.createdAt}" pattern="EEEE" />, <fmt:formatDate value="${userProfile.createdAt}" pattern="MMMM dd" />, <fmt:formatDate value="${userProfile.createdAt}" pattern="yyyy" />, <fmt:formatDate value="${userProfile.createdAt}" pattern="h:mm a" /></p>
+            <p>userSocialConnectionPjo.socialconnectionId: ${userSocialConnectionPjo.socialconnectionId}</p>
         </div>
         <div>
 
@@ -122,20 +123,25 @@
                 <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'authUserSentRequest'}">
                     <form:form action='/socialconnection/cancel' method='post' modelAttribute='soConObjForm'>
                         <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>
+                        <form:input type="hidden" path="objectOrigin" value="profileRecord"/>
                         <button type="submit" class="btn btn-secondary me-2">Cancel Request</button>
                     </form:form>
                 </c:when>
 
                 <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'authUserReceivedRequest'}">
+
                     <form:form action='/socialconnection/accept' method='post' modelAttribute='soConObjForm'>
                         <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>
+                        <form:input type="hidden" path="objectOrigin" value="profileRecord"/>
                         <button type="submit" class="btn btn-primary me-2">Accept</button>
                     </form:form>
 
                     <form:form action='/socialconnection/decline' method='post' modelAttribute='soConObjForm'>
                         <form:input type="hidden" path="id" value = "${userSocialConnectionPjo.socialconnectionId}"/>
+                        <form:input type="hidden" path="objectOrigin" value="profileRecord"/>
                         <button type="submit" class="btn btn-secondary me-2">Decline</button>
                     </form:form>
+
                 </c:when>
 
                 <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'friends'}">
@@ -145,6 +151,7 @@
 <%--                        <button type="submit" class="btn btn-info me-2">Unfriend</button>--%>
 <%--                    </form:form>--%>
 
+
                     <div class="dropdown d-flex justify-content-end">
                         <button class="btn btn-secondary dropdown-toggle my-3 me-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Friends
@@ -152,7 +159,8 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
                                 <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>
-                                    <form:input type="hidden" path="id" value="${userSocialConnectionPjo.id}"/>
+                                    <form:input type="hidden" path="id" value="${userSocialConnectionPjo.socialconnectionId}"/>
+                                    <form:input type="hidden" path="objectOrigin" value="profileRecord"/>
                                     <button type="submit" class="dropdown-item">Unfriend</button>
                                 </form:form>
                             </li>
@@ -172,6 +180,7 @@
                 <c:otherwise>
                     <form:form action='/socialconnection/request' method='post' modelAttribute='soConObjForm'>
                         <form:input type="hidden" path="responderUser" value="${userSocialConnectionPjo.id}"/>
+                        <form:input type="hidden" path="objectOrigin" value="profileRecord"/>
                         <button type="submit" class="btn btn-primary">Add Friend</button>
                     </form:form>
                 </c:otherwise>

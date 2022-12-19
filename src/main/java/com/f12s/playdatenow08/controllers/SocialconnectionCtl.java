@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -54,8 +55,8 @@ public class SocialconnectionCtl {
 
         // (1) soCon lists
 
-        List<UserSocialConnectionPjo> userSocialConnectionListBlocked = userSrv.userSocialConnectionListBlocked(authUserObj.getId());
-        model.addAttribute("userSocialConnectionListBlocked", userSocialConnectionListBlocked);
+//        List<UserSocialConnectionPjo> userSocialConnectionListBlocked = userSrv.userSocialConnectionListBlocked(authUserObj.getId());
+//        model.addAttribute("userSocialConnectionListBlocked", userSocialConnectionListBlocked);
 
         List<UserSocialConnectionPjo> userSocialConnectionListSent = userSrv.userSocialConnectionListSent(authUserObj.getId());
         model.addAttribute("userSocialConnectionListSent", userSocialConnectionListSent);
@@ -65,13 +66,6 @@ public class SocialconnectionCtl {
 
         List<UserSocialConnectionPjo> userSocialConnectionListFriends = userSrv.userSocialConnectionListFriends(authUserObj.getId());
         model.addAttribute("userSocialConnectionListFriends", userSocialConnectionListFriends);
-
-        // working thru below
-//
-//
-//        List<UserSocialConnectionPjo> userSocialConnectionListRequestCancelled = userSrv.userSocialConnectionListRequestCancelled(authUserObj.getId());
-//        model.addAttribute("userSocialConnectionListRequestCancelled", userSocialConnectionListRequestCancelled);
-//
 
         return "connection/list.jsp";
     }
@@ -114,12 +108,17 @@ public class SocialconnectionCtl {
 //            } else {
 //                System.out.println("the submitted respondent object/ID is bullshit");
 //            }
-
+//
+//            // (testing)
+//
+//            String soConObjFormDotobjectOrigin = soConObjForm.getObjectOrigin();
+            System.out.println("soConObjForm.getObjectOrigin(): " + soConObjForm.getObjectOrigin() );
 
             // (1) create variables
             Optional<SocialconnectionMdl> preexistingSoConObj = Optional.ofNullable(socialconnectionRpo.existingSoConBaby(authUserObj.getId(), soConObjForm.getResponderUser().getId())); // represents whether soCon record already exists between auth user and related user
             CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("soConReset"); // used in the update path
             CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("requestPending");
+//            Long soConObjFormDotId = soConObjForm.getId();
 
             // (2) run update-v-create based on value of that variable
             if ( preexistingSoConObj.isPresent()) {
@@ -143,6 +142,10 @@ public class SocialconnectionCtl {
                 // (2a4) run the update service on the object
                 socialconnectionSrv.update(soConObject);
 
+//                if (Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord")) {
+//                    return "redirect:/profile/" + soConObjForm.getResponderUser().getId();
+//                }
+
             } else {
 
                 // (2b1) instantiate the new SoCon object, specifically as an object of BP'ed from the SocialconnectionMdl
@@ -163,7 +166,12 @@ public class SocialconnectionCtl {
             System.out.println("soCon request attempted, but no bueno!");
         }
 
-        return "redirect:/profile/";
+        if (Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord")) {
+            return "redirect:/profile/" + soConObjForm.getResponderUser().getId();
+        } else {
+            return "redirect:/profile/";
+        }
+
     }
 
     @PostMapping("/socialconnection/cancel")
@@ -221,7 +229,14 @@ public class SocialconnectionCtl {
         // (6) run the update service on the object
         socialconnectionSrv.update(soConObject);
 
-        return "redirect:/profile/";
+//        return "redirect:/profile/";
+        if ( Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord") ) {
+            return "redirect:/profile/" + soConObject.getResponderUser().getId();
+        } else if (  Objects.equals(soConObjForm.getObjectOrigin(), "connectionList")  ) {
+            return "redirect:/connection/" ;
+        } else {
+            return "redirect:/profile/";
+        }
     }
 
     @PostMapping("/socialconnection/decline")
@@ -268,7 +283,15 @@ public class SocialconnectionCtl {
         // (6) run the update service on the object
         socialconnectionSrv.update(soConObject);
 
-        return "redirect:/profile/";
+//        return "redirect:/profile/";
+        if ( Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord") ) {
+//            return "redirect:/profile/" + soConObject.getResponderUser().getId();
+            return "redirect:/profile/" + soConObject.getInitiatorUser().getId() ;
+        } else if (  Objects.equals(soConObjForm.getObjectOrigin(), "connectionList")  ) {
+            return "redirect:/connection/" ;
+        } else {
+            return "redirect:/profile/";
+        }
     }
 
     @PostMapping("/socialconnection/accept")
@@ -316,7 +339,15 @@ public class SocialconnectionCtl {
         // (6) run the update service on the object
         socialconnectionSrv.update(soConObject);
 
-        return "redirect:/profile/";
+//        return "redirect:/profile/";
+        if ( Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord") ) {
+//            return "redirect:/profile/" + soConObject.getResponderUser().getId();
+            return "redirect:/profile/" + soConObject.getInitiatorUser().getId() ;
+        } else if (  Objects.equals(soConObjForm.getObjectOrigin(), "connectionList")  ) {
+            return "redirect:/connection/" ;
+        } else {
+            return "redirect:/profile/";
+        }
     }
 
     @PostMapping("/socialconnection/unfriend")
@@ -368,7 +399,23 @@ public class SocialconnectionCtl {
         // (6) run the update service on the object
         socialconnectionSrv.update(soConObject);
 
-        return "redirect:/profile/";
+        // (7) reaffirm the userid that is the newly unfriended user:
+        // first, set redirect as initiator as default: assume authUser is the initiator, so have the redirect be the responder
+        Long profileRedirectId = soConObject.getResponderUser().getId();
+        // but if authUser  the responder, then do the reverse: have the redirect be to the initiator
+        if ( authUserObj.equals(soConObject.getResponderUser() ) ) {
+            profileRedirectId = soConObject.getInitiatorUser().getId();
+        }
+
+//        return "redirect:/profile/";
+        if ( Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord") ) {
+            ///
+            return "redirect:/profile/" + profileRedirectId ;
+        } else if (  Objects.equals(soConObjForm.getObjectOrigin(), "connectionList")  ) { // note, all this elseIf/else is deprecated for this scenario: unfriending only happens on use profile now
+            return "redirect:/connection/" ;
+        } else {
+            return "redirect:/profile/";
+        }
     }
 
     @PostMapping("/socialconnection/block")
@@ -382,57 +429,53 @@ public class SocialconnectionCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); // no model attributes here b/c no resulting page we are rending
 
-            // (1) create variables
-            Optional<SocialconnectionMdl> preexistingSoConObj = Optional.ofNullable(socialconnectionRpo.existingSoConBaby(authUserObj.getId(), soConObjForm.getResponderUser().getId())); // represents whether soCon record already exists between auth user and related user
+        // (1) create variables
+        Optional<SocialconnectionMdl> preexistingSoConObj = Optional.ofNullable(socialconnectionRpo.existingSoConBaby(authUserObj.getId(), soConObjForm.getResponderUser().getId())); // represents whether soCon record already exists between auth user and related user
 //            CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("soConReset"); // used in the update path
-            CodeMdl prohibitedSoConStatusCodeObj = codeSrv.findCodeMdlByCode("blocked"); // replaces above
-            CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("blocked");
+        CodeMdl prohibitedSoConStatusCodeObj = codeSrv.findCodeMdlByCode("blocked"); // replaces above
+        CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("blocked");
 
-            // (2) run update-v-create based on value of that variable
-            if ( preexistingSoConObj.isPresent()) {
+        // (2) run update-v-create based on value of that variable
+        if ( preexistingSoConObj.isPresent()) {
 
-                // (2a1) get the as-is soCon object, using the auth user and the related user (incoming from form).  MORE: This object needs to be called separately from preexistingSoConObj listed above.  get/set methods downstream won't work on preexistingSoConObj, not entirely sure why.
-                SocialconnectionMdl soConObject = socialconnectionRpo.existingSoConBaby(authUserObj.getId(), soConObjForm.getResponderUser().getId());
+            // (2a1) get the as-is soCon object, using the auth user and the related user (incoming from form).  MORE: This object needs to be called separately from preexistingSoConObj listed above.  get/set methods downstream won't work on preexistingSoConObj, not entirely sure why.
+            SocialconnectionMdl soConObject = socialconnectionRpo.existingSoConBaby(authUserObj.getId(), soConObjForm.getResponderUser().getId());
 
-                // (2a2) validate: is request presently in *prohibited* status?
-//                if( soConObject.getSoconstatusCode().equals(requiredSoConStatusCodeObj)) {
-                if( soConObject.getSoconstatusCode().equals(prohibitedSoConStatusCodeObj)) {
-                    redirectAttributes.addFlashAttribute("permissionErrorMsg", "Present relationship status does not allow blocking user.");
-                    return "redirect:/profile/" ;
-                }
-
-                // (2a3) update the object to have the intended values
-                soConObject.setSoconstatusCode(toBeSoconstatusCodeObj);
-//                soConObject.setInitiatorUser(authUserObj); // leave initiator alone
-//                soConObject.setResponderUser(soConObjForm.getResponderUser());  // leave responder alone
-                soConObject.setBlockerUser(authUserObj); // *do* set the blocker value
-
-                // (2a4) run the update service on the object
-                socialconnectionSrv.update(soConObject);
-
-            } else {
-
-                // (2b1) instantiate the new SoCon object, specifically as an object of BP'ed from the SocialconnectionMdl
-                SocialconnectionMdl soConObject = new SocialconnectionMdl();
-
-                // (2b2) validate: no required on create path
-
-                // (2b3) infuse into that object all the values from the incoming model/form
-                soConObject.setSoconstatusCode(toBeSoconstatusCodeObj);
-                soConObject.setInitiatorUser(authUserObj); // this just makes sense: the authuser is setting this in motion, so make him the initiator!
-                soConObject.setResponderUser(soConObjForm.getResponderUser());
-
-                // (2b4) run the service to create the record
-                socialconnectionSrv.create(soConObject);
+            // (2a2) validate: is request presently in *prohibited* status?
+            if( soConObject.getSoconstatusCode().equals(prohibitedSoConStatusCodeObj)) {
+                redirectAttributes.addFlashAttribute("permissionErrorMsg", "Present relationship status does not allow user blocking.");
+                return "redirect:/profile/" ;
             }
 
-//        } else {
-//            System.out.println("soCon request attempted, but no bueno!");
-//        }
+            // (2a3) update the object to have the intended values
+            soConObject.setSoconstatusCode(toBeSoconstatusCodeObj);
+            soConObject.setBlockerUser(authUserObj); // *do* set the blocker value
 
-        return "redirect:/profile/";
+            // (2a4) run the update service on the object
+            socialconnectionSrv.update(soConObject);
+
+        } else {
+
+            // (2b1) instantiate the new SoCon object, specifically as an object of BP'ed from the SocialconnectionMdl
+            SocialconnectionMdl soConObject = new SocialconnectionMdl();
+
+            // (2b2) validate: no required on create path
+
+            // (2b3) infuse into that object all the values from the incoming model/form
+            soConObject.setSoconstatusCode(toBeSoconstatusCodeObj);
+            soConObject.setInitiatorUser(authUserObj); // this just makes sense: the authuser is setting this in motion, so make him the initiator!
+            soConObject.setResponderUser(soConObjForm.getResponderUser());
+            soConObject.setBlockerUser(authUserObj); // *do* set the blocker value
+
+            // (2b4) run the service to create the record
+            socialconnectionSrv.create(soConObject);
+        }
+
+        redirectAttributes.addFlashAttribute("permissionErrorMsg", "User has been blocked.  To view all users you've blocked, click Display Blocked Users below.");
+//        return "redirect:/profile/";
+        return "redirect:/settings/";
+
     }
-
 
     @PostMapping("/socialconnection/unblock")
     public String unblockConnection(
@@ -479,145 +522,16 @@ public class SocialconnectionCtl {
         // (6) run the update service on the object
         socialconnectionSrv.update(soConObject);
 
-        return "redirect:/profile/";
-    }
-
-    // BELOW SUPER OLD STUFF!!!!
-
-    @PostMapping("/connection/accept/{id}")
-    public String acceptConnection(
-            @PathVariable("id") Long socialconnectionId
-            , Principal principal
-            , RedirectAttributes redirectAttributes
-    ) {
-
-        // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName()); // no model attributes here b/c no resulting page we are rending
-
-        // (1) get the object from the path variable
-        // YO!!!! big thought here: I THINK that we could adjust this whole thing to be better: make the form/button an object submitter;
-        // if we did that, we could eliminate all the code for looking up that object by path variable;
-        // additionally, removes possibilty for bad actor to mess with the variable and thus no need to validate for that in these methods. maybe??
-        // it just might work... might be worth asking an old friend Cameron about this, yes?
-        SocialconnectionMdl socialconnectionObj = socialconnectionSrv.findById(socialconnectionId);
-
-        // (2) get objects for validation
-        UserMdl socialconnectionUserTwo = socialconnectionObj.getUsertwoUserMdl();
-        CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("requestPending");
-
-        // (3a) validate: is current user the recipient of a request?
-        if(
-                !authUserObj.equals(socialconnectionUserTwo)
-        ) {
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "This request can only be responded to by its intended invitation recipient.");
-            return "redirect:/connection/" ;
+        // (7) reaffirm the userid that is the newly unblocked user:
+        // first, set redirect as initiator as default: assume authUser is the initiator, so have the redirect be the responder
+        Long profileRedirectId = soConObject.getResponderUser().getId();
+        // but if authUser  the responder, then do the reverse: have the redirect be to the initiator
+        if ( authUserObj.equals(soConObject.getResponderUser() ) ) {
+            profileRedirectId = soConObject.getInitiatorUser().getId();
         }
 
-        // (3b) validate: is request presently in pending status?
-        if(
-            !socialconnectionObj.getSoconstatusCode().equals(requiredSoConStatusCodeObj)
-
-        ) {
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "Present relationship status does not allow accepting/declining of request.");
-            return "redirect:/connection/" ;
-        }
-
-        // (4) update the object to have the intended soConStatus value
-        socialconnectionObj.setSoconstatusCode(codeSrv.findCodeMdlByCode("friends"));
-
-        // (5) run the update service on the object
-        socialconnectionSrv.update(socialconnectionObj);
-
-        return "redirect:/connection/";
-    }
-
-    @PostMapping("/connection/decline/{id}")
-    public String declineConnection(
-            @PathVariable("id") Long socialconnectionId
-            , Principal principal
-            , RedirectAttributes redirectAttributes
-    ) {
-
-        // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        // no model attributes here b/c no resulting page we are rending
-
-        // (1) get the object from the path variable
-        SocialconnectionMdl socialconnectionObj = socialconnectionSrv.findById(socialconnectionId);
-
-        // (2) get objects for validation
-        UserMdl socialconnectionUserTwo = socialconnectionObj.getUsertwoUserMdl();
-        CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("requestPending");
-
-        // (3a) validate: is current user the recipient of a request?
-        if(
-                !authUserObj.equals(socialconnectionUserTwo)
-        ) {
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "This request can only be responded to by its intended invitation recipient.");
-            return "redirect:/connection/" ;
-        }
-
-        // (3b) validate: is request presently in pending status?
-        if(
-            !socialconnectionObj.getSoconstatusCode().equals(requiredSoConStatusCodeObj)
-        ) {
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "Present relationship status does not allow accepting/declining request.");
-            return "redirect:/connection/" ;
-        }
-
-        // (4) update the object to have the intended soConStatus value
-        socialconnectionObj.setSoconstatusCode(codeSrv.findCodeMdlByCode("requestRejected"));
-
-        // (5) run the update service on the object
-        socialconnectionSrv.update(socialconnectionObj);
-
-        return "redirect:/connection/";
-    }
-
-
-
-    @PostMapping("/connection/reactivaterequest/{id}")
-    public String reactivateRequestConnection(
-            @PathVariable("id") Long socialconnectionId
-            , Principal principal
-            , RedirectAttributes redirectAttributes
-    ) {
-
-        // authentication boilerplate for all mthd
-        UserMdl authUserObj = userSrv.findByEmail(principal.getName());
-        // no model attributes here b/c no resulting page we are rending
-
-        // (1) get the object from the path variable
-        SocialconnectionMdl socialconnectionObj = socialconnectionSrv.findById(socialconnectionId);
-
-        // (2) get objects for validation
-//        UserMdl socialconnectionUserTwo = socialconnectionObj.getUsertwoUserMdl();
-        UserMdl socialconnectionUserOne = socialconnectionObj.getUseroneUserMdl();
-        CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("requestCancelled");
-
-        // (3a) validate: is current user the *sender* of a request?
-        if(
-                !authUserObj.equals(socialconnectionUserOne)
-        ) {
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "This request can only be reactivated to by its sender.");
-            return "redirect:/connection/" ;
-        }
-
-        // (3b) validate: is request presently in pending status?
-        if(
-                !socialconnectionObj.getSoconstatusCode().equals(requiredSoConStatusCodeObj)
-        ) {
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "Present relationship status does not allow request reactivation.");
-            return "redirect:/connection/" ;
-        }
-
-        // (4) update the object to have the intended soConStatus value
-        socialconnectionObj.setSoconstatusCode(codeSrv.findCodeMdlByCode("requestPending"));
-
-        // (5) run the update service on the object
-        socialconnectionSrv.update(socialconnectionObj);
-
-        return "redirect:/connection/";
+//        return "redirect:/profile/";
+        return "redirect:/profile/" + profileRedirectId ;
     }
 
 } // end ctl
