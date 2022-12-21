@@ -6,6 +6,7 @@ import com.f12s.playdatenow08.repositories.SocialconnectionRpo;
 import com.f12s.playdatenow08.repositories.UserRpo;
 import com.f12s.playdatenow08.services.CodeSrv;
 import com.f12s.playdatenow08.services.SocialconnectionSrv;
+import com.f12s.playdatenow08.services.SocialconnectionhistorySrv;
 import com.f12s.playdatenow08.services.UserSrv;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,11 @@ public class SocialconnectionCtl {
     @Autowired
     private SocialconnectionRpo socialconnectionRpo;
 
-    // trying here 12/7
     @Autowired
     private UserRpo userRpo;
+
+    @Autowired
+    private SocialconnectionhistorySrv socialconnectionhistorySrv;
 
     // view all socialConnection
     @GetMapping("/connection")
@@ -112,12 +115,13 @@ public class SocialconnectionCtl {
 //            // (testing)
 //
 //            String soConObjFormDotobjectOrigin = soConObjForm.getObjectOrigin();
-            System.out.println("soConObjForm.getObjectOrigin(): " + soConObjForm.getObjectOrigin() );
+//            System.out.println("soConObjForm.getObjectOrigin(): " + soConObjForm.getObjectOrigin() );
 
             // (1) create variables
             Optional<SocialconnectionMdl> preexistingSoConObj = Optional.ofNullable(socialconnectionRpo.existingSoConBaby(authUserObj.getId(), soConObjForm.getResponderUser().getId())); // represents whether soCon record already exists between auth user and related user
             CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("soConReset"); // used in the update path
             CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("requestPending");
+            CodeMdl socialconnectionhistoryActivityCodeObj = codeSrv.findCodeMdlByCode("sentRequest");
 //            Long soConObjFormDotId = soConObjForm.getId();
 
             // (2) run update-v-create based on value of that variable
@@ -142,9 +146,11 @@ public class SocialconnectionCtl {
                 // (2a4) run the update service on the object
                 socialconnectionSrv.update(soConObject);
 
-//                if (Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord")) {
-//                    return "redirect:/profile/" + soConObjForm.getResponderUser().getId();
-//                }
+                // (7) create activityhistory entry
+                SocialconnectionhistoryMdl socialconnectionhistoryObject = new SocialconnectionhistoryMdl();
+                socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
+
+//                return soConObject;
 
             } else {
 
@@ -160,6 +166,10 @@ public class SocialconnectionCtl {
 
                 // (2b4) run the service to create the record
                 socialconnectionSrv.create(soConObject);
+
+                // (7) create activityhistory entry
+                SocialconnectionhistoryMdl socialconnectionhistoryObject = new SocialconnectionhistoryMdl();
+                socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
             }
 
         } else {
@@ -210,6 +220,8 @@ public class SocialconnectionCtl {
         CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("requestPending"); // used in the update path
         CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("soConReset");
         UserMdl soConObjAuthorizedManager = soConObject.getInitiatorUser(); // this replaced line above
+        // new below
+        CodeMdl socialconnectionhistoryActivityCodeObj = codeSrv.findCodeMdlByCode("cancelRequest");
 
         // (4a) validate: is request presently in required status?
         if (!soConObject.getSoconstatusCode().equals(requiredSoConStatusCodeObj)) {
@@ -228,6 +240,25 @@ public class SocialconnectionCtl {
 
         // (6) run the update service on the object
         socialconnectionSrv.update(soConObject);
+
+        // (7) create activityhistory entry
+
+        // (7a) instantiate the new soconhistory object, specifically as an object of BP'ed from the SocialconnectionhistoryMdl
+//        System.out.print("we are now logging soCon activity.");
+        SocialconnectionhistoryMdl socialconnectionhistoryObject = new SocialconnectionhistoryMdl();
+
+//        // (7b) infuse into that object all the values from the successful soCon activity above
+//        socialconnectionhistoryObject.setActorUser(authUserObj);
+//        socialconnectionhistoryObject.setSocialconnection(soConObject);
+//        socialconnectionhistoryObject.setResultingsoconstatusCode(toBeSoconstatusCodeObj);
+//        socialconnectionhistoryObject.setSoconactivityCode(socialconnectionhistoryActivityCodeObj);
+//
+//        // (7c) run the service to create the record
+//        socialconnectionhistorySrv.create(socialconnectionhistoryObject);
+
+        // 7 b+c working fine; below tryding to do that with an enhanced service instead
+
+        socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
 
 //        return "redirect:/profile/";
         if ( Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord") ) {
@@ -264,6 +295,7 @@ public class SocialconnectionCtl {
         CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("requestPending"); // used in the update path
         CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("soConReset");
         UserMdl soConObjAuthorizedManager = soConObject.getResponderUser(); // now it's the respondent only who can take this action
+        CodeMdl socialconnectionhistoryActivityCodeObj = codeSrv.findCodeMdlByCode("declinedRequest");
 
         // (4a) validate: is request presently in required status?
         if (!soConObject.getSoconstatusCode().equals(requiredSoConStatusCodeObj)) {
@@ -282,6 +314,10 @@ public class SocialconnectionCtl {
 
         // (6) run the update service on the object
         socialconnectionSrv.update(soConObject);
+
+        // (7) create activityhistory entry
+        SocialconnectionhistoryMdl socialconnectionhistoryObject = new SocialconnectionhistoryMdl();
+        socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
 
 //        return "redirect:/profile/";
         if ( Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord") ) {
@@ -320,6 +356,7 @@ public class SocialconnectionCtl {
         CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("requestPending"); // used in the update path
         CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("friends");
         UserMdl soConObjAuthorizedManager = soConObject.getResponderUser(); // this line replaced above; now it's the respondent only who can take this action
+        CodeMdl socialconnectionhistoryActivityCodeObj = codeSrv.findCodeMdlByCode("acceptRequest");
 
         // (4a) validate: is request presently in required status?
         if (!soConObject.getSoconstatusCode().equals(requiredSoConStatusCodeObj)) {
@@ -338,6 +375,10 @@ public class SocialconnectionCtl {
 
         // (6) run the update service on the object
         socialconnectionSrv.update(soConObject);
+
+        // (7) create activityhistory entry
+        SocialconnectionhistoryMdl socialconnectionhistoryObject = new SocialconnectionhistoryMdl();
+        socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
 
 //        return "redirect:/profile/";
         if ( Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord") ) {
@@ -377,6 +418,7 @@ public class SocialconnectionCtl {
         CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("soConReset");
         UserMdl soConObjAuthorizedManager = soConObject.getResponderUser(); // this is one side of the relationship
         UserMdl soConObjAuthorizedManager2 = soConObject.getInitiatorUser(); // this is the other side of the relationship
+        CodeMdl socialconnectionhistoryActivityCodeObj = codeSrv.findCodeMdlByCode("terminateFriendship");
 
         // (4a) validate: is request presently in required status?
         if (!soConObject.getSoconstatusCode().equals(requiredSoConStatusCodeObj)) {
@@ -399,13 +441,19 @@ public class SocialconnectionCtl {
         // (6) run the update service on the object
         socialconnectionSrv.update(soConObject);
 
-        // (7) reaffirm the userid that is the newly unfriended user:
+        // (7) create activityhistory entry
+        SocialconnectionhistoryMdl socialconnectionhistoryObject = new SocialconnectionhistoryMdl();
+        socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
+
+        // (8) reaffirm the userid that is the newly unfriended user:
         // first, set redirect as initiator as default: assume authUser is the initiator, so have the redirect be the responder
         Long profileRedirectId = soConObject.getResponderUser().getId();
         // but if authUser  the responder, then do the reverse: have the redirect be to the initiator
         if ( authUserObj.equals(soConObject.getResponderUser() ) ) {
             profileRedirectId = soConObject.getInitiatorUser().getId();
         }
+
+
 
 //        return "redirect:/profile/";
         if ( Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord") ) {
@@ -434,6 +482,7 @@ public class SocialconnectionCtl {
 //            CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("soConReset"); // used in the update path
         CodeMdl prohibitedSoConStatusCodeObj = codeSrv.findCodeMdlByCode("blocked"); // replaces above
         CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("blocked");
+        CodeMdl socialconnectionhistoryActivityCodeObj = codeSrv.findCodeMdlByCode("blockUser");
 
         // (2) run update-v-create based on value of that variable
         if ( preexistingSoConObj.isPresent()) {
@@ -454,6 +503,10 @@ public class SocialconnectionCtl {
             // (2a4) run the update service on the object
             socialconnectionSrv.update(soConObject);
 
+            // (7) create activityhistory entry
+            SocialconnectionhistoryMdl socialconnectionhistoryObject = new SocialconnectionhistoryMdl();
+            socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
+
         } else {
 
             // (2b1) instantiate the new SoCon object, specifically as an object of BP'ed from the SocialconnectionMdl
@@ -469,6 +522,10 @@ public class SocialconnectionCtl {
 
             // (2b4) run the service to create the record
             socialconnectionSrv.create(soConObject);
+
+            // (7) create activityhistory entry
+            SocialconnectionhistoryMdl socialconnectionhistoryObject = new SocialconnectionhistoryMdl();
+            socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
         }
 
         redirectAttributes.addFlashAttribute("permissionErrorMsg", "User has been blocked.  To view all users you've blocked, click Display Blocked Users below.");
@@ -499,9 +556,10 @@ public class SocialconnectionCtl {
         SocialconnectionMdl soConObject = socialconnectionSrv.findById(soConObjForm.getId());
 
         // (3) create variables
-        CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("blocked"); // used in the update path
+        CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("blocked");
         CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("soConReset");
-        UserMdl soConObjAuthorizedManager = soConObject.getBlockerUser(); // this replaced line above
+        UserMdl soConObjAuthorizedManager = soConObject.getBlockerUser();
+        CodeMdl socialconnectionhistoryActivityCodeObj = codeSrv.findCodeMdlByCode("unblockUser");
 
         // (4a) validate: is request presently in required status?
         if (!soConObject.getSoconstatusCode().equals(requiredSoConStatusCodeObj)) {
@@ -522,7 +580,11 @@ public class SocialconnectionCtl {
         // (6) run the update service on the object
         socialconnectionSrv.update(soConObject);
 
-        // (7) reaffirm the userid that is the newly unblocked user:
+        // (7) create activityhistory entry
+        SocialconnectionhistoryMdl socialconnectionhistoryObject = new SocialconnectionhistoryMdl();
+        socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
+
+        // (8) reaffirm the userid that is the newly unblocked user:
         // first, set redirect as initiator as default: assume authUser is the initiator, so have the redirect be the responder
         Long profileRedirectId = soConObject.getResponderUser().getId();
         // but if authUser  the responder, then do the reverse: have the redirect be to the initiator

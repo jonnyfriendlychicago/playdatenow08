@@ -96,6 +96,10 @@ public class UserMdl {
     @OneToMany(mappedBy="responderUser", fetch = FetchType.LAZY) // the mappedBy should be the same name as the col in other table (yes?)
     private List<SocialconnectionMdl> responderSocialconnectionList;
 
+    // join to SocialconnectionhistoryMdl.actor_user_id
+    @OneToMany(mappedBy="actorUser", fetch = FetchType.LAZY) // the mappedBy should be the same name as the col in other table (yes?)
+    private List<SocialconnectionhistoryMdl> actorSocialconnectionhistoryList;
+
     // (2) joins to put other tables' cols on this mdl
 
     // join stateterritory table
