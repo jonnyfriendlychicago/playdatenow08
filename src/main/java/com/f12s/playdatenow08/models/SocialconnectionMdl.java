@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="socialconnection")
@@ -33,6 +34,7 @@ public class SocialconnectionMdl {
     // join user table, first time
 
     // begin: joins
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="soconstatus_code_id")
 //    private CodeMdl soconStatus;
@@ -58,9 +60,11 @@ public class SocialconnectionMdl {
     @JoinColumn(name="responder_user_id")  // added 2022.12.04, think this will support newly evolved design/model.
     private UserMdl responderUser; // I think... going forward, this second value should always be the same as the joincolunn name
 
-    // placeholder for second join col
+    // join to SocialconnectionhistoryMdl.socialconnection_id
+    @OneToMany(mappedBy="socialconnection", fetch = FetchType.LAZY) // the mappedBy should be the same name as the col in other table (yes?)
+    private List<SocialconnectionhistoryMdl> socialconnectionhistoryList;
 
-    // begin: joins
+    // end: joins
 
     // instantiate the model:
     public SocialconnectionMdl() {}
@@ -176,6 +180,14 @@ public class SocialconnectionMdl {
 
     public void setObjectOrigin(String objectOrigin) {
         this.objectOrigin = objectOrigin;
+    }
+
+    public List<SocialconnectionhistoryMdl> getSocialconnectionhistoryList() {
+        return socialconnectionhistoryList;
+    }
+
+    public void setSocialconnectionhistoryList(List<SocialconnectionhistoryMdl> socialconnectionhistoryList) {
+        this.socialconnectionhistoryList = socialconnectionhistoryList;
     }
 
     // end: getters and setters

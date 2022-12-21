@@ -1,7 +1,5 @@
 package com.f12s.playdatenow08.repositories;
 
-
-import com.f12s.playdatenow08.models.PlaydateMdl;
 import com.f12s.playdatenow08.models.SocialconnectionMdl;
 import com.f12s.playdatenow08.pojos.UserSocialConnectionPjo;
 import org.springframework.data.jpa.repository.Query;
