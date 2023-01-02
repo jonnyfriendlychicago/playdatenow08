@@ -300,12 +300,39 @@ public class IndexhomeprofileCtl {
             homeAddy += authUserObj.getZipCode();}
         model.addAttribute("homeAddy", homeAddy);
 
-        // (5) sent list of playdates, for display in table
+        // (5) send list of playdates, for display in table
         List<PlaydateMdl> userHostedPlaydateListPast = playdateSrv.userHostedPlaydateListPast(userProfileId);
         model.addAttribute("userHostedPlaydateListPast", userHostedPlaydateListPast);
 
         List<PlaydateMdl> userHostedPlaydateListCurrentPlus = playdateSrv.userHostedPlaydateListCurrentPlus(userProfileId);
         model.addAttribute("userHostedPlaydateListCurrentPlus", userHostedPlaydateListCurrentPlus);
+
+        // (6) use service to determine whether user is admin, send to page
+        int authUserIsAdmin = userSrv.authUserIsAdmin(authUserObj);
+        model.addAttribute("authUserIsAdmin", authUserIsAdmin);
+
+        // above replaces the first draft that lies below; below was native to this mthd, did not use a service.
+
+        // (6) ferret out whether admin or not, and send to page.. yes, this is a mess and needs to be a service. to do!
+//        // 6a: instantiate essential variable
+//        int authUserIsAdmin = 0;
+//        // 6b: get list of roleMdl values, b/c that's how this many:many table set-up works
+//        List<RoleMdl> authUserObjRoleMdlList = authUserObj.getRoleMdl();
+//        // 6c: iterate through the list, looking for values where role id is 2 or 3, i.e. the admin roles; and yes, there is literally only one record in the list, so this iteration is "one and done"
+//        int a = 0; // instantiate variable for iteration
+//        for (a=0; a < authUserObjRoleMdlList.size(); a++ ) {
+//            System.out.println("item: " + a );
+//            System.out.println("authUserObjRoleMdlList.get(a).getId(): " + authUserObjRoleMdlList.get(a).getId() );
+//            if (
+//                    authUserObjRoleMdlList.get(a).getId().equals(Long.valueOf(2))
+//                    ||
+//                            authUserObjRoleMdlList.get(a).getId().equals(Long.valueOf(3))
+//            ) authUserIsAdmin = 1;
+//             System.out.println("authUserIsAdmin: " + authUserIsAdmin  + "\n" );
+//        }
+//        // 6d: send variable to page
+//        model.addAttribute("authUserIsAdmin", authUserIsAdmin);
+
 
         return "profile/record.jsp";
     }

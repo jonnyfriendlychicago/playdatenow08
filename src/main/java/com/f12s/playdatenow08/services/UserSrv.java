@@ -1,5 +1,6 @@
 package com.f12s.playdatenow08.services;
 
+import com.f12s.playdatenow08.models.RoleMdl;
 import com.f12s.playdatenow08.models.UserMdl;
 import com.f12s.playdatenow08.pojos.UserSocialConnectionPjo;
 import com.f12s.playdatenow08.repositories.RoleRpo;
@@ -142,10 +143,26 @@ public class UserSrv{
 
     // (5) relations to authUser: friends
     public List<UserSocialConnectionPjo> userSocialConnectionListFriends(Long authUserId) {return userRpo.userSocialConnectionListFriends(authUserId);}
-//
-//    // (5) relations to authUser: requestCancelled
-//    public List<UserSocialConnectionPjo> userSocialConnectionListRequestCancelled(Long x) {return userRpo.userSocialConnectionListRequestCancelled(x);}
-//
+
+    // determination of whether auth user is admin or not; this combination of new variable instantiation and list iteration is required b/c of the many:many set-up between user and role
+    public int authUserIsAdmin(UserMdl authUserObj) {
+        int authUserIsAdmin = 0;
+        // 6b: get list of roleMdl values, b/c that's how this many:many table set-up works
+        List<RoleMdl> authUserObjRoleMdlList = authUserObj.getRoleMdl();
+        // 6c: iterate through the list, looking for values where role id is 2 or 3, i.e. the admin roles; and yes, there is literally only one record in the list, so this iteration is "one and done"
+        int a = 0; // instantiate variable for iteration
+        for (a=0; a < authUserObjRoleMdlList.size(); a++ ) {
+//            System.out.println("item from service: " + a );
+//            System.out.println("authUserObjRoleMdlList.get(a).getId() service: " + authUserObjRoleMdlList.get(a).getId() );
+            if (
+                    authUserObjRoleMdlList.get(a).getId().equals(Long.valueOf(2))
+                            ||
+                            authUserObjRoleMdlList.get(a).getId().equals(Long.valueOf(3))
+            ) authUserIsAdmin = 1;
+//            System.out.println("authUserIsAdmin service: " + authUserIsAdmin  + "\n" );
+        }
+        return authUserIsAdmin;
+    }
 // end srv
 }
 

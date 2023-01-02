@@ -124,11 +124,18 @@
                 <p class="m-0 text-secondary">You are the organizer of this event.</p>
             </c:if>
         </div>
+
         <div>
+            <p>authUserIsAdmin: ${authUserIsAdmin}</p>
+            <c:if test="${authUserIsAdmin == 1}">
+                <a href="/playdate/${playdate.id}/edit"><button class="btn btn-info mb-2">Playdate Edit(Admin)</button></a>
+            </c:if>
+
             <c:if test="${playdate.userMdl.id == authUser.id}">
                 <a href="/playdate/${playdate.id}/edit"><button class="btn btn-primary mb-2">Edit Playdate</button></a>
             </c:if>
         </div>
+
     </div><!-- end creationOrganizerButtons -->
 
     <div class="row mt-3" id="playdateInfoRow">

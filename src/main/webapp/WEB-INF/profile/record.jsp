@@ -107,13 +107,13 @@
     <div id="joinedMgmtButtons" class="d-flex justify-content-between">
         <div class="card p-2 border-0">
             <p class="m-0 text-secondary" style="font-size: 0.8rem;">Joined <fmt:formatDate value="${userProfile.createdAt}" pattern="EEEE" />, <fmt:formatDate value="${userProfile.createdAt}" pattern="MMMM dd" />, <fmt:formatDate value="${userProfile.createdAt}" pattern="yyyy" />, <fmt:formatDate value="${userProfile.createdAt}" pattern="h:mm a" /></p>
-            <p>userSocialConnectionPjo.socialconnectionId: ${userSocialConnectionPjo.socialconnectionId}</p>
+<%--            <p>userSocialConnectionPjo.socialconnectionId: ${userSocialConnectionPjo.socialconnectionId}</p>--%>
         </div>
         <div>
-
-<%--            <c:if test="${userProfile.id == authUser.id}">--%>
-<%--            <a href="/profile/${userProfile.id}/edit"><button class="btn btn-primary mb-2">Edit (trad)</button></a>--%>
-<%--            </c:if>--%>
+            <p>authUserIsAdmin: ${authUserIsAdmin}</p>
+            <c:if test="${authUserIsAdmin == 1}">
+            <a href="/profile/${userProfile.id}/edit"><button class="btn btn-info mb-2">Admin Edit</button></a>
+            </c:if>
 
             <c:choose>
                 <c:when test="${userSocialConnectionPjo.soconStatusEnhanced == 'authUserRecord'}">
@@ -210,10 +210,10 @@
     <div class="row mt-3">
         <div id="playdateInfoCol" class="col">
 
-            <div class="card p-2 border-0">
-                <p class="m-0 text-secondary" style="font-size: 0.8rem;">soconStatusEnhanced</p>
-                <p class="m-0">${userSocialConnectionPjo.soconStatusEnhanced}</p>
-            </div>
+<%--            <div class="card p-2 border-0">--%>
+<%--                <p class="m-0 text-secondary" style="font-size: 0.8rem;">soconStatusEnhanced</p>--%>
+<%--                <p class="m-0">${userSocialConnectionPjo.soconStatusEnhanced}</p>--%>
+<%--            </div>--%>
 
             <div class="card p-2 border-0">
                 <p class="m-0 text-secondary" style="font-size: 0.8rem;">First name</p>
