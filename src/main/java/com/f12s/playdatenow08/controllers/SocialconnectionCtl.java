@@ -56,11 +56,7 @@ public class SocialconnectionCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
 
-        // (1) soCon lists
-
-//        List<UserSocialConnectionPjo> userSocialConnectionListBlocked = userSrv.userSocialConnectionListBlocked(authUserObj.getId());
-//        model.addAttribute("userSocialConnectionListBlocked", userSocialConnectionListBlocked);
-
+        // (1) call/deliver soCon lists
         List<UserSocialConnectionPjo> userSocialConnectionListSent = userSrv.userSocialConnectionListSent(authUserObj.getId());
         model.addAttribute("userSocialConnectionListSent", userSocialConnectionListSent);
 
@@ -79,8 +75,8 @@ public class SocialconnectionCtl {
     // (2) someone need to validate whether incoming user value exist in db or not.  at present, hacking UI to be a bogus user.id just blows up page
     public String processSoconNew(
             @Valid @ModelAttribute("soConObjForm") SocialconnectionMdl soConObjForm
-            , BindingResult result // I *think* this entire BR/result program can be taken out of this mthd, b/c there's no model attributes being validated here, nor any validator srv
-            , Model model
+//            , BindingResult result // I *think* this entire BR/result program can be taken out of this mthd, b/c there's no model attributes being validated here, nor any validator srv
+//            , Model model
             , Principal principal
             , RedirectAttributes redirectAttributes
     ) {
@@ -88,7 +84,7 @@ public class SocialconnectionCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); // no model attributes here b/c no resulting page we are rending
 
-        if(!result.hasErrors()) {
+//        if(!result.hasErrors()) {
 
             // (x) validate whether target user exists; if not, this entire mthd is fed.  Note, can't get any of this to work in a useful way.
 //            Optional<Optional<UserMdl>> validResponderUserObject = Optional.of(userRpo.findById(soConObjForm.getResponderUser().getId())); // no idea WTF this is
@@ -172,9 +168,9 @@ public class SocialconnectionCtl {
                 socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
             }
 
-        } else {
-            System.out.println("soCon request attempted, but no bueno!");
-        }
+//        } else {
+//            System.out.println("soCon request attempted, but no bueno!");
+//        }
 
         if (Objects.equals(soConObjForm.getObjectOrigin(), "profileRecord")) {
             return "redirect:/profile/" + soConObjForm.getResponderUser().getId();
@@ -186,10 +182,7 @@ public class SocialconnectionCtl {
 
     @PostMapping("/socialconnection/cancel")
     public String cancelConnection(
-//            @PathVariable("id") Long socialconnectionId
             @Valid @ModelAttribute("soConObjForm") SocialconnectionMdl soConObjForm
-//            , BindingResult result // I *think* this entire BR/result program can be taken out of this mthd, b/c there's no model attributes being validated here, nor any validator srv
-//            , Model model  // similar to above: not used here
             , Principal principal
             , RedirectAttributes redirectAttributes
     ) {
@@ -197,19 +190,12 @@ public class SocialconnectionCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); // no model attributes here b/c no resulting page we are rendering
 
-        // testing/proving:
-//        System.out.println("soConObjForm.getId(): " + soConObjForm.getId());
-//        System.out.println("soConObjForm.getInitiatorUser(): " + soConObjForm.getInitiatorUser());
-//        System.out.println("soConObjForm.getResponderUser(): " + soConObjForm.getResponderUser());
-//        System.out.println("soConObjForm.getSoconstatusCode(): " + soConObjForm.getSoconstatusCode());
-
         // (1) validate: does soConObj (uid'ed by incoming hidden field on soConObjForm) exist?
         Optional<SocialconnectionMdl> soConFromForm = Optional.ofNullable(socialconnectionRpo.soConFromForm(soConObjForm.getId()));  // represents whether soCon record exists
 
 //        if (!soConFromForm.isPresent() ) {
         if (soConFromForm.isEmpty()) { // replaced with '.isEmpty' as suggested by IJ-IDEA
-//            System.out.println("Hidden id value on GUI form was tampered to be invalid, so cancel process was aborted, and user shall be returned to connections list page with no further action.");
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "Relationship error.  No records saved or updated.");
+            redirectAttributes.addFlashAttribute("permissionErrorMsg", "Error Code 01");
             return "redirect:/profile/";
         }
 
@@ -217,21 +203,20 @@ public class SocialconnectionCtl {
         SocialconnectionMdl soConObject = socialconnectionSrv.findById(soConObjForm.getId());
 
         // (3) create variables
-        CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("requestPending"); // used in the update path
+        CodeMdl requiredSoConStatusCodeObj = codeSrv.findCodeMdlByCode("requestPending");
         CodeMdl toBeSoconstatusCodeObj = codeSrv.findCodeMdlByCode("soConReset");
-        UserMdl soConObjAuthorizedManager = soConObject.getInitiatorUser(); // this replaced line above
-        // new below
+        UserMdl soConObjAuthorizedManager = soConObject.getInitiatorUser();
         CodeMdl socialconnectionhistoryActivityCodeObj = codeSrv.findCodeMdlByCode("cancelRequest");
 
-        // (4a) validate: is request presently in required status?
+        // (4a) validate: is request presently in required status? i.e. Present relationship status does not allow cancellation of friend request.
         if (!soConObject.getSoconstatusCode().equals(requiredSoConStatusCodeObj)) {
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "Present relationship status does not allow cancellation of friend request.");
+            redirectAttributes.addFlashAttribute("permissionErrorMsg", "Error Code 02");
             return "redirect:/profile/";
         }
 
-        // (4b) validate: is current user authorized to take such action on the soConObj?
+        // (4b) validate: is current user authorized to take such action on the soConObj? i.e. This request can only be cancelled to by its sender.
         if (!authUserObj.equals(soConObjAuthorizedManager)) {
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "This request can only be cancelled to by its sender.");
+            redirectAttributes.addFlashAttribute("permissionErrorMsg", "Error Code 03");
             return "redirect:/profile/";
         }
 
@@ -244,20 +229,7 @@ public class SocialconnectionCtl {
         // (7) create activityhistory entry
 
         // (7a) instantiate the new soconhistory object, specifically as an object of BP'ed from the SocialconnectionhistoryMdl
-//        System.out.print("we are now logging soCon activity.");
         SocialconnectionhistoryMdl socialconnectionhistoryObject = new SocialconnectionhistoryMdl();
-
-//        // (7b) infuse into that object all the values from the successful soCon activity above
-//        socialconnectionhistoryObject.setActorUser(authUserObj);
-//        socialconnectionhistoryObject.setSocialconnection(soConObject);
-//        socialconnectionhistoryObject.setResultingsoconstatusCode(toBeSoconstatusCodeObj);
-//        socialconnectionhistoryObject.setSoconactivityCode(socialconnectionhistoryActivityCodeObj);
-//
-//        // (7c) run the service to create the record
-//        socialconnectionhistorySrv.create(socialconnectionhistoryObject);
-
-        // 7 b+c working fine; below tryding to do that with an enhanced service instead
-
         socialconnectionhistorySrv.createNew(socialconnectionhistoryObject, authUserObj,soConObject, toBeSoconstatusCodeObj  , socialconnectionhistoryActivityCodeObj  );
 
 //        return "redirect:/profile/";
