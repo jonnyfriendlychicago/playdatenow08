@@ -257,6 +257,10 @@ public class PlaydateCtl {
 
         model.addAttribute("homeAddy", playdateAddySendThis);
 
+        // (4) use service to determine whether user is admin, send to page
+        int authUserIsAdmin = userSrv.authUserIsAdmin(authUserObj);
+        model.addAttribute("authUserIsAdmin", authUserIsAdmin);
+
         return "playdate/record.jsp";
     }
 
@@ -353,14 +357,24 @@ public class PlaydateCtl {
 
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
+        int authUserIsAdmin = userSrv.authUserIsAdmin(authUserObj); // new
 
         // (1) get as-is object from db.  several implications downstream herein.
         PlaydateMdl playdateObj = playdateSrv.findById(playdateMdl.getId());
 
         // (2) validate if authenticated user has security to edit this profile record; if not, redirect user to record screen with flash msg.
         UserMdl recordCreatorUserMdl = playdateObj.getUserMdl();
-        if(!authUserObj.equals(recordCreatorUserMdl)) {
-            System.out.println("recordCreatorUserMdl != currentUserMdl, so redirected to record");
+//        if(!authUserObj.equals(recordCreatorUserMdl)) {
+//            System.out.println("recordCreatorUserMdl != currentUserMdl, so redirected to record");
+//            redirectAttributes.addFlashAttribute("permissionErrorMsg", "This record can only be edited by its creator.  Any edits just attempted were discarded.");
+//            return "redirect:/playdate/" + playdateObj.getId();
+//        }
+        // below replaces above
+        if(
+                !authUserObj.equals(recordCreatorUserMdl)
+                && authUserIsAdmin != 1
+        ) {
+            System.out.println("recordCreatorUserMdl != currentUserMdl, and current userMdl is NOT an admin... so redirected to record");
             redirectAttributes.addFlashAttribute("permissionErrorMsg", "This record can only be edited by its creator.  Any edits just attempted were discarded.");
             return "redirect:/playdate/" + playdateObj.getId();
         }

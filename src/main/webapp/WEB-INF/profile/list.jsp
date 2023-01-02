@@ -33,9 +33,9 @@
                                     </c:choose>
                                 </a>
                             </h5>
-                            <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>
-                            <p>relationInitiator: ${record.relationInitiator}</p>
-                            <p>socialconnectionId: ${record.socialconnectionId}</p>
+<%--                            <p>soconStatusEnhanced: ${record.soconStatusEnhanced}</p>--%>
+<%--                            <p>relationInitiator: ${record.relationInitiator}</p>--%>
+<%--                            <p>socialconnectionId: ${record.socialconnectionId}</p>--%>
 
                             <c:if test="${record.city.length() > 0}">
                             <p>${record.city}, ${record.stateName}</p>
@@ -43,35 +43,12 @@
                         </div>
                         <div class="col-sm-3 d-flex justify-content-end">
 
-<%--                            <c:choose>--%>
-<%--                                <c:when test="${record.soconStatusEnhanced == 'authUserRecord' || record.soconStatusEnhanced == 'blocked' }">--%>
-<%--                                </c:when>--%>
-<%--                                <c:otherwise>--%>
-<%--                                    <form:form action='/socialconnection/block' method='post' modelAttribute='soConObjForm'>--%>
-<%--                                        <form:input type="hidden" path="responderUser" value="${record.id}"/>--%>
-<%--                                        <button type="submit" class="btn btn-danger">Block</button>--%>
-<%--                                    </form:form>--%>
-<%--                                </c:otherwise>--%>
-<%--                            </c:choose>--%>
-
-<%--                            <c:if test="${record.soconStatusEnhanced != 'blocked' || record.soconStatusEnhanced != 'authUserRecord'}">--%>
-<%--                                <form:form action='/socialconnection/block' method='post' modelAttribute='soConObjForm'>--%>
-<%--                                    <form:input type="hidden" path="responderUser" value="${record.id}"/>--%>
-<%--                                    <button type="submit" class="btn btn-danger">Block</button>--%>
-<%--                                </form:form>--%>
-<%--                            </c:if>--%>
 
                             <c:choose>
-<%--                                <c:when test="${record.id == authUser.id}">--%>
                                 <c:when test="${record.soconStatusEnhanced == 'authUserRecord'}">
                                     <p class="text-secondary">This is your profile.</p>
                                 </c:when>
                                 <c:when test="${record.soconStatusEnhanced == 'authUserSentRequest'}">
-<%--                                    <form:form action='/socialconnection/request' method='post' modelAttribute='soConObjForm'>--%>
-<%--                                        <form:input type="hidden" path="responderUser" value="${record.id}"/>--%>
-<%--                                        <button type="submit" class="btn btn-primary disabled">Add Friend</button>--%>
-<%--                                        <p>Friend request awaits response.</p>--%>
-<%--                                    </form:form>--%>
                                     <form:form action='/socialconnection/cancel' method='post' modelAttribute='soConObjForm'>
                                         <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>
                                         <button type="submit" class="btn btn-secondary me-2">Cancel Request</button>
@@ -90,10 +67,6 @@
                                 </c:when>
 
                                 <c:when test="${record.soconStatusEnhanced == 'friends'}">
-<%--                                    <form:form action='/socialconnection/unfriend' method='post' modelAttribute='soConObjForm'>--%>
-<%--                                        <form:input type="hidden" path="id" value = "${record.socialconnectionId}"/>--%>
-<%--                                        <button type="submit" class="btn btn-info me-2">Unfriend</button>--%>
-<%--                                    </form:form>--%>
                                     <p class="text-secondary">You are friends.</p>
                                 </c:when>
 
@@ -112,7 +85,6 @@
                                     </form:form>
                                 </c:otherwise>
                             </c:choose>
-<%--                            <p>some</p>--%>
                         </div>
                     </div> <%-- end row--%>
                </div> <%-- end container--%>
