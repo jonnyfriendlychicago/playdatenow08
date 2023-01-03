@@ -12,14 +12,8 @@
           document.getElementById("locationNameContainer").removeAttribute("class");
           document.getElementById("locationNameContainer").setAttribute("class", "form-floating mb-3 collapse");
 
-          // document.getElementById("locationAddyContainer").removeAttribute("class");
-          // document.getElementById("locationAddyContainer").setAttribute("class", "form-floating mb-3 collapse");
-
           document.getElementById("addressLine1Container").removeAttribute("class");
           document.getElementById("addressLine1Container").setAttribute("class", "form-floating mb-3 collapse");
-
-          // document.getElementById("addressLine2Container").removeAttribute("class");
-          // document.getElementById("addressLine2Container").setAttribute("class", "form-floating mb-3 collapse");
 
           document.getElementById("cityContainer").removeAttribute("class");
           document.getElementById("cityContainer").setAttribute("class", "form-floating mb-3 collapse");
@@ -27,30 +21,19 @@
           document.getElementById("stateterritoryContainer").removeAttribute("class");
           document.getElementById("stateterritoryContainer").setAttribute("class", "form-floating mb-3 collapse");
 
-          // document.getElementById("zipCodeContainer").removeAttribute("class");
-          // document.getElementById("zipCodeContainer").setAttribute("class", "form-floating mb-3 collapse");
-
         } else {
           document.getElementById("locationNameContainer").removeAttribute("class");
           document.getElementById("locationNameContainer").setAttribute("class", "form-floating mb-3");
 
-          // document.getElementById("locationAddyContainer").removeAttribute("class");
-          // document.getElementById("locationAddyContainer").setAttribute("class", "form-floating mb-3");
 
           document.getElementById("addressLine1Container").removeAttribute("class");
           document.getElementById("addressLine1Container").setAttribute("class", "form-floating mb-3 ");
-
-          // document.getElementById("addressLine2Container").removeAttribute("class");
-          // document.getElementById("addressLine2Container").setAttribute("class", "form-floating mb-3 ");
 
           document.getElementById("cityContainer").removeAttribute("class");
           document.getElementById("cityContainer").setAttribute("class", "form-floating mb-3 ");
 
           document.getElementById("stateterritoryContainer").removeAttribute("class");
           document.getElementById("stateterritoryContainer").setAttribute("class", "form-floating mb-3 ");
-
-          // document.getElementById("zipCodeContainer").removeAttribute("class");
-          // document.getElementById("zipCodeContainer").setAttribute("class", "form-floating mb-3 ");
         }
     }
 </script>
@@ -430,9 +413,9 @@
                 </table>
             </div><!-- end rsvpTrackingCard -->
 
-            <div id="rsvpCard" class="card p-3 d-md-flex justify-content-start">
+            <div id="rsvpCard" class="card p-3 d-md-flex justify-content-start bg-secondary">
 
-                <p class="m-0 text-center" style="font-size: 1.25rem;">Your RSVP</p>
+                <p class="m-0 text-center text-light fs-3" style="font-size: 1.25rem;">Your RSVP</p>
 
                 <div class="form-floating mb-3">
                     <form:select
@@ -498,7 +481,7 @@
 
     </form:form> <!-- end playdateEditForm -->
 
-    <div id="rsvpListRow" class="row m-1">
+    <div id="rsvpListRow" class="row m-1 table-responsive">
         <table class="table table-striped table-hover table-responsive mt-2 caption-top">
             <caption class="text-dark" style="font-size: 1.5rem;">Rsvp List</caption>
             <thead class="border-top-0">
@@ -529,6 +512,13 @@
                 <div class="card p-2 border-0">
                     <p>Other Actions:</p>
                     <a href="/playdate/delete/${playdate.id}"><button class="btn btn-danger mb-2">Delete Playdate</button></a>
+
+                    <c:if test="${authUserIsAdmin == 1}">
+                        <a href="/playdate/delete/${playdate.id}"><button class="btn btn-info mb-2">Delete Playdate (Admin)</button></a>
+                    </c:if>
+
+
+
                 </div>
                   <%--
                 <!-- 9/27: not entirely sure how/why started using this "form" approach for delete; after lots of frustration, embraced using href above instead;  -->

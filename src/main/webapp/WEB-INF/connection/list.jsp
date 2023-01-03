@@ -32,8 +32,8 @@
                                     </c:choose>
                                 </a>
                             </h5>
-                            <p>initiatorUser: ${record.initiatorUser}</p>
-                            <p>socialconnectionId: ${record.socialconnectionId}</p>
+<%--                            <p>initiatorUser: ${record.initiatorUser}</p>--%>
+<%--                            <p>socialconnectionId: ${record.socialconnectionId}</p>--%>
 
                             <c:if test="${record.city.length() > 0}">
                             <p>${record.city}, ${record.stateName}</p>
@@ -118,8 +118,8 @@
                                     </c:choose>
                                 </a>
                             </h5>
-                            <p>initiatorUser: ${record.initiatorUser}</p>
-                            <p>socialconnectionId: ${record.socialconnectionId}</p>
+<%--                            <p>initiatorUser: ${record.initiatorUser}</p>--%>
+<%--                            <p>socialconnectionId: ${record.socialconnectionId}</p>--%>
 
                             <c:if test="${record.city.length() > 0}">
                                 <p>${record.city}, ${record.stateName}</p>
@@ -173,8 +173,8 @@
                                     </c:choose>
                                 </a>
                             </h5>
-                            <p>initiatorUser: ${record.initiatorUser}</p>
-                            <p>socialconnectionId: ${record.socialconnectionId}</p>
+<%--                            <p>initiatorUser: ${record.initiatorUser}</p>--%>
+<%--                            <p>socialconnectionId: ${record.socialconnectionId}</p>--%>
 
                             <c:if test="${record.city.length() > 0}">
                                 <p>${record.city}, ${record.stateName}</p>

@@ -130,24 +130,6 @@ public class PlaydateCtl {
             // (2) deliver error message
             model.addAttribute("validationErrorMsg", "Uh-oh! Please fix the errors noted below and submit again.  (Or cancel.)");
 
-//            String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
-//            model.addAttribute("startTimeList", startTimeList );
-//
-//            // create+send the list of all to the page, for drop-down
-//            List<CodeMdl> codeList = codeSrv.returnAll();
-//            model.addAttribute("codeList", codeList);
-//
-//            // create+send the list of locationTypes to the page, for drop-down
-//            List<CodeMdl> locationTypeList = codeSrv.returnAll();
-//            model.addAttribute("locationTypeList", locationTypeList);
-//
-//            // create+send the list of locationTypes to the page, for drop-down
-//            List<CodeMdl> playdateStatusList = codeSrv.returnAll();
-//            model.addAttribute("playdateStatusList", playdateStatusList);
-
-//            System.out.println(playdateObj.getLocationType());
-//            System.out.println(playdateObj.getLocationType().getCode());
-
             return "playdate/create.jsp";
         }
     }
@@ -273,6 +255,7 @@ public class PlaydateCtl {
 
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName()); model.addAttribute("authUser", authUserObj); model.addAttribute("authUserName", authUserObj.getUserName());
+        int authUserIsAdmin = userSrv.authUserIsAdmin(authUserObj); // new
 
         // (1) get as-is object from db, then send to form for editing
         PlaydateMdl playdateObj = playdateSrv.findById(playdateId);
@@ -342,6 +325,10 @@ public class PlaydateCtl {
         model.addAttribute("hasOneOrMoreRsvp", hasOneOrMoreRsvp);
         // END: calculate various RSVP-related stats and controls.
 
+        // (6) add admin variable to page
+        model.addAttribute("authUserIsAdmin", authUserIsAdmin);
+
+
         return "playdate/edit.jsp";
     }
 
@@ -375,7 +362,7 @@ public class PlaydateCtl {
                 && authUserIsAdmin != 1
         ) {
             System.out.println("recordCreatorUserMdl != currentUserMdl, and current userMdl is NOT an admin... so redirected to record");
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "This record can only be edited by its creator.  Any edits just attempted were discarded.");
+            redirectAttributes.addFlashAttribute("permissionErrorMsg", "You do no have permissions to edit this record.  Any edits just attempted were discarded.");
             return "redirect:/playdate/" + playdateObj.getId();
         }
 
@@ -480,13 +467,17 @@ public class PlaydateCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName());
         // no model attributes here b/c no resulting page we are rending
+        int authUserIsAdmin = userSrv.authUserIsAdmin(authUserObj); // new
 
         PlaydateMdl playdateObj = playdateSrv.findById(playdateId);
         UserMdl recordCreatorUserMdl = playdateObj.getUserMdl();   // gets the userMdl obj saved to the existing playdateObj
 
-        if(!authUserObj.equals(recordCreatorUserMdl)) {
+        if(
+                !authUserObj.equals(recordCreatorUserMdl)
+                        && authUserIsAdmin != 1
+        ) {
             System.out.println("recordCreatorUserMdl != currentUserMdl, so redirected to record");
-            redirectAttributes.addFlashAttribute("permissionErrorMsg", "This record can only be deleted by its creator.");
+            redirectAttributes.addFlashAttribute("permissionErrorMsg", "You do not have permissions to delete this playdate.");
             return "redirect:/playdate/" + playdateObj.getId();
         }
 
