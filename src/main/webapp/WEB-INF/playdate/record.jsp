@@ -112,6 +112,7 @@
     <div id="creationOrganizerButtons" class="d-flex justify-content-between"> <!-- this should be a row, get back to it -->
 
         <div id="creatorOrganizer" class="card p-2 border-0">
+            <h1>hey-yah!! </h1>
             <p class="m-0 text-secondary" style="font-size: 0.8rem;">
                 Created by
                 <c:choose>
