@@ -1,5 +1,6 @@
 package com.f12s.playdatenow08.repositories;
 
+import com.f12s.playdatenow08.models.CodeMdl;
 import com.f12s.playdatenow08.models.UserMdl;
 import java.util.List;
 
@@ -348,7 +349,6 @@ public interface UserRpo extends CrudRepository<UserMdl, Long> {
     @Query(
             value =
                     "select "
-
                             + " ur.socialconnectionId as socialconnectionId, ur.relationInitiator as relationInitiator, "
                             + " u.id as id, u.about_me as aboutMe, u.address_line1 as addressLine1, u.address_line2 as addressLine2, u.city as city, u.created_at as createdAt, u.email as email, u.first_name as firstName, u.last_name as lastName, u.user_name as userName, u.zip_code as zipCode, u.home_name as homeName, st.full_name as stateName "
 
@@ -359,6 +359,45 @@ public interface UserRpo extends CrudRepository<UserMdl, Long> {
                             + " where c.code = 'requestCancelled' "
             , nativeQuery = true)
     List<UserSocialConnectionPjo> userSocialConnectionListRequestCancelled(Long keyword);
+
+    // (5) user records/objects: is a friend of authUser
+//
+//    @Query(
+//            value= "SELECT u.* FROM playdatenow08.user u where u.id = :keyword "
+//            , nativeQuery = true)
+//    List<UserMdl> userFriendForPlaydateList(Long keyword);
+
+//    @Query(
+//            value=
+//                    "SELECT "
+//                            + "u.* "
+//                            + "FROM playdatenow08.user u "
+//                            + " join "
+//                            + "(select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId "
+//                            + " union all "
+//                            + " select sc.id as socialconnectionId, sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as initiatorUserId, sc.responder_user_id as responderUserId , sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId "
+//                            + " ) ur on u.id = ur.relatedUserId"
+//                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
+//                            + " where code.code = 'friends' "
+//
+//            , nativeQuery = true)
+//    List<UserMdl> userFriendForPlaydateList(Long authUserId);
+
+    @Query(
+            value=
+                    "SELECT "
+                            + "u.* "
+                            + "FROM playdatenow08.user u "
+                            + " join "
+                            + "(select sc.soconstatus_code_id as soconStatusCodeId, sc.initiator_user_id as relatedUserId from playdatenow08.socialconnection sc where responder_user_id = :authUserId "
+                            + " union all "
+                            + " select sc.soconstatus_code_id as soconStatusCodeId, sc.responder_user_id as relatedUserId from playdatenow08.socialconnection sc where initiator_user_id = :authUserId "
+                            + " ) ur on u.id = ur.relatedUserId"
+                            + " left join playdatenow08.code code on ur.soconStatusCodeId = code.id "
+                            + " where code.code = 'friends' "
+
+            , nativeQuery = true)
+    List<UserMdl> userFriendForPlaydateInviteDropdownList(Long authUserId);
 
 
 

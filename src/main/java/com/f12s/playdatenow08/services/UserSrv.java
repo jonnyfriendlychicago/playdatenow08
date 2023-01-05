@@ -1,5 +1,6 @@
 package com.f12s.playdatenow08.services;
 
+import com.f12s.playdatenow08.models.CodeMdl;
 import com.f12s.playdatenow08.models.RoleMdl;
 import com.f12s.playdatenow08.models.UserMdl;
 import com.f12s.playdatenow08.pojos.UserSocialConnectionPjo;
@@ -163,6 +164,13 @@ public class UserSrv{
         }
         return authUserIsAdmin;
     }
+
+    // (6) getting friends list on playdate page
+    public List<UserMdl> userFriendForPlaydateInviteDropdownList(Long x) {
+        return userRpo.userFriendForPlaydateInviteDropdownList(x);
+    }
+
+
 // end srv
 }
 

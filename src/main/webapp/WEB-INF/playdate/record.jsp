@@ -96,6 +96,7 @@
 
 </script>
 </head>
+
 <jsp:include page="/WEB-INF/include/bodyDesign.jsp" />
 <jsp:include page="/WEB-INF/include/header.jsp" />
 <jsp:include page="/WEB-INF/include/pageLayoutTop.jsp" />
@@ -112,7 +113,6 @@
     <div id="creationOrganizerButtons" class="d-flex justify-content-between"> <!-- this should be a row, get back to it -->
 
         <div id="creatorOrganizer" class="card p-2 border-0">
-            <h1>hey-yah!! </h1>
             <p class="m-0 text-secondary" style="font-size: 0.8rem;">
                 Created by
                 <c:choose>
@@ -254,7 +254,6 @@
             <c:choose>
                 <c:when test="${authUser.id == playdate.userMdl.id}">
 
-<%--                    <p class="m-0 text-center text-light" style="font-size: 1.25rem;"></p>--%>
                     <p class="text-center text-light fs-3">Your RSVP</p>
 
                     <div class = "container m-0 p-0">
@@ -267,10 +266,24 @@
                                 </div>
                             </div>
 
+                            <div class="col-sm me-5 p-0 mb-3" >
+                                <div class="card p-2 m-0 border-0">
+                                    <p class="m-0 text-secondary" style="font-size: 0.8rem;">playdateOrganizerRsvpStatus</p>
+                                    <p class="m-0">${playdate.playdateOrganizerRsvpStatus.displayValue}</p>
+                                </div>
+                            </div>
+
                             <div class="col-sm me-5 p-0 mb-3">
                                 <div class="card p-2 border-0">
                                     <p class="m-0 text-secondary" style="font-size: 0.8rem;"># of Kids</p>
-                                    <p class="m-0">${playdate.kidCount}</p>
+                                    <c:choose>
+                                        <c:when test="${playdate.kidCount == null}">
+                                            <p>we got a null here</p>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p class="m-0">${playdate.kidCount}</p>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
 
@@ -282,21 +295,6 @@
                             </div>
                         </div> <!-- end row -->
                     </div> <!-- end container -->
-<%--                    --%>
-<%--                    <div class="card p-2 m-0 border-0">--%>
-<%--                        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Status</p>--%>
-<%--                        <p class="m-0">${playdate.rsvpStatus}</p>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="card p-2 border-0">--%>
-<%--                        <p class="m-0 text-secondary" style="font-size: 0.8rem;"># of Kids</p>--%>
-<%--                        <p class="m-0">${playdate.kidCount}</p>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="card p-2 border-0">--%>
-<%--                        <p class="m-0 text-secondary" style="font-size: 0.8rem;"># of Adults</p>--%>
-<%--                        <p class="m-0">${playdate.adultCount}</p>--%>
-<%--                    </div>--%>
 
                 </c:when>
 
@@ -324,6 +322,13 @@
                                 </div>
                             </div>
 
+                            <div class="col-sm me-5 p-0 mb-3" >
+                                <div class="card p-2 m-0 border-0">
+                                    <p class="m-0 text-secondary" style="font-size: 0.8rem;">respondentRsvpStatus</p>
+                                    <p class="m-0">${rsvpObjForAuthUser.respondentRsvpStatus.displayValue}</p>
+                                </div>
+                            </div>
+
                             <div class="col-sm me-5 p-0 mb-3">
                                 <div class="card p-2 border-0">
                                     <p class="m-0 text-secondary" style="font-size: 0.8rem;"># of Kids</p>
@@ -340,60 +345,11 @@
                         </div> <!-- end row -->
                     </div> <!-- end container -->
 
-
-<%--                    <div class="card p-2 m-0 border-0">--%>
-<%--                        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Status</p>--%>
-<%--                        <p class="m-0">${rsvpObjForAuthUser.rsvpStatus}</p>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="card p-2 border-0">--%>
-<%--                        <p class="m-0 text-secondary" style="font-size: 0.8rem;"># of Kids</p>--%>
-<%--                        <p class="m-0">${rsvpObjForAuthUser.kidCount}</p>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="card p-2 border-0">--%>
-<%--                        <p class="m-0 text-secondary" style="font-size: 0.8rem;"># of Adults</p>--%>
-<%--                        <p class="m-0">${rsvpObjForAuthUser.adultCount}</p>--%>
-<%--                    </div>--%>
-
                     <div class="card p-2 border-0 bg-secondary">
                         <p class="m-0 text-light text-end" style="font-size: 0.8rem;">You RSVPed on <fmt:formatDate value="${rsvpObjForAuthUser.createdAt}" pattern="EEEE" />, <fmt:formatDate value="${rsvpObjForAuthUser.createdAt}" pattern="MMMM dd" />, <fmt:formatDate value="${rsvpObjForAuthUser.createdAt}" pattern="yyyy" />, <fmt:formatDate value="${rsvpObjForAuthUser.createdAt}" pattern="h:mm a" /></p>
                     </div>
 
                 </c:when>
-<%--                    original below, from the 'when' above --%>
-
-<%--                    <div class="row">--%>
-<%--                        <div class="col">--%>
-<%--                        </div>--%>
-
-<%--                        <div class="col">--%>
-<%--                            <p class="m-0 text-center text-light" style="font-size: 1.25rem;">Your RSVP fix this</p>--%>
-<%--                        </div>--%>
-
-<%--                        <div class="col d-flex justify-content-end">--%>
-<%--                            <a href="/playdate/${playdate.id}/rsvp/${rsvpObjForAuthUser.id}/edit"><button class="btn btn-primary mb-2">Edit</button></a>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="card p-2 m-0 border-0">--%>
-<%--                        <p class="m-0 text-secondary" style="font-size: 0.8rem;">Status</p>--%>
-<%--                        <p class="m-0">${rsvpObjForAuthUser.rsvpStatus}</p>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="card p-2 border-0">--%>
-<%--                        <p class="m-0 text-secondary" style="font-size: 0.8rem;"># of Kids</p>--%>
-<%--                        <p class="m-0">${rsvpObjForAuthUser.kidCount}</p>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="card p-2 border-0">--%>
-<%--                        <p class="m-0 text-secondary" style="font-size: 0.8rem;"># of Adults</p>--%>
-<%--                        <p class="m-0">${rsvpObjForAuthUser.adultCount}</p>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="card p-2 border-0">--%>
-<%--                        <p class="m-0 text-secondary" style="font-size: 0.8rem;">You RSVPed on <fmt:formatDate value="${rsvpObjForAuthUser.createdAt}" pattern="EEEE" />, <fmt:formatDate value="${rsvpObjForAuthUser.createdAt}" pattern="MMMM dd" />, <fmt:formatDate value="${rsvpObjForAuthUser.createdAt}" pattern="yyyy" />, <fmt:formatDate value="${rsvpObjForAuthUser.createdAt}" pattern="h:mm a" /></p>--%>
-<%--                    </div>--%>
 
                 <c:otherwise>
 
@@ -413,9 +369,32 @@
                                         <form:option value="Out" path="rsvpStatus">Out</form:option>
                                     </form:select>
                                     <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
-                                    <p class="text-danger"><form:errors path="rsvpStatus" />
+                                    <p class="text-danger bg-light"><form:errors path="rsvpStatus" />
                                 </div>
 
+                                <div class="form-floating col-sm me-5 p-0">
+                                    <form:select
+                                            path="respondentRsvpStatus"
+                                            class="form-control"
+                                            id="respondentRsvpStatus"
+                                            placeholder="respondentRsvpStatus">
+                                        <c:forEach items="${playdateRsvpStatusList}" var="record">
+                                            <c:choose>
+                                                <c:when test="${record == rsvp.respondentRsvpStatus}">
+                                                    <form:option value="${record.id}" path="respondentRsvpStatus" selected="true">${record.displayValue}</form:option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <form:option value="${record.id}" path="respondentRsvpStatus">${record.displayValue}</form:option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </form:select>
+                                    <form:label path="respondentRsvpStatus" for="respondentRsvpStatus">respondentRsvpStatus</form:label>
+                                    <p class="text-danger bg-light"><form:errors path="respondentRsvpStatus" />
+                                </div>
+
+<%--                                            min="1"--%>
+<%--                                            value="1" --%>
                                 <div class="form-floating col-sm me-5 p-0">
                                     <form:input
                                             path="kidCount"
@@ -423,13 +402,15 @@
                                             class="form-control"
                                             id="kidCount"
                                             placeholder="kidCount"
-                                            min="1"
+                                            min="0"
                                             step="1"
-                                            value="1" />
+                                    />
                                     <form:label path="kidCount" for="kidCount"># of Kids</form:label>
-                                    <p class="text-danger"><form:errors path="kidCount" />
+                                    <p class="text-danger bg-light"><form:errors path="kidCount" />
                                 </div>
 
+<%--                                            min="1"--%>
+<%--                                            value="1" --%>
                                 <div class="form-floating col-sm p-0">
                                     <form:input
                                             path="adultCount"
@@ -437,11 +418,11 @@
                                             class="form-control"
                                             id="adultCount"
                                             placeholder="adultCount"
-                                            min="1"
+                                            min="0"
                                             step="1"
-                                            value="1" />
+                                    />
                                     <form:label path="adultCount" for="adultCount"># of Adults</form:label>
-                                    <p class="text-danger"><form:errors path="adultCount" />
+                                    <p class="text-danger bg-light"><form:errors path="adultCount" />
                                 </div>
                             </div> <!-- end row -->
                         </div> <!-- end container -->
@@ -465,32 +446,141 @@
             <thead class="border-top-0">
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">UserId</th>
                 <th scope="col">Status</th>
                 <th scope="col"># of Kids</th>
                 <th scope="col"># of Adults</th>
-                <th scope="col">actions for organizer</th>
-
-                <%--                    <th scope="col">Comment</th>--%>
+                <c:if test="${authUser.id == playdate.userMdl.id}">
+                    <th scope="col">Manage</th>
+                </c:if>
             </tr>
             </thead>
             <tbody>
             <c:forEach var="record" items="${playdateRsvpList}">
                 <tr>
                     <td><a class="text-decoration-none" href="/profile/${record.userId}">${record.userName}</a></td>
-                    <td>${record.userId}</td>
                     <td>${record.rsvpStatus}</td>
                     <td>${record.kidCount}</td>
                     <td>${record.adultCount}</td>
-                    <td>placeholder</td>
-
-                        <%--                    <td><pre style="white-space: pre-wrap" class="m-0">${record.comment}</pre></td>--%>
+                    <c:if test="${authUser.id == playdate.userMdl.id}">
+                        <c:choose>
+                            <c:when test="${playdate.userMdl.id == record.userId}">
+                                <td>what are you thinking?</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>
+                                    <a href="/rsvp/delete/${record.rsvpId}"><button class="btn btn-danger mb-2">Delete </button></a>
+                                </td>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
 
     </div><!-- end rsvpListRow -->
+
+<%--    this is for exploration only--%>
+
+    <div id="userFriendList" class="row m-1 table-responsive">
+
+        <table class="table table-striped table-hover table-responsive mt-2 caption-top">
+            <caption class="text-dark" style="font-size: 1.5rem;">userFriendForPlaydateInviteDropdownList</caption>
+            <thead class="border-top-0">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">UserId</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="record" items="${userFriendForPlaydateInviteDropdownList}">
+                <tr>
+                    <td><a class="text-decoration-none" href="/profile/${record.id}">${record.userName}</a></td>
+                    <td>${record.id}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+
+    </div><!-- end userFriendList -->
+
+    <div class="row m-1" id="rsvpRowTwo">
+        <div id="rsvpCard" class="card p-3 d-md-flex justify-content-start bg-secondary ">
+
+            <p class="text-center text-light fs-3">Create RSVP for someone else</p>
+
+            <form:form action='/playdate/${playdate.id}/rsvp/createforuser' method='post' modelAttribute='rsvp'>
+
+                <div class = "container m-0 p-0">
+                    <div class="row m-0 p-0">
+                        <div class="form-floating col-sm me-5 p-0 ">
+                            <form:select
+                                    path="rsvpStatus"
+                                    class="form-control"
+                                    id="rsvpStatus"
+                                    placeholder="rsvpStatus">
+                                <form:option value="In" path="rsvpStatus">In</form:option>
+                                <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>
+                                <form:option value="Out" path="rsvpStatus">Out</form:option>
+                            </form:select>
+                            <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
+                            <p class="text-danger"><form:errors path="rsvpStatus" />
+                        </div>
+
+                        <div class="form-floating col-sm me-5 p-0 ">
+                            <form:select
+                                    path="userMdl"
+                                    class="form-control"
+                                    id="userMdl"
+                                    placeholder="userMdl">
+                                <c:forEach items="${userFriendForPlaydateInviteDropdownList}" var="record">
+                                    <form:option value="${record.id}" path="userMdl">${record.userName}</form:option>
+                                </c:forEach>
+                            </form:select>
+                            <form:label path="userMdl" for="userMdl">userMdl</form:label>
+                            <p class="text-danger"><form:errors path="userMdl" />
+                        </div>
+
+                        <div class="form-floating col-sm me-5 p-0">
+                            <form:input
+                                    path="kidCount"
+                                    type="number"
+                                    class="form-control"
+                                    id="kidCount"
+                                    placeholder="kidCount"
+                                    min="0"
+                                    step="1"
+                                    value="1" />
+                            <form:label path="kidCount" for="kidCount"># of Kids</form:label>
+                            <p class="text-danger"><form:errors path="kidCount" />
+                        </div>
+
+                        <div class="form-floating col-sm p-0">
+                            <form:input
+                                    path="adultCount"
+                                    type="number"
+                                    class="form-control"
+                                    id="adultCount"
+                                    placeholder="adultCount"
+                                    min="0"
+                                    step="1"
+                                    value="1" />
+                            <form:label path="adultCount" for="adultCount"># of Adults</form:label>
+                            <p class="text-danger"><form:errors path="adultCount" />
+                        </div>
+                    </div> <!-- end row -->
+                </div> <!-- end container -->
+
+                <div>
+                    <button type="submit" class="btn btn-primary w-100">Invite</button>
+                </div>
+
+            </form:form>
+
+        </div> <!-- end rsvpCard -->
+    </div > <!--end rsvpRowTwo> -->
+
+
 
 </div><!-- end playdateCard -->
 

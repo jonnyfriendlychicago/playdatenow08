@@ -283,9 +283,33 @@
                                 <form:option value="Out" path="rsvpStatus">Out</form:option>
                             </form:select>
                             <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
-                            <p class="text-danger"><form:errors path="rsvpStatus" />
+                            <p class="text-danger bg-light"><form:errors path="rsvpStatus" />
                         </div>
 
+                        <div class="form-floating col-sm me-5 p-0">
+                            <form:select
+                                    path="respondentRsvpStatus"
+                                    class="form-control"
+                                    id="respondentRsvpStatus"
+                                    placeholder="respondentRsvpStatus">
+                                <c:forEach items="${playdateRsvpStatusList}" var="record">
+                                    <c:choose>
+                                        <c:when test="${record == rsvp.respondentRsvpStatus}">
+                                            <form:option value="${record.id}" path="respondentRsvpStatus" selected="true">${record.displayValue}</form:option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <form:option value="${record.id}" path="respondentRsvpStatus">${record.displayValue}</form:option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                            </form:select>
+                            <form:label path="respondentRsvpStatus" for="respondentRsvpStatus">respondentRsvpStatus</form:label>
+                            <p class="text-danger bg-light"><form:errors path="respondentRsvpStatus" />
+                        </div>
+
+
+
+<%--                                    value="1" --%>
                         <div class="form-floating col-sm me-5 p-0">
                             <form:input
                                     path="kidCount"
@@ -295,11 +319,12 @@
                                     placeholder="kidCount"
                                     min="1"
                                     step="1"
-                                    value="1" />
+                            />
                             <form:label path="kidCount" for="kidCount"># of Kids</form:label>
-                            <p class="text-danger"><form:errors path="kidCount" />
+                            <p class="text-danger bg-light"><form:errors path="kidCount" />
                         </div>
 
+<%--                                    value="1" --%>
                         <div class="form-floating col-sm p-0">
                             <form:input
                                     path="adultCount"
@@ -309,9 +334,9 @@
                                     placeholder="adultCount"
                                     min="1"
                                     step="1"
-                                    value="1" />
+                            />
                             <form:label path="adultCount" for="adultCount"># of Adults</form:label>
-                            <p class="text-danger"><form:errors path="adultCount" />
+                            <p class="text-danger bg-light"><form:errors path="adultCount" />
                         </div>
                     </div> <!-- end row -->
                 </div> <!-- end container -->
