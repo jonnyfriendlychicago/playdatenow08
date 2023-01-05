@@ -42,7 +42,6 @@ public class PlaydateCtl {
     @Autowired
     private PlaydateValidator playdateValidator;
 
-
     @GetMapping("/playdate")
     public String displayPlaydateAll(
             Principal principal
@@ -80,6 +79,11 @@ public class PlaydateCtl {
         Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
         List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
         model.addAttribute("playdateStatusList", playdateStatusList);
+
+        // let's rock those rsvp status codes
+        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+        model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
         List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
         model.addAttribute("stateterritoryList", stateterritoryList);
@@ -124,6 +128,11 @@ public class PlaydateCtl {
             List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
             model.addAttribute("playdateStatusList", playdateStatusList);
 
+            // let's rock those rsvp status codes
+            Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+            model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
+
             List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
             model.addAttribute("stateterritoryList", stateterritoryList);
 
@@ -137,7 +146,7 @@ public class PlaydateCtl {
     @GetMapping("/playdate/{id}")
     public String displayPlaydate(
             @PathVariable("id") Long playdateId
-            , @ModelAttribute("rsvp") RsvpMdl rsvpObj // enables delivery of RSVP record on the page
+            , @ModelAttribute("rsvp") RsvpMdl rsvpObj // remove this and page blows up, b/c rsvp form is incomplete
             , Model model
             , Principal principal
     ) {
@@ -243,6 +252,18 @@ public class PlaydateCtl {
         int authUserIsAdmin = userSrv.authUserIsAdmin(authUserObj);
         model.addAttribute("authUserIsAdmin", authUserIsAdmin);
 
+        // (5) beginning of scratch-around on inviting friends
+
+//        Long codeCategoryIdForPlaydateLocationTypeCodes = Long.valueOf(1);
+        long authUserId = authUserObj.getId();
+        List<UserMdl> userFriendForPlaydateInviteDropdownList = userSrv.userFriendForPlaydateInviteDropdownList(authUserId);
+        model.addAttribute("userFriendForPlaydateInviteDropdownList", userFriendForPlaydateInviteDropdownList);
+
+        // let's rock those rsvp status codes
+        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+        model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
+
         return "playdate/record.jsp";
     }
 
@@ -328,6 +349,10 @@ public class PlaydateCtl {
         // (6) add admin variable to page
         model.addAttribute("authUserIsAdmin", authUserIsAdmin);
 
+        // let's rock those rsvp status codes
+        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+        model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
         return "playdate/edit.jsp";
     }
@@ -351,12 +376,7 @@ public class PlaydateCtl {
 
         // (2) validate if authenticated user has security to edit this profile record; if not, redirect user to record screen with flash msg.
         UserMdl recordCreatorUserMdl = playdateObj.getUserMdl();
-//        if(!authUserObj.equals(recordCreatorUserMdl)) {
-//            System.out.println("recordCreatorUserMdl != currentUserMdl, so redirected to record");
-//            redirectAttributes.addFlashAttribute("permissionErrorMsg", "This record can only be edited by its creator.  Any edits just attempted were discarded.");
-//            return "redirect:/playdate/" + playdateObj.getId();
-//        }
-        // below replaces above
+
         if(
                 !authUserObj.equals(recordCreatorUserMdl)
                 && authUserIsAdmin != 1
@@ -452,6 +472,11 @@ public class PlaydateCtl {
 
             // (6) deliver error msg to page
             model.addAttribute("validationErrorMsg", "Uh-oh! Please fix the errors noted below and submit again.  (Or cancel.)");
+
+            // let's rock those rsvp status codes
+            Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+            model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
             return "playdate/edit.jsp";
         }

@@ -1,7 +1,5 @@
 package com.f12s.playdatenow08.validator;
 
-//import com.f12s.playdatenow08.models.UserMdl;
-// above replaced by below
 import com.f12s.playdatenow08.models.CodeMdl;
 import com.f12s.playdatenow08.models.PlaydateMdl;
 import com.f12s.playdatenow08.models.StateterritoryMdl;
@@ -73,10 +71,46 @@ public class PlaydateValidator implements Validator {
             }
         }
 
+        // (3) make determination
         if (
                 validPlaydateStatus == 0
         ) {
             errors.rejectValue("playdateStatus", "Value");
+        }
+
+        // playdateOrganizerRsvpStatus
+        // (1) get list of valid objects from code table
+        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+
+        // (2) iterate through the list, looking for objects that match user entry
+        int validPlaydateRsvpStatus = 0;
+        int c = 0;
+
+        for (c = 0; c < playdateRsvpStatusList.size(); c++) {
+            // all printStatements herein for initial testing purposes only
+            System.out.print("playdateOrganizerRsvpStatus item: " + c + "\n");
+//            System.out.print("playdateMdl.getPlaydateStatus().getCode(): " + playdateMdl.getPlaydateStatus().getCode() + "\n");
+//            System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusList.get(a).getCode() + "\n");
+            if (
+                    !playdateMdl.getPlaydateOrganizerRsvpStatus().getCode().equals( playdateRsvpStatusList.get(c).getCode() )
+            ) {
+                System.out.println("entry does not match this list item");
+//                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+            } else {
+                validPlaydateRsvpStatus = 1;
+                System.out.println("validPlaydateRsvpStatus achieved!");
+//                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+//                System.out.println("we're done!");
+                break;
+            }
+        }
+
+        // (3) make determination
+        if (
+                validPlaydateRsvpStatus == 0
+        ) {
+            errors.rejectValue("playdateOrganizerRsvpStatus", "Value");
         }
 
         // eventDate
@@ -134,20 +168,50 @@ public class PlaydateValidator implements Validator {
             errors.rejectValue("maxCountKids", "Size");
         }
 
-        // kidCount
+//        // kidCount
+//
+//        String inRsvpStatus = "In";
+//        if (
+//                playdateMdl.getRsvpStatus() == inRsvpStatus &&
+//                        (
+//                            playdateMdl.getKidCount() == null
+//                                    || (playdateMdl.getKidCount() != null && playdateMdl.getKidCount() < 1)
+//                        )
+//
+//        ) {
+//            errors.rejectValue("kidCount", "Size");
+//        }
+
+        // kidCount, take two
         if (
-                playdateMdl.getKidCount() == null ||
-                        (playdateMdl.getKidCount() != null && playdateMdl.getKidCount() < 1)
+                playdateMdl.getPlaydateOrganizerRsvpStatus().getId() == 21 &&
+                        (
+                                playdateMdl.getKidCount() == null
+                                        || (playdateMdl.getKidCount() != null && playdateMdl.getKidCount() < 1)
+                        )
+
         ) {
-            errors.rejectValue("kidCount", "Size");
+            errors.rejectValue("kidCount", "rsvpInKidCountCombo");
         }
 
-        // adultCount
+//        // adultCount
+//        if (
+//                playdateMdl.getAdultCount() == null ||
+//                        (playdateMdl.getAdultCount() != null && playdateMdl.getAdultCount() < 1 )
+//        ) {
+//            errors.rejectValue("adultCount", "Size");
+//        }
+
+        // adultCount, take two
         if (
-                playdateMdl.getAdultCount() == null ||
-                        (playdateMdl.getAdultCount() != null && playdateMdl.getAdultCount() < 1 )
+                playdateMdl.getPlaydateOrganizerRsvpStatus().getId() == 21 &&
+                        (
+                                playdateMdl.getAdultCount() == null
+                                        || (playdateMdl.getAdultCount() != null && playdateMdl.getAdultCount() < 1)
+                        )
+
         ) {
-            errors.rejectValue("adultCount", "Size");
+            errors.rejectValue("adultCount", "rsvpInAdultCountCombo");
         }
 
         // locationType
@@ -261,10 +325,6 @@ public class PlaydateValidator implements Validator {
 //        ) {
 //            errors.rejectValue("zipCode", "zipCodeLocationTypeCombo");
 //        }
-
-
-
-
 
     } // end validate function
 

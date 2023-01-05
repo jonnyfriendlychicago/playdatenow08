@@ -60,6 +60,14 @@ public class CodeMdl {
     @OneToMany(mappedBy="playdateStatus", fetch = FetchType.LAZY)
     private List<PlaydateMdl> playdateListplaydateStatus;
 
+    // join playdate - playdateOrganizerRsvpStatus
+    @OneToMany(mappedBy="playdateOrganizerRsvpStatus", fetch = FetchType.LAZY)
+    private List<PlaydateMdl> playdateListplaydateOrganizerRsvpStatus;
+
+    // join rsvp - respondentRsvpStatus
+    @OneToMany(mappedBy="respondentRsvpStatus", fetch = FetchType.LAZY)
+    private List<RsvpMdl> rsvpListRespondentRsvpStatus;
+
 //    @OneToMany(mappedBy="soconStatus", fetch = FetchType.LAZY)
 //    private List<SocialconnectionMdl> socialconnectionListsoconStatus;
 
@@ -235,6 +243,22 @@ public class CodeMdl {
 
     public void setSocialconnectionhistoryListSoconactivityCode(List<SocialconnectionhistoryMdl> socialconnectionhistoryListSoconactivityCode) {
         this.socialconnectionhistoryListSoconactivityCode = socialconnectionhistoryListSoconactivityCode;
+    }
+
+    public List<PlaydateMdl> getPlaydateListplaydateOrganizerRsvpStatus() {
+        return playdateListplaydateOrganizerRsvpStatus;
+    }
+
+    public void setPlaydateListplaydateOrganizerRsvpStatus(List<PlaydateMdl> playdateListplaydateOrganizerRsvpStatus) {
+        this.playdateListplaydateOrganizerRsvpStatus = playdateListplaydateOrganizerRsvpStatus;
+    }
+
+    public List<RsvpMdl> getRsvpListRespondentRsvpStatus() {
+        return rsvpListRespondentRsvpStatus;
+    }
+
+    public void setRsvpListRespondentRsvpStatus(List<RsvpMdl> rsvpListRespondentRsvpStatus) {
+        this.rsvpListRespondentRsvpStatus = rsvpListRespondentRsvpStatus;
     }
 
     // end: getters and setters

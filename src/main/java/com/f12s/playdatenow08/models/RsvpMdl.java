@@ -19,7 +19,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 @Entity
 @Table(name="rsvp")
 public class RsvpMdl {
@@ -36,22 +35,24 @@ public class RsvpMdl {
 
     // begin: entity-specific table fields
 
-    @NotBlank(message="RSVP status is required.")
+//    @NotBlank(message="RSVP status is required.")
     private String rsvpStatus;
 
-    @NotNull (message = "Minimum one child on the RSVP")
-    @Min(value =1, message="Minimum one child on the RSVP.")
+//    @NotNull (message = "Minimum one child on the RSVP")
+//    @Min(value =1, message="Minimum one child on the RSVP.")
     private Integer kidCount;
 
-    @NotNull (message = "Minimum one adult on the RSVP")
-    @Min(value =1, message="Minimum one adult on the RSVP.")
+//    @NotNull (message = "Minimum one adult on the RSVP")
+//    @Min(value =1, message="Minimum one adult on the RSVP.")
     private Integer adultCount;
 
-    private String comment;
+//    private String comment;
 
     // end: entity-specific table fields
 
     // start: code for joins
+
+    // (2) joins to put other tables' cols on this mdl
 
     // join user table
     @ManyToOne(fetch = FetchType.LAZY)
@@ -62,6 +63,11 @@ public class RsvpMdl {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="playdate_id")
     private PlaydateMdl playdateMdl;
+
+    // join code table, for respondentRsvpStatus
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="respondentRsvpStatus_code_id")
+    private CodeMdl respondentRsvpStatus;
 
     // end: code for joins
 
@@ -128,13 +134,13 @@ public class RsvpMdl {
         this.adultCount = adultCount;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+//    public String getComment() {
+//        return comment;
+//    }
+//
+//    public void setComment(String comment) {
+//        this.comment = comment;
+//    }
 
     public UserMdl getUserMdl() {
         return userMdl;
@@ -150,6 +156,14 @@ public class RsvpMdl {
 
     public void setPlaydateMdl(PlaydateMdl playdateMdl) {
         this.playdateMdl = playdateMdl;
+    }
+
+    public CodeMdl getRespondentRsvpStatus() {
+        return respondentRsvpStatus;
+    }
+
+    public void setRespondentRsvpStatus(CodeMdl respondentRsvpStatus) {
+        this.respondentRsvpStatus = respondentRsvpStatus;
     }
 
     // end: getters and setters

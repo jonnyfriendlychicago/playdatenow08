@@ -158,24 +158,6 @@
                 <p class="text-danger"><form:errors path="locationName" />
             </div>
 
-                <%--            <c:choose>--%>
-                <%--            <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">--%>
-                <%--            <div id="locationAddyContainer" class="form-floating mb-3 collapse">--%>
-                <%--            </c:when>--%>
-                <%--            <c:otherwise>--%>
-                <%--            <div id="locationAddyContainer" class="form-floating mb-3 ">--%>
-                <%--            </c:otherwise>--%>
-                <%--            </c:choose>--%>
-                <%--                <form:input--%>
-                <%--                    path="locationAddy"--%>
-                <%--                    type="text"--%>
-                <%--                    class="form-control"--%>
-                <%--                    id="locationAddy"--%>
-                <%--                    placeholder="locationAddy" />--%>
-                <%--                <form:label path="locationAddy" for="locationAddy">Location Address</form:label>--%>
-                <%--                <p class="text-danger"><form:errors path="locationAddy" />--%>
-                <%--            </div>--%>
-
             <c:choose>
             <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">
             <div id="addressLine1Container" class="form-floating mb-3 collapse">
@@ -193,24 +175,6 @@
                 <form:label path="addressLine1" for="addressLine1">Address</form:label>
                 <p class="text-danger"><form:errors path="addressLine1" />
             </div>
-
-                    <%--            <c:choose>--%>
-                    <%--            <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">--%>
-                    <%--            <div id="addressLine2Container" class="form-floating mb-3 collapse">--%>
-                    <%--            </c:when>--%>
-                    <%--            <c:otherwise>--%>
-                    <%--            <div id="addressLine2Container" class="form-floating mb-3 ">--%>
-                    <%--                </c:otherwise>--%>
-                    <%--                </c:choose>--%>
-                    <%--                <form:input--%>
-                    <%--                        path="addressLine2"--%>
-                    <%--                        type="text"--%>
-                    <%--                        class="form-control"--%>
-                    <%--                        id="addressLine2"--%>
-                    <%--                        placeholder="addressLine2" />--%>
-                    <%--                <form:label path="addressLine2" for="addressLine2">Address Line 2</form:label>--%>
-                    <%--                <p class="text-danger"><form:errors path="addressLine2" />--%>
-                    <%--            </div>--%>
 
             <c:choose>
             <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">
@@ -247,9 +211,6 @@
                     <c:forEach items="${stateterritoryList}" var="record">
                         <c:choose>
                             <c:when test="${record == playdate.stateterritoryMdl}">
-                                <%--                            <c:when test="${record == intendedStateTerritoryObj}">--%>
-                                <%--                                above replaced by below--%>
-                                <%--                                <c:when test="${record == userProfileObj.stateterritoryMdl  }">--%>
                                 <form:option value="${record.id}" path="stateterritoryMdl" selected="true">${record.abbreviation}</form:option>
                             </c:when>
                             <c:otherwise>
@@ -261,71 +222,6 @@
                 <form:label path="stateterritoryMdl" for="stateterritoryMdl">State/Territory</form:label>
                 <p class="text-danger"><form:errors path="stateterritoryMdl" />
             </div>
-
-                            <%--            <c:choose>--%>
-                            <%--            <c:when test="${playdate.locationType == null || (playdate.locationType != null && playdate.locationType.code == 'ourHome')}">--%>
-                            <%--            <div id="zipCodeContainer" class="form-floating mb-3 collapse">--%>
-                            <%--            </c:when>--%>
-                            <%--            <c:otherwise>--%>
-                            <%--            <div id="zipCodeContainer" class="form-floating mb-3 ">--%>
-                            <%--                </c:otherwise>--%>
-                            <%--                </c:choose>--%>
-                            <%--                <form:input--%>
-                            <%--                        path="zipCode"--%>
-                            <%--                        type="text"--%>
-                            <%--                        class="form-control"--%>
-                            <%--                        id="zipCode"--%>
-                            <%--                        placeholder="zipCode" />--%>
-                            <%--                <form:label path="zipCode" for="zipCode">Zip Code</form:label>--%>
-                            <%--                <p class="text-danger"><form:errors path="zipCode" />--%>
-                            <%--            </div>--%>
-
-<%--        <div class="form-floating mb-3">--%>
-<%--          <form:select--%>
-<%--                  path="locationType"--%>
-<%--                  class="form-control"--%>
-<%--                  id="codeMdl"--%>
-<%--                  placeholder="locationType">--%>
-<%--            &lt;%&ndash;            <form:option value="0" path="locationType">(none)</form:option>&ndash;%&gt;--%>
-<%--            &lt;%&ndash;            <c:forEach items="${codeList}" var="record">&ndash;%&gt;--%>
-<%--            <c:forEach items="${locationTypeList}" var="record">--%>
-<%--              <c:choose>--%>
-<%--                <c:when test="${record == playdate.locationType}">--%>
-<%--                  <form:option value="${record.id}" path="locationType"--%>
-<%--                               selected="true">${record.displayValue}</form:option>--%>
-<%--                </c:when>--%>
-<%--                <c:otherwise>--%>
-<%--                  <form:option value="${record.id}" path="locationType">${record.displayValue}</form:option>--%>
-<%--                </c:otherwise>--%>
-<%--              </c:choose>--%>
-<%--            </c:forEach>--%>
-<%--          </form:select>--%>
-<%--          <form:label path="locationType" for="locationType">Location Type</form:label>--%>
-<%--          <p class="text-danger"><form:errors path="locationType" />--%>
-<%--        </div>--%>
-<%--    --%>
-<%--        <div class="form-floating mb-3">--%>
-<%--          <form:input--%>
-<%--                  path="locationName"--%>
-<%--                  type="text"--%>
-<%--                  class="form-control"--%>
-<%--                  id="locationName"--%>
-<%--                  placeholder="locationName" />--%>
-<%--          <form:label path="locationName" for="locationName">Location Name</form:label>--%>
-<%--          <div id="locationHelp" class="form-text">Examples: Our Home or Central Park or Gertie's Ice Cream, etc.</div>--%>
-<%--          <p class="text-danger"><form:errors path="locationName" /></p>--%>
-<%--        </div>--%>
-<%--    --%>
-<%--        <div class="form-floating mb-3">--%>
-<%--          <form:input--%>
-<%--                  path="locationAddy"--%>
-<%--                  type="text"--%>
-<%--                  class="form-control"--%>
-<%--                  id="locationAddy"--%>
-<%--                  placeholder="locationAddy" />--%>
-<%--          <form:label path="locationAddy" for="locationAddy">Location Address</form:label>--%>
-<%--          <p class="text-danger"><form:errors path="locationAddy" />--%>
-<%--        </div>--%>
 
             <div class="form-floating mb-3">
                 <form:input
@@ -428,7 +324,28 @@
                         <form:option value="Out" path="rsvpStatus">Out</form:option>
                     </form:select>
                     <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
-                    <p class="text-danger"><form:errors path="rsvpStatus" />
+                    <p class="text-danger bg-light"><form:errors path="rsvpStatus" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <form:select
+                            path="playdateOrganizerRsvpStatus"
+                            class="form-control"
+                            id="playdateOrganizerRsvpStatus"
+                            placeholder="playdateOrganizerRsvpStatus">
+                        <c:forEach items="${playdateRsvpStatusList}" var="record">
+                            <c:choose>
+                                <c:when test="${record == playdate.playdateOrganizerRsvpStatus}">
+                                    <form:option value="${record.id}" path="playdateOrganizerRsvpStatus" selected="true">${record.displayValue}</form:option>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:option value="${record.id}" path="playdateOrganizerRsvpStatus">${record.displayValue}</form:option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </form:select>
+                    <form:label path="playdateOrganizerRsvpStatus" for="playdateOrganizerRsvpStatus">playdateOrganizerRsvpStatus</form:label>
+                    <p class="text-danger bg-light"><form:errors path="playdateOrganizerRsvpStatus" />
                 </div>
 
                 <div class="form-floating mb-3">
@@ -442,7 +359,7 @@
                             step="1"
                             value="1"/>
                     <form:label path="kidCount" for="kidCount"># of Kids</form:label>
-                    <p class="text-danger"><form:errors path="kidCount" />
+                    <p class="text-danger bg-light"><form:errors path="kidCount" />
                 </div>
 
                 <div class="form-floating mb-3">
@@ -456,20 +373,8 @@
                             step="1"
                             value="1"/>
                     <form:label path="adultCount" for="adultCount"># of Adults</form:label>
-                    <p class="text-danger"><form:errors path="adultCount" />
+                    <p class="text-danger bg-light"><form:errors path="adultCount" />
                 </div>
-
-<%--                <div class="form-floating mb-3">--%>
-<%--                    <form:textarea--%>
-<%--                            path="comment"--%>
-<%--                            type="text"--%>
-<%--                            class="form-control"--%>
-<%--                            id="comment"--%>
-<%--                            placeholder="comment"--%>
-<%--                            style="height: 10rem;" />--%>
-<%--                    <form:label path="comment" for="comment">Comment</form:label>--%>
-<%--                    <p class="text-danger"><form:errors path="comment" />--%>
-<%--                </div>--%>
 
             </div> <!-- end rsvpCard -->
         </div> <!-- end rsvpEtcCol-->
