@@ -8,9 +8,12 @@ public interface PlaydateUserUnionRsvpUser {
     Integer getAdultCount();
     String getRsvpStatus();
     String getComment();
-    Integer getUserId();
-    Integer getRsvpId(); // new
-    String getPlaydateOrganizerRsvpStatus(); // new
+//    Integer getUserId();
+    Long getUserId();
+    Long getRsvpId(); // new
+//    String getPlaydateOrganizerRsvpStatus(); // new
+    String getRsvpStatusTwo();
+    String getRsvpStatusTwoCode();
 
 
 }

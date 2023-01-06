@@ -152,7 +152,7 @@
                     </c:otherwise>
                 </c:choose>
                 ">
-                    <p class="m-0 ">Playdate Status: <strong>${playdate.playdateStatus.displayValue} </strong> </p>
+                    <p class="m-0 ">Playdate Status: <strong>${playdate.playdateStatus.displayValue}</strong> </p>
                 </div>
             </c:if>
 
@@ -179,7 +179,7 @@
                                     ${playdate.userMdl.homeName}
                                 </c:when>
                                 <c:otherwise>
-                                    ${playdate.userMdl.userName}
+                                    ${playdate.userMdl.userName}'s Home
                                 </c:otherwise>
                             </c:choose>
                         </p>
@@ -210,16 +210,14 @@
         </div><!-- end playdateInfoCol -->
 
         <div id="rsvpEtcCol" class="col">
-
             <div id="rsvpTrackingCard" class="card p-3 d-md-flex justify-content-start mb-3">
-                <p class="m-0 text-secondary text-center">RSVP Tracking</p>
+                <p class="m-0 text-secondary text-center">Attendance Tracking</p>
                 <table class="table table-responsive mt-2 table-borderless table-sm">
                     <thead class="table-light align-top">
                     <tr>
-                        <th scope="col">RSVPs</th>
-                        <th scope="col">RSVPed Adults</th>
-                        <th scope="col">Max Kids</th>
-                        <th scope="col">RSVPed Kids</th>
+                        <th scope="col">Families</th>
+                        <th scope="col">Adults</th>
+                        <th scope="col">Kids</th>
                         <th scope="col">Open Kid Spots</th>
                     </tr>
                     </thead>
@@ -227,7 +225,6 @@
                     <tr>
                         <td>${rsvpCount}</td>
                         <td>${aggAdultsCount}</td>
-                        <td>${playdate.maxCountKids}</td>
                         <td>${aggKidsCount}</td>
                         <td>${openKidsSpots}</td>
                     </tr>
@@ -254,17 +251,31 @@
             <c:choose>
                 <c:when test="${authUser.id == playdate.userMdl.id}">
 
-                    <p class="text-center text-light fs-3">Your RSVP</p>
+<%--                    <p class="text-center text-light fs-3">Your RSVP</p>--%>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                        </div>
+
+                        <div class="col">
+                            <p class="m-0 text-center text-light fs-3" style="font-size: 1.25rem;">Your RSVP</p>
+                        </div>
+
+                        <div class="col d-flex justify-content-end">
+<%--                            <a href="/playdate/${playdate.id}/rsvp/${rsvpObjForAuthUser.id}/edit"><button class="btn btn-primary mb-2">Edit</button></a>--%>
+                                <a href="/playdate/${playdate.id}/edit"><button class="btn btn-primary border border-light mb-2">Edit</button></a>
+                        </div>
+                    </div>
 
                     <div class = "container m-0 p-0">
                         <div class="row m-0 p-0">
 
-                            <div class="col-sm me-5 p-0 mb-3" >
-                                <div class="card p-2 m-0 border-0">
-                                    <p class="m-0 text-secondary" style="font-size: 0.8rem;">Status</p>
-                                    <p class="m-0">${playdate.rsvpStatus}</p>
-                                </div>
-                            </div>
+<%--                            <div class="col-sm me-5 p-0 mb-3" >--%>
+<%--                                <div class="card p-2 m-0 border-0">--%>
+<%--                                    <p class="m-0 text-secondary" style="font-size: 0.8rem;">Status</p>--%>
+<%--                                    <p class="m-0">${playdate.rsvpStatus}</p>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
 
                             <div class="col-sm me-5 p-0 mb-3" >
                                 <div class="card p-2 m-0 border-0">
@@ -308,19 +319,19 @@
                         </div>
 
                         <div class="col d-flex justify-content-end">
-                            <a href="/playdate/${playdate.id}/rsvp/${rsvpObjForAuthUser.id}/edit"><button class="btn btn-primary mb-2">Edit</button></a>
+                            <a href="/playdate/${playdate.id}/rsvp/${rsvpObjForAuthUser.id}/edit"><button class="btn btn-primary mb-2 border border-light">Edit</button></a>
                         </div>
                     </div>
 
                     <div class = "container m-0 p-0">
                         <div class="row m-0 p-0">
 
-                            <div class="col-sm me-5 p-0 mb-3" >
-                                <div class="card p-2 m-0 border-0">
-                                    <p class="m-0 text-secondary" style="font-size: 0.8rem;">Status</p>
-                                    <p class="m-0">${rsvpObjForAuthUser.rsvpStatus}</p>
-                                </div>
-                            </div>
+<%--                            <div class="col-sm me-5 p-0 mb-3" >--%>
+<%--                                <div class="card p-2 m-0 border-0">--%>
+<%--                                    <p class="m-0 text-secondary" style="font-size: 0.8rem;">Status</p>--%>
+<%--                                    <p class="m-0">${rsvpObjForAuthUser.rsvpStatus}</p>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
 
                             <div class="col-sm me-5 p-0 mb-3" >
                                 <div class="card p-2 m-0 border-0">
@@ -359,18 +370,18 @@
 
                         <div class = "container m-0 p-0">
                             <div class="row m-0 p-0">
-                                <div class="form-floating col-sm me-5 p-0 ">
-                                    <form:select
-                                            path="rsvpStatus"
-                                            class="form-control"
-                                            id="rsvpStatus" placeholder="rsvpStatus">
-                                        <form:option value="In" path="rsvpStatus">In</form:option>
-                                        <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>
-                                        <form:option value="Out" path="rsvpStatus">Out</form:option>
-                                    </form:select>
-                                    <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
-                                    <p class="text-danger bg-light"><form:errors path="rsvpStatus" />
-                                </div>
+<%--                                <div class="form-floating col-sm me-5 p-0 ">--%>
+<%--                                    <form:select--%>
+<%--                                            path="rsvpStatus"--%>
+<%--                                            class="form-control"--%>
+<%--                                            id="rsvpStatus" placeholder="rsvpStatus">--%>
+<%--                                        <form:option value="In" path="rsvpStatus">In</form:option>--%>
+<%--                                        <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>--%>
+<%--                                        <form:option value="Out" path="rsvpStatus">Out</form:option>--%>
+<%--                                    </form:select>--%>
+<%--                                    <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>--%>
+<%--                                    <p class="text-danger bg-light"><form:errors path="rsvpStatus" />--%>
+<%--                                </div>--%>
 
                                 <div class="form-floating col-sm me-5 p-0">
                                     <form:select
@@ -428,7 +439,7 @@
                         </div> <!-- end container -->
 
                         <div>
-                            <button type="submit" class="btn btn-primary w-100">Save My Rsvp</button>
+                            <button type="submit" class="btn btn-primary border border-light">Save My Rsvp</button>
                         </div>
 
                     </form:form>
@@ -446,7 +457,7 @@
             <thead class="border-top-0">
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Status</th>
+                <th scope="col">New Status</th>
                 <th scope="col"># of Kids</th>
                 <th scope="col"># of Adults</th>
                 <c:if test="${authUser.id == playdate.userMdl.id}">
@@ -458,17 +469,19 @@
             <c:forEach var="record" items="${playdateRsvpList}">
                 <tr>
                     <td><a class="text-decoration-none" href="/profile/${record.userId}">${record.userName}</a></td>
-                    <td>${record.rsvpStatus}</td>
+                    <td>${record.rsvpStatusTwo}</td>
                     <td>${record.kidCount}</td>
                     <td>${record.adultCount}</td>
                     <c:if test="${authUser.id == playdate.userMdl.id}">
                         <c:choose>
                             <c:when test="${playdate.userMdl.id == record.userId}">
-                                <td>what are you thinking?</td>
+                                <td>
+                                    <a href="/playdate/${playdate.id}/edit"><button class="btn btn-primary mb-2">Edit</button></a>
+                                </td>
                             </c:when>
                             <c:otherwise>
                                 <td>
-                                    <a href="/rsvp/delete/${record.rsvpId}"><button class="btn btn-danger mb-2">Delete </button></a>
+                                    <a href="/rsvp/delete/${record.rsvpId}"><button class="btn btn-danger mb-2">Delete</button></a>
                                 </td>
                             </c:otherwise>
                         </c:choose>
@@ -513,19 +526,20 @@
 
                 <div class = "container m-0 p-0">
                     <div class="row m-0 p-0">
-                        <div class="form-floating col-sm me-5 p-0 ">
-                            <form:select
-                                    path="rsvpStatus"
-                                    class="form-control"
-                                    id="rsvpStatus"
-                                    placeholder="rsvpStatus">
-                                <form:option value="In" path="rsvpStatus">In</form:option>
-                                <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>
-                                <form:option value="Out" path="rsvpStatus">Out</form:option>
-                            </form:select>
-                            <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
-                            <p class="text-danger"><form:errors path="rsvpStatus" />
-                        </div>
+
+<%--                        <div class="form-floating col-sm me-5 p-0 ">--%>
+<%--                            <form:select--%>
+<%--                                    path="rsvpStatus"--%>
+<%--                                    class="form-control"--%>
+<%--                                    id="rsvpStatus"--%>
+<%--                                    placeholder="rsvpStatus">--%>
+<%--                                <form:option value="In" path="rsvpStatus">In</form:option>--%>
+<%--                                <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>--%>
+<%--                                <form:option value="Out" path="rsvpStatus">Out</form:option>--%>
+<%--                            </form:select>--%>
+<%--                            <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>--%>
+<%--                            <p class="text-danger"><form:errors path="rsvpStatus" />--%>
+<%--                        </div>--%>
 
                         <div class="form-floating col-sm me-5 p-0 ">
                             <form:select
@@ -541,38 +555,41 @@
                             <p class="text-danger"><form:errors path="userMdl" />
                         </div>
 
-                        <div class="form-floating col-sm me-5 p-0">
-                            <form:input
-                                    path="kidCount"
-                                    type="number"
-                                    class="form-control"
-                                    id="kidCount"
-                                    placeholder="kidCount"
-                                    min="0"
-                                    step="1"
-                                    value="1" />
-                            <form:label path="kidCount" for="kidCount"># of Kids</form:label>
-                            <p class="text-danger"><form:errors path="kidCount" />
-                        </div>
+<%--                                    value="1" --%>
+<%--                        <div class="form-floating col-sm me-5 p-0">--%>
+<%--                            <form:input--%>
+<%--                                    path="kidCount"--%>
+<%--                                    type="number"--%>
+<%--                                    class="form-control"--%>
+<%--                                    id="kidCount"--%>
+<%--                                    placeholder="kidCount"--%>
+<%--                                    min="0"--%>
+<%--                                    step="1"--%>
+<%--                            />--%>
+<%--                            <form:label path="kidCount" for="kidCount"># of Kids</form:label>--%>
+<%--                            <p class="text-danger"><form:errors path="kidCount" />--%>
+<%--                        </div>--%>
 
-                        <div class="form-floating col-sm p-0">
-                            <form:input
-                                    path="adultCount"
-                                    type="number"
-                                    class="form-control"
-                                    id="adultCount"
-                                    placeholder="adultCount"
-                                    min="0"
-                                    step="1"
-                                    value="1" />
-                            <form:label path="adultCount" for="adultCount"># of Adults</form:label>
-                            <p class="text-danger"><form:errors path="adultCount" />
-                        </div>
+<%--                                    value="1" --%>
+<%--                        <div class="form-floating col-sm p-0">--%>
+<%--                            <form:input--%>
+<%--                                    path="adultCount"--%>
+<%--                                    type="number"--%>
+<%--                                    class="form-control"--%>
+<%--                                    id="adultCount"--%>
+<%--                                    placeholder="adultCount"--%>
+<%--                                    min="0"--%>
+<%--                                    step="1"--%>
+<%--                            />--%>
+<%--                            <form:label path="adultCount" for="adultCount"># of Adults</form:label>--%>
+<%--                            <p class="text-danger"><form:errors path="adultCount" />--%>
+<%--                        </div>--%>
+
                     </div> <!-- end row -->
                 </div> <!-- end container -->
 
                 <div>
-                    <button type="submit" class="btn btn-primary w-100">Invite</button>
+                    <button type="submit" class="btn btn-primary border border-light">Invite</button>
                 </div>
 
             </form:form>

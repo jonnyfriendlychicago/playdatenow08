@@ -262,19 +262,19 @@
 
                 <p class="m-0 text-center text-light fs-3" style="font-size: 1.25rem;">Your RSVP</p>
 
-                <div class="form-floating mb-3">
-                    <form:select
-                        path="rsvpStatus"
-                        class="form-control"
-                        id="rsvpStatus"
-                        placeholder="rsvpStatus">
-                        <form:option value="In" path="rsvpStatus">In</form:option>
-                        <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>
-                        <form:option value="Out" path="rsvpStatus">Out</form:option>
-                    </form:select>
-                    <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
-                    <p class="text-danger bg-light"><form:errors path="rsvpStatus" />
-                </div>
+<%--                <div class="form-floating mb-3">--%>
+<%--                    <form:select--%>
+<%--                        path="rsvpStatus"--%>
+<%--                        class="form-control"--%>
+<%--                        id="rsvpStatus"--%>
+<%--                        placeholder="rsvpStatus">--%>
+<%--                        <form:option value="In" path="rsvpStatus">In</form:option>--%>
+<%--                        <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>--%>
+<%--                        <form:option value="Out" path="rsvpStatus">Out</form:option>--%>
+<%--                    </form:select>--%>
+<%--                    <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>--%>
+<%--                    <p class="text-danger bg-light"><form:errors path="rsvpStatus" />--%>
+<%--                </div>--%>
 
                 <div class="form-floating mb-3">
                     <form:select
@@ -297,6 +297,7 @@
                     <p class="text-danger bg-light"><form:errors path="playdateOrganizerRsvpStatus" />
                 </div>
 
+<%--                        value="1"--%>
                 <div class="form-floating mb-3">
                     <form:input
                         path="kidCount"
@@ -306,12 +307,12 @@
                         placeholder="kidCount"
                         min="1"
                         step="1"
-                        value="1"
                     />
                     <form:label path="kidCount" for="kidCount"># of Kids</form:label>
                     <p class="text-danger bg-light"><form:errors path="kidCount" />
                 </div>
 
+<%--                        value="1"--%>
                 <div class="form-floating mb-3">
                     <form:input
                         path="adultCount"
@@ -321,7 +322,6 @@
                         placeholder="adultCount"
                         min="1"
                         step="1"
-                        value="1"
                     />
                     <form:label path="adultCount" for="adultCount"># of Adults</form:label>
                     <p class="text-danger bg-light"><form:errors path="adultCount" />

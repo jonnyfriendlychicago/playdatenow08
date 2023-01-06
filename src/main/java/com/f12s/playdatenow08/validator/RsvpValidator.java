@@ -1,13 +1,9 @@
 package com.f12s.playdatenow08.validator;
 
 import com.f12s.playdatenow08.models.CodeMdl;
-import com.f12s.playdatenow08.models.PlaydateMdl;
 import com.f12s.playdatenow08.models.RsvpMdl;
-import com.f12s.playdatenow08.models.StateterritoryMdl;
-import com.f12s.playdatenow08.repositories.PlaydateRpo;
 import com.f12s.playdatenow08.repositories.RsvpRpo;
 import com.f12s.playdatenow08.services.CodeSrv;
-import com.f12s.playdatenow08.services.StateterritorySrv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -50,41 +46,6 @@ public class RsvpValidator implements Validator {
 
         // begin validations
 
-                            //        // playdateStatus
-                            //        // (1) get list of valid objects from code table
-                            //        Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
-                            //        List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
-                            //
-                            //        // (2) iterate through the list, looking for objects that match user entry
-                            //        int validPlaydateStatus = 0;
-                            //        int a = 0;
-                            //
-                            //        for (a = 0; a < playdateStatusList.size(); a++) {
-                            //            // all printStatements herein for initial testing purposes only
-                            ////            System.out.print("item: " + a + "\n");
-                            ////            System.out.print("playdateMdl.getPlaydateStatus().getCode(): " + playdateMdl.getPlaydateStatus().getCode() + "\n");
-                            ////            System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusList.get(a).getCode() + "\n");
-                            //            if (
-                            //                    !playdateMdl.getPlaydateStatus().getCode().equals( playdateStatusList.get(a).getCode() )
-                            //            ) {
-                            ////                System.out.println("entry does not match this list item");
-                            ////                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
-                            //            } else {
-                            //                validPlaydateStatus = 1;
-                            ////                System.out.println("validPlaydateStatus achieved!");
-                            ////                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
-                            ////                System.out.println("we're done!");
-                            //                break;
-                            //            }
-                            //        }
-                            //
-                            //        // (3) make determination
-                            //        if (
-                            //                validPlaydateStatus == 0
-                            //        ) {
-                            //            errors.rejectValue("playdateStatus", "Value");
-                            //        }
-
         // playdateOrganizerRsvpStatus
         // (1) get list of valid objects from code table
         Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
@@ -118,6 +79,30 @@ public class RsvpValidator implements Validator {
                 validPlaydateRsvpStatus == 0
         ) {
             errors.rejectValue("respondentRsvpStatus", "Value");
+        }
+
+        // kidCount, take two
+        if (
+                rsvpMdl.getRespondentRsvpStatus().getId() == 21 &&
+                        (
+                                rsvpMdl.getKidCount() == null
+                                        || (rsvpMdl.getKidCount() != null && rsvpMdl.getKidCount() < 1)
+                        )
+
+        ) {
+            errors.rejectValue("kidCount", "rsvpInKidCountCombo");
+        }
+
+        // adultCount, take two
+        if (
+                rsvpMdl.getRespondentRsvpStatus().getId() == 21 &&
+                        (
+                                rsvpMdl.getAdultCount() == null
+                                        || (rsvpMdl.getAdultCount() != null && rsvpMdl.getAdultCount() < 1)
+                        )
+
+        ) {
+            errors.rejectValue("adultCount", "rsvpInAdultCountCombo");
         }
 
 //        // eventDate
@@ -189,17 +174,6 @@ public class RsvpValidator implements Validator {
 //            errors.rejectValue("kidCount", "Size");
 //        }
 
-        // kidCount, take two
-        if (
-                rsvpMdl.getRespondentRsvpStatus().getId() == 21 &&
-                        (
-                                rsvpMdl.getKidCount() == null
-                                        || (rsvpMdl.getKidCount() != null && rsvpMdl.getKidCount() < 1)
-                        )
-
-        ) {
-            errors.rejectValue("kidCount", "rsvpInKidCountCombo");
-        }
 
 //        // adultCount
 //        if (
@@ -209,17 +183,6 @@ public class RsvpValidator implements Validator {
 //            errors.rejectValue("adultCount", "Size");
 //        }
 
-        // adultCount, take two
-        if (
-                rsvpMdl.getRespondentRsvpStatus().getId() == 21 &&
-                        (
-                                rsvpMdl.getAdultCount() == null
-                                        || (rsvpMdl.getAdultCount() != null && rsvpMdl.getAdultCount() < 1)
-                        )
-
-        ) {
-            errors.rejectValue("adultCount", "rsvpInAdultCountCombo");
-        }
 
 //        // locationType
 //        // fyi, this ought to never be invoked as createNew has a default selection
