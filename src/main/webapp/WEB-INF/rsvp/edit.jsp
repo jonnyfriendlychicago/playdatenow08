@@ -209,16 +209,14 @@
         </div><!-- end playdateInfoCol -->
 
         <div id="rsvpEtcCol" class="col">
-
             <div id="rsvpTrackingCard" class="card p-3 d-md-flex justify-content-start mb-3">
-                <p class="m-0 text-secondary text-center">RSVP Tracking</p>
+                <p class="m-0 text-secondary text-center">Attendance Tracking</p>
                 <table class="table table-responsive mt-2 table-borderless table-sm">
                     <thead class="table-light align-top">
                     <tr>
-                        <th scope="col">RSVPs</th>
-                        <th scope="col">RSVPed Adults</th>
-                        <th scope="col">Max Kids</th>
-                        <th scope="col">RSVPed Kids</th>
+                        <th scope="col">Families</th>
+                        <th scope="col">Adults</th>
+                        <th scope="col">Kids</th>
                         <th scope="col">Open Kid Spots</th>
                     </tr>
                     </thead>
@@ -226,12 +224,31 @@
                     <tr>
                         <td>${rsvpCount}</td>
                         <td>${aggAdultsCount}</td>
-                        <td>${playdate.maxCountKids}</td>
                         <td>${aggKidsCount}</td>
                         <td>${openKidsSpots}</td>
                     </tr>
                     </tbody>
                 </table>
+<%--                <table class="table table-responsive mt-2 table-borderless table-sm">--%>
+<%--                    <thead class="table-light align-top">--%>
+<%--                    <tr>--%>
+<%--                        <th scope="col">RSVPs</th>--%>
+<%--                        <th scope="col">RSVPed Adults</th>--%>
+<%--                        <th scope="col">Max Kids</th>--%>
+<%--                        <th scope="col">RSVPed Kids</th>--%>
+<%--                        <th scope="col">Open Kid Spots</th>--%>
+<%--                    </tr>--%>
+<%--                    </thead>--%>
+<%--                    <tbody>--%>
+<%--                    <tr>--%>
+<%--                        <td>${rsvpCount}</td>--%>
+<%--                        <td>${aggAdultsCount}</td>--%>
+<%--                        <td>${playdate.maxCountKids}</td>--%>
+<%--                        <td>${aggKidsCount}</td>--%>
+<%--                        <td>${openKidsSpots}</td>--%>
+<%--                    </tr>--%>
+<%--                    </tbody>--%>
+<%--                </table>--%>
             </div>
 
             <div class="card p-2 border-0">
@@ -261,7 +278,7 @@
                 </div>
 
                 <div class="col d-flex justify-content-end">
-                    <a href="/playdate/${playdate.id}"><button class="btn btn-primary mb-2">Cancel</button></a>
+                    <a href="/playdate/${playdate.id}"><button class="btn btn-primary mb-2 border border-light">Cancel</button></a>
                 </div>
             </div>
 
@@ -272,19 +289,20 @@
 
                 <div class = "container m-0 p-0">
                     <div class="row m-0 p-0">
-                        <div class="form-floating col-sm me-5 p-0 ">
-                            <form:select
-                                    path="rsvpStatus"
-                                    class="form-control"
-                                    id="rsvpStatus"
-                                    placeholder="rsvpStatus">
-                                <form:option value="In" path="rsvpStatus">In</form:option>
-                                <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>
-                                <form:option value="Out" path="rsvpStatus">Out</form:option>
-                            </form:select>
-                            <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
-                            <p class="text-danger bg-light"><form:errors path="rsvpStatus" />
-                        </div>
+
+<%--                        <div class="form-floating col-sm me-5 p-0 ">--%>
+<%--                            <form:select--%>
+<%--                                    path="rsvpStatus"--%>
+<%--                                    class="form-control"--%>
+<%--                                    id="rsvpStatus"--%>
+<%--                                    placeholder="rsvpStatus">--%>
+<%--                                <form:option value="In" path="rsvpStatus">In</form:option>--%>
+<%--                                <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>--%>
+<%--                                <form:option value="Out" path="rsvpStatus">Out</form:option>--%>
+<%--                            </form:select>--%>
+<%--                            <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>--%>
+<%--                            <p class="text-danger bg-light"><form:errors path="rsvpStatus" />--%>
+<%--                        </div>--%>
 
                         <div class="form-floating col-sm me-5 p-0">
                             <form:select
@@ -306,8 +324,6 @@
                             <form:label path="respondentRsvpStatus" for="respondentRsvpStatus">respondentRsvpStatus</form:label>
                             <p class="text-danger bg-light"><form:errors path="respondentRsvpStatus" />
                         </div>
-
-
 
 <%--                                    value="1" --%>
                         <div class="form-floating col-sm me-5 p-0">
@@ -342,13 +358,13 @@
                 </div> <!-- end container -->
 
                 <div>
-                    <button type="submit" class="btn btn-primary w-100">Update</button>
+                    <button type="submit" class="btn btn-primary border border-light">Update</button>
                 </div>
 
             </form:form>
 
             <div class="d-flex justify-content-center mt-3">
-                <a href="/rsvp/delete/${rsvp.id}"><button class="btn btn-danger mb-2">Delete RSVP</button></a>
+                <a href="/rsvp/delete/${rsvp.id}"><button class="btn btn-danger mb-2 border border-light">Delete RSVP</button></a>
             </div>
 
         </div> <!-- end rsvpCard -->

@@ -79,7 +79,7 @@ public class PlaydateValidator implements Validator {
         }
 
         // playdateOrganizerRsvpStatus
-        // (1) get list of valid objects from code table
+        // (1) get list of valid objects
         Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
         List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
 
@@ -106,7 +106,7 @@ public class PlaydateValidator implements Validator {
             }
         }
 
-        // (3) make determination
+        // (3) deliver any determination of error
         if (
                 validPlaydateRsvpStatus == 0
         ) {
@@ -121,8 +121,11 @@ public class PlaydateValidator implements Validator {
         }
 
         // startTimeTxt
+        // (1) get list of valid objects
         // note: this startTimeList is copy/pasted from the controller that delivers this list to the page in the first place
         String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
+
+        // (2) iterate through the list, looking for objects that match user entry
         int validStartTime = 0;
         int i = 0;
 
@@ -145,6 +148,7 @@ public class PlaydateValidator implements Validator {
             }
         }
 
+        // (3) deliver any determination of error
         if (
                 validStartTime == 0
         ) {
@@ -272,6 +276,7 @@ public class PlaydateValidator implements Validator {
             errors.rejectValue("city", "cityLocationTypeCombo");
         }
 
+        // jan 6: we should update below so that it doesn't even do this list review if location type is not 'other location'
         // stateterritory
         // (1) instantiate essential variable
         int stateterritoryValid = 0;

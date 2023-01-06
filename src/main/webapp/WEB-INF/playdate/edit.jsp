@@ -268,6 +268,7 @@
                 <p class="text-danger"><form:errors path="eventDescription" />
             </div>
 
+<%--                      value="1"--%>
             <div class="form-floating mb-3">
                 <form:input
                       path="maxCountKids"
@@ -277,7 +278,7 @@
                       placeholder="maxCountKids"
                       min="1"
                       step="1"
-                      value="1"/>
+                />
                 <form:label path="maxCountKids" for="maxCountKids">Max. Kids Number</form:label>
                 <p class="text-danger"><form:errors path="maxCountKids" />
             </div>
@@ -286,46 +287,64 @@
 
         <div id="rsvpEtcCol" class="col">
             <div id="rsvpTrackingCard" class="card p-3 d-md-flex justify-content-start mb-3">
-                <p class="m-0 text-secondary text-center">RSVP Tracking</p>
+                <p class="m-0 text-secondary text-center">Attendance Tracking</p>
                 <table class="table table-responsive mt-2 table-borderless table-sm">
                     <thead class="table-light align-top">
-                        <tr>
-                            <th scope="col">RSVPs</th>
-                            <th scope="col">RSVPed Adults</th>
-                            <th scope="col">Max Kids</th>
-                            <th scope="col">RSVPed Kids</th>
-                            <th scope="col">Open Spots</th>
-                        </tr>
+                    <tr>
+                        <th scope="col">Families</th>
+                        <th scope="col">Adults</th>
+                        <th scope="col">Kids</th>
+                        <th scope="col">Open Kid Spots</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>${rsvpCount}</td>
-                            <td>${aggAdultsCount}</td>
-                            <td>${playdate.maxCountKids}</td>
-                            <td>${aggKidsCount}</td>
-                            <td>${openKidsSpots}</td>
-                        </tr>
+                    <tr>
+                        <td>${rsvpCount}</td>
+                        <td>${aggAdultsCount}</td>
+                        <td>${aggKidsCount}</td>
+                        <td>${openKidsSpots}</td>
+                    </tr>
                     </tbody>
                 </table>
+<%--                <table class="table table-responsive mt-2 table-borderless table-sm">--%>
+<%--                    <thead class="table-light align-top">--%>
+<%--                        <tr>--%>
+<%--                            <th scope="col">RSVPs</th>--%>
+<%--                            <th scope="col">RSVPed Adults</th>--%>
+<%--                            <th scope="col">Max Kids</th>--%>
+<%--                            <th scope="col">RSVPed Kids</th>--%>
+<%--                            <th scope="col">Open Spots</th>--%>
+<%--                        </tr>--%>
+<%--                    </thead>--%>
+<%--                    <tbody>--%>
+<%--                        <tr>--%>
+<%--                            <td>${rsvpCount}</td>--%>
+<%--                            <td>${aggAdultsCount}</td>--%>
+<%--                            <td>${playdate.maxCountKids}</td>--%>
+<%--                            <td>${aggKidsCount}</td>--%>
+<%--                            <td>${openKidsSpots}</td>--%>
+<%--                        </tr>--%>
+<%--                    </tbody>--%>
+<%--                </table>--%>
             </div><!-- end rsvpTrackingCard -->
 
             <div id="rsvpCard" class="card p-3 d-md-flex justify-content-start bg-secondary">
 
                 <p class="m-0 text-center text-light fs-3" style="font-size: 1.25rem;">Your RSVP</p>
 
-                <div class="form-floating mb-3">
-                    <form:select
-                            path="rsvpStatus"
-                            class="form-control"
-                            id="rsvpStatus"
-                            placeholder="rsvpStatus">
-                        <form:option value="In" path="rsvpStatus">In</form:option>
-                        <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>
-                        <form:option value="Out" path="rsvpStatus">Out</form:option>
-                    </form:select>
-                    <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>
-                    <p class="text-danger bg-light"><form:errors path="rsvpStatus" />
-                </div>
+<%--                <div class="form-floating mb-3">--%>
+<%--                    <form:select--%>
+<%--                            path="rsvpStatus"--%>
+<%--                            class="form-control"--%>
+<%--                            id="rsvpStatus"--%>
+<%--                            placeholder="rsvpStatus">--%>
+<%--                        <form:option value="In" path="rsvpStatus">In</form:option>--%>
+<%--                        <form:option value="Maybe" path="rsvpStatus">Maybe</form:option>--%>
+<%--                        <form:option value="Out" path="rsvpStatus">Out</form:option>--%>
+<%--                    </form:select>--%>
+<%--                    <form:label path="rsvpStatus" for="rsvpStatus">Status</form:label>--%>
+<%--                    <p class="text-danger bg-light"><form:errors path="rsvpStatus" />--%>
+<%--                </div>--%>
 
                 <div class="form-floating mb-3">
                     <form:select
@@ -348,6 +367,7 @@
                     <p class="text-danger bg-light"><form:errors path="playdateOrganizerRsvpStatus" />
                 </div>
 
+<%--                            value="1"--%>
                 <div class="form-floating mb-3">
                     <form:input
                             path="kidCount"
@@ -357,11 +377,12 @@
                             placeholder="kidCount"
                             min="1"
                             step="1"
-                            value="1"/>
+                    />
                     <form:label path="kidCount" for="kidCount"># of Kids</form:label>
                     <p class="text-danger bg-light"><form:errors path="kidCount" />
                 </div>
 
+<%--                            value="1"--%>
                 <div class="form-floating mb-3">
                     <form:input
                             path="adultCount"
@@ -371,7 +392,7 @@
                             placeholder="adultCount"
                             min="1"
                             step="1"
-                            value="1"/>
+                    />
                     <form:label path="adultCount" for="adultCount"># of Adults</form:label>
                     <p class="text-danger bg-light"><form:errors path="adultCount" />
                 </div>
@@ -392,20 +413,18 @@
             <thead class="border-top-0">
                 <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Status</th>
+                <th scope="col">New Status</th>
                 <th scope="col"># of Kids</th>
                 <th scope="col"># of Adults</th>
-                <th scope="col">Comment</th>
                 </tr>
             </thead>
             <tbody>
             <c:forEach var="record" items="${playdateRsvpList}">
                 <tr>
                     <td><a class="text-decoration-none" href="/profile/${record.userId}">${record.userName}</a></td>
-                    <td>${record.rsvpStatus}</td>
+                    <td>${record.rsvpStatusTwo}</td>
                     <td>${record.kidCount}</td>
                     <td>${record.adultCount}</td>
-                    <td>${record.comment}</td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -421,9 +440,6 @@
                     <c:if test="${authUserIsAdmin == 1}">
                         <a href="/playdate/delete/${playdate.id}"><button class="btn btn-info mb-2">Delete Playdate (Admin)</button></a>
                     </c:if>
-
-
-
                 </div>
                   <%--
                 <!-- 9/27: not entirely sure how/why started using this "form" approach for delete; after lots of frustration, embraced using href above instead;  -->

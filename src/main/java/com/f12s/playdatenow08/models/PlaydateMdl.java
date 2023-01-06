@@ -65,7 +65,7 @@ public class PlaydateMdl {
 
     // fields added to house the host RSVP
 
-    @NotBlank(message="RSVP status is required.")
+//    @NotBlank(message="RSVP status is required.")
     private String rsvpStatus;
 
     private Integer kidCount;
