@@ -15,9 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -35,7 +32,7 @@ public class PlaydateMdl {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
 
-//    // begin: entity-specific table fields
+    // begin: entity-specific table fields
 
     private String eventName;
 
