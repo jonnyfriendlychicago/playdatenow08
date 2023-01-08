@@ -156,6 +156,11 @@ public class PlaydateCtl {
 
         // (1) deliver the primary object to be displayed on page
         PlaydateMdl playdateObj = playdateSrv.findById(playdateId);
+
+        if (playdateObj == null ) {
+            return "redirect:/playdate";
+        }
+
         model.addAttribute("playdate", playdateObj);
 
         // (2) deliver list of unioned rsvp records for child record table
