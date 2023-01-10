@@ -13,14 +13,6 @@ public interface SocialconnectionRpo extends CrudRepository<SocialconnectionMdl,
 
     // 2022.12.05: trying to get "find soCon if it exists
 
-//    @Query(
-//            value=
-//                    " select sc.* from playdatenow08.socialconnection sc where sc.userone = :incomingUserA and sc.usertwo = :incomingUserB "
-//                    + " union all "
-//                    + " select sc.* from playdatenow08.socialconnection sc where sc.userone = :incomingUserB and sc.usertwo = :incomingUserA "
-//            , nativeQuery = true)
-//    SocialconnectionMdl existingSoConBaby(Long incomingUserA, Long incomingUserB);
-
     @Query(
             value=
                     " select "
@@ -64,5 +56,4 @@ public interface SocialconnectionRpo extends CrudRepository<SocialconnectionMdl,
             , nativeQuery = true)
     UserSocialConnectionPjo getOneUserSocialConnectionPjo(Long authUserId, Long userProfileId);
 
-
-}
+} // endRpo

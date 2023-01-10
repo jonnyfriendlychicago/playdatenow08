@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SocialconnectionhistoryRpo extends CrudRepository<SocialconnectionhistoryMdl, Long> {
 
-
 } // end rpo

@@ -55,5 +55,4 @@ public class PlaydateSrv {
         return playdateRpo.userHostedPlaydateListPast(x);
     }
 
-// end srv
-}
+} // end srv

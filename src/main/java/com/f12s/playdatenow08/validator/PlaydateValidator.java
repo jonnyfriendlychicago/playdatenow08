@@ -46,8 +46,120 @@ public class PlaydateValidator implements Validator {
         PlaydateMdl playdateMdl = (PlaydateMdl) object;
 
         // begin validations
+        System.out.println("::: BEGIN PLAYDATE VALIDATION :::");
 
-//        // playdateStatus
+        // start validation code set
+        String targetedField = "playdateStatus";
+        String codeCategoryString = "eventStatusType";
+        CodeMdl userEntry = playdateMdl.getPlaydateStatus();
+        String userEntryDisplayText = "playdateMdl.getPlaydateStatus()";
+//        System.out.println("::: Begin " + targetedField + " validation ::: ");
+        // (1) instantiate essential variable, start as positive and only set to negative if a unacceptable condition met
+        boolean validEntry = true;
+        // (2a) check: does incoming variable exist?
+        if (userEntry == null) {
+//            System.out.println(targetedField + " is null");
+            validEntry = false;
+        } else {
+            // (2b) since exists, now get list of valid objects from code table, then iterate through the list, looking for objects that match the user entry
+            List<CodeMdl> validValuesList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType(codeCategoryString));
+//            System.out.print(userEntryDisplayText + ".getCode(): " + userEntry.getCode() + "\n");
+            int a = 0;
+            for (a = 0; a < validValuesList.size(); a++) {  // all printStatements herein for initial testing purposes only
+//                System.out.print("item: " + a + "\n");
+//                System.out.print("validValuesList.get(a).getCode(): " + validValuesList.get(a).getCode() + "\n");
+                if (
+                        userEntry.equals( validValuesList.get(a) )
+                ) {
+                    validEntry = true;
+//                    System.out.println("valid" + targetedField + "! we're done!" );
+                    break;
+                } else {
+                    validEntry = false;
+//                    System.out.println("entry does not match this list item");
+                }
+            }
+        }
+        // (3) deliver error msgs if variable in negative/false status
+        if (!validEntry) {
+            errors.rejectValue(targetedField, "Value");
+        } // end: validation code set
+
+        // below is great, but trying to make it more plug/play with above
+//        System.out.println("begin validation: playdateStatus");
+//        // (1) instantiate essential variable, start as positive and only set to negative if a unacceptable condition met
+//        boolean validPlaydateStatus = true;
+//        // (2a) check: does incoming variable exist?
+//        if (playdateMdl.getPlaydateStatus() == null) {
+//            System.out.println("playdateStatus is null");
+//            validPlaydateStatus = false;
+//        } else {
+//            // (2b) since exists, now get list of valid objects from code table, then iterate through the list, looking for objects that match the user entry
+//            CodecategoryMdl targetedCodeCategory = codecategoryRpo.findCodecategoryMdlByCodeType("eventStatusType");
+//            List<CodeMdl> playdateStatusList = codeSrv.targetedCodeListTwo(targetedCodeCategory);
+//            int a = 0;
+//            for (a = 0; a < playdateStatusList.size(); a++) {  // all printStatements herein for initial testing purposes only
+//                System.out.print("item: " + a + "\n");
+//                System.out.print("playdateMdl.getPlaydateStatus().getCode(): " + playdateMdl.getPlaydateStatus().getCode() + "\n");
+//                System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusList.get(a).getCode() + "\n");
+//                if (
+//                        playdateMdl.getPlaydateStatus().equals( playdateStatusList.get(a) )
+//                ) {
+//                    validPlaydateStatus = true;
+//                    System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+//                    System.out.println("validPlaydateStatus achieved!");
+//                    System.out.println("we're done!");
+//                    break;
+//                } else {
+//                    System.out.println("entry does not match this list item");
+//                    validPlaydateStatus = false;
+//                    System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+//                }
+//            }
+//        }
+//        // (3) deliver error msgs if variable in negative/false status
+//        if (
+//                validPlaydateStatus == false
+//        ) {
+//            errors.rejectValue("playdateStatus", "Value");
+//        }
+//        // end: playdateStatus
+
+            // below old scratch for above
+//            CodecategoryMdl targetedCodeCategory = codecategoryRpo.findCodecategoryMdlByCodeType("eventStatusType");
+//            List<CodeMdl> playdateStatusListTwo = codeSrv.targetedCodeListTwo(targetedCodeCategory);
+//            int z = 0;
+//            for (z = 0; z < playdateStatusListTwo.size(); z++) {
+//                System.out.print("new list, baby" + "\n");
+//                System.out.print("item: " + z + "\n");
+//                System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusListTwo.get(z).getCode() + "\n");
+//            }
+//            // (2b) since exists, now get list of valid objects from code table, then iterate through the list, looking for objects that match user entry
+//            Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
+//            List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
+//            int a = 0;
+//            for (a = 0; a < playdateStatusList.size(); a++) {
+//                // all printStatements herein for initial testing purposes only
+//                System.out.print("item: " + a + "\n");
+//                System.out.print("playdateMdl.getPlaydateStatus().getCode(): " + playdateMdl.getPlaydateStatus().getCode() + "\n");
+//                System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusList.get(a).getCode() + "\n");
+//                if (
+//                        playdateMdl.getPlaydateStatus().getCode().equals( playdateStatusList.get(a).getCode() )
+//                ) {
+//                    validPlaydateStatus = true;
+//                    System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+//                    System.out.println("validPlaydateStatus achieved!");
+//                    System.out.println("we're done!");
+//                    break;
+//                } else {
+//                    System.out.println("entry does not match this list item");
+//                    validPlaydateStatus = false;
+//                    System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+//                }
+//            }
+
+        // below the super old stuff
+        //        // playdateStatus
 //        System.out.println("begin validation: playdateStatus");
 //        // (1) get list of valid objects from code table
 //        Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
@@ -75,98 +187,112 @@ public class PlaydateValidator implements Validator {
 //                break;
 //            }
 //        }
-//
 
-        // begin: playdateStatus
-        System.out.println("begin validation: playdateStatus");
+        // start validation code set
+        targetedField = "playdateOrganizerRsvpStatus";
+        codeCategoryString = "rsvpStatusType";
+        userEntry = playdateMdl.getPlaydateOrganizerRsvpStatus();
+        userEntryDisplayText = "playdateMdl.getPlaydateOrganizerRsvpStatus()";
+//        System.out.println("::: Begin " + targetedField + " validation ::: ");
         // (1) instantiate essential variable, start as positive and only set to negative if a unacceptable condition met
-        boolean validPlaydateStatus = true;
-
+        validEntry = true;
         // (2a) check: does incoming variable exist?
-        if (playdateMdl.getPlaydateStatus() == null) {
-            System.out.println("playdateStatus is null");
-            validPlaydateStatus = false;
+        if (userEntry == null) {
+//            System.out.println(targetedField + " is null");
+            validEntry = false;
         } else {
-
-            CodecategoryMdl targetedCodeCategory = codecategoryRpo.findCodecategoryMdlByCodeType("eventStatusType");
-            List<CodeMdl> playdateStatusListTwo = codeSrv.targetedCodeListTwo(targetedCodeCategory);
-
-            int z = 0;
-            for (z = 0; z < playdateStatusListTwo.size(); z++) {
-                System.out.print("new list, baby" + "\n");
-                System.out.print("item: " + z + "\n");
-                System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusListTwo.get(z).getCode() + "\n");
-
-            }
-            
-            // (2b) since exists, now get list of valid objects from code table, then iterate through the list, looking for objects that match user entry
-            Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
-            List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
+            // (2b) since exists, now get list of valid objects from code table, then iterate through the list, looking for objects that match the user entry
+            List<CodeMdl> validValuesList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType(codeCategoryString));
+//            System.out.print(userEntryDisplayText + ".getCode(): " + userEntry.getCode() + "\n");
             int a = 0;
-            for (a = 0; a < playdateStatusList.size(); a++) {
-                // all printStatements herein for initial testing purposes only
-                System.out.print("item: " + a + "\n");
-                System.out.print("playdateMdl.getPlaydateStatus().getCode(): " + playdateMdl.getPlaydateStatus().getCode() + "\n");
-                System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusList.get(a).getCode() + "\n");
+            for (a = 0; a < validValuesList.size(); a++) {  // all printStatements herein for initial testing purposes only
+//                System.out.print("item: " + a + "\n");
+//                System.out.print("validValuesList.get(a).getCode(): " + validValuesList.get(a).getCode() + "\n");
                 if (
-                        playdateMdl.getPlaydateStatus().getCode().equals( playdateStatusList.get(a).getCode() )
+                        userEntry.equals( validValuesList.get(a) )
                 ) {
-                    validPlaydateStatus = true;
-                    System.out.println("validPlaydateStatus: " + validPlaydateStatus);
-                    System.out.println("validPlaydateStatus achieved!");
-                    System.out.println("we're done!");
+                    validEntry = true;
+//                    System.out.println("valid" + targetedField + "! we're done!" );
                     break;
                 } else {
-                    System.out.println("entry does not match this list item");
-                    validPlaydateStatus = false;
-                    System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+                    validEntry = false;
+//                    System.out.println("entry does not match this list item");
                 }
             }
         }
         // (3) deliver error msgs if variable in negative/false status
-        if (
-                validPlaydateStatus == false
-        ) {
-            errors.rejectValue("playdateStatus", "Value");
-        }
-        // end: playdateStatus
+        if (!validEntry) {
+            errors.rejectValue(targetedField, "Value");
+        } // end: validation code set
 
 
+//        // playdateOrganizerRsvpStatus
+//        // (1) get list of valid objects
+//        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+//        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//
+//        // (2) iterate through the list, looking for objects that match user entry
+//        int validPlaydateRsvpStatus = 0;
+//        int c = 0;
+//
+//        for (c = 0; c < playdateRsvpStatusList.size(); c++) {
+//            // all printStatements herein for initial testing purposes only
+////            System.out.print("playdateOrganizerRsvpStatus item: " + c + "\n");
+////            System.out.print("playdateMdl.getPlaydateStatus().getCode(): " + playdateMdl.getPlaydateStatus().getCode() + "\n");
+////            System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusList.get(a).getCode() + "\n");
+//            if (
+//                    !playdateMdl.getPlaydateOrganizerRsvpStatus().getCode().equals( playdateRsvpStatusList.get(c).getCode() )
+//            ) {
+////                System.out.println("entry does not match this list item");
+////                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+//            } else {
+//                validPlaydateRsvpStatus = 1;
+////                System.out.println("validPlaydateRsvpStatus achieved!");
+////                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+////                System.out.println("we're done!");
+//                break;
+//            }
+//        }
+//
+//        // (3) deliver any determination of error
+//        if (
+//                validPlaydateRsvpStatus == 0
+//        ) {
+//            errors.rejectValue("playdateOrganizerRsvpStatus", "Value");
+//        }
 
-
-        // playdateOrganizerRsvpStatus
+        // startTimeTxt
+//        System.out.println("::: Begin startTimeTxt validation ::: ");
         // (1) get list of valid objects
-        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
-        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
-
+        // note: this startTimeList is copy/pasted from the controller that delivers this list to the page in the first place
+        String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
         // (2) iterate through the list, looking for objects that match user entry
-        int validPlaydateRsvpStatus = 0;
-        int c = 0;
-
-        for (c = 0; c < playdateRsvpStatusList.size(); c++) {
+        boolean validStartTime = true;
+//        System.out.print("playdateMdl.getStartTimeTxt(): " + playdateMdl.getStartTimeTxt() + "\n");
+        int i = 0;
+        for (i = 0; i < startTimeList.length; i++) {
             // all printStatements herein for initial testing purposes only
-//            System.out.print("playdateOrganizerRsvpStatus item: " + c + "\n");
-//            System.out.print("playdateMdl.getPlaydateStatus().getCode(): " + playdateMdl.getPlaydateStatus().getCode() + "\n");
-//            System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusList.get(a).getCode() + "\n");
+//            System.out.print("item: " + i + "\n");
+//            System.out.println("startTimeList[i]: " + startTimeList[i]);
             if (
-                    !playdateMdl.getPlaydateOrganizerRsvpStatus().getCode().equals( playdateRsvpStatusList.get(c).getCode() )
+                    playdateMdl.getStartTimeTxt().equals( startTimeList[i] )
             ) {
-//                System.out.println("entry does not match this list item");
-//                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
-            } else {
-                validPlaydateRsvpStatus = 1;
-//                System.out.println("validPlaydateRsvpStatus achieved!");
-//                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
-//                System.out.println("we're done!");
+//                System.out.println("validStartTime: " + validStartTime);
+                validStartTime = true;
+//                System.out.println("validStartTime achieved!");
                 break;
+            } else {
+                validStartTime = false;
+//                System.out.println("entry does not match this list item");
+//                System.out.println("validStartTime: " + validStartTime);
+//                System.out.println("we're done!");
             }
         }
-
         // (3) deliver any determination of error
         if (
-                validPlaydateRsvpStatus == 0
+                !validStartTime
         ) {
-            errors.rejectValue("playdateOrganizerRsvpStatus", "Value");
+            errors.rejectValue("startTimeTxt", "Value");
         }
 
         // eventDate
@@ -174,41 +300,6 @@ public class PlaydateValidator implements Validator {
                 playdateMdl.getEventDate() == null
         ) {
             errors.rejectValue("eventDate", "Value");
-        }
-
-        // startTimeTxt
-        // (1) get list of valid objects
-        // note: this startTimeList is copy/pasted from the controller that delivers this list to the page in the first place
-        String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
-
-        // (2) iterate through the list, looking for objects that match user entry
-        int validStartTime = 0;
-        int i = 0;
-
-        for (i = 0; i < startTimeList.length; i++) {
-            // all printStatements herein for initial testing purposes only
-//            System.out.print("i: " + i);
-//            System.out.print("playdateMdl.getStartTimeTxt(): " + playdateMdl.getStartTimeTxt());
-//            System.out.println("startTimeList[i]" + startTimeList[i]);
-            if (
-                    !playdateMdl.getStartTimeTxt().equals( startTimeList[i] )
-            ) {
-//                System.out.println("entry does not match this list item");
-//                System.out.println("validStartTime: " + validStartTime);
-            } else {
-                validStartTime = 1;
-//                System.out.println("validStartTime achieved!");
-//                System.out.println("validStartTime: " + validStartTime);
-//                System.out.println("we're done!");
-                break;
-            }
-        }
-
-        // (3) deliver any determination of error
-        if (
-                validStartTime == 0
-        ) {
-            errors.rejectValue("startTimeTxt", "Value");
         }
 
         // eventDescription
@@ -285,18 +376,18 @@ public class PlaydateValidator implements Validator {
         // if locationType is somewhereElse... required related fields:
 
         // stateterritory
-        System.out.println("begin state validation");
+//        System.out.println("::: Begin stateTerr validation :::");
         // (1) determine if this validation applicable
         if (  // only proceed if locationType not null and other location
                 playdateMdl.getLocationType() != null &&
                 playdateMdl.getLocationType().equals(codeSrv.findCodeMdlByCode("otherLocation"))
         ) {
-            System.out.println("locationType is otherLocation; begin stateTerr validation");
+//            System.out.println("locationType is otherLocation; begin stateTerr validation");
             // (1) instantiate essential variable, start as positive and only set to negative if a unacceptable condition met
             boolean stateterritoryValid = true;
             // (2) check: does incoming variable exist?
             if (playdateMdl.getStateterritoryMdl() == null) {
-                System.out.println("stateTerr is null");
+//                System.out.println("stateTerr is null");
                 stateterritoryValid = false;
             }
             // (3) deliver error msgs if variable in negative/false status
@@ -307,7 +398,7 @@ public class PlaydateValidator implements Validator {
             }
 
         } else {
-            System.out.println("locationType is not otherLocation; skipped stateTerr validation");
+//            System.out.println("locationType is not otherLocation; skipped stateTerr validation");
         }
 
         // locationName
@@ -369,8 +460,10 @@ public class PlaydateValidator implements Validator {
 //            errors.rejectValue("zipCode", "zipCodeLocationTypeCombo");
 //        }
 
-    } // end validate function
 
+        // end validations
+        System.out.println("::: END PLAYDATE VALIDATION :::");
+    } // end validate function
 
 } // end validator class
 

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import com.f12s.playdatenow08.models.*;
 import com.f12s.playdatenow08.pojos.PlaydateUserUnionRsvpUser;
+import com.f12s.playdatenow08.repositories.CodecategoryRpo;
 import com.f12s.playdatenow08.services.*;
 import com.f12s.playdatenow08.validator.PlaydateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,11 @@ public class PlaydateCtl {
     @Autowired
     private CodeSrv codeSrv;
 
-    // adding below to mimic the userValidator program
     @Autowired
     private PlaydateValidator playdateValidator;
+
+    @Autowired
+    private CodecategoryRpo codecategoryRpo;
 
     @GetMapping("/playdate")
     public String displayPlaydateAll(
@@ -72,17 +75,22 @@ public class PlaydateCtl {
         String[] startTimeList = {"8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
         model.addAttribute("startTimeList", startTimeList );
 
-        Long codeCategoryIdForPlaydateLocationTypeCodes = Long.valueOf(1);
-        List<CodeMdl> locationTypeList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateLocationTypeCodes);
+//        Long codeCategoryIdForPlaydateLocationTypeCodes = Long.valueOf(1);
+//        List<CodeMdl> locationTypeList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateLocationTypeCodes);
+        // above two replaced by below one
+        List<CodeMdl> locationTypeList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("playdateLocationType"));
         model.addAttribute("locationTypeList", locationTypeList);
 
-        Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
-        List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
+//        Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
+//        List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
+        // above two replaced by below one
+        List<CodeMdl> playdateStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("eventStatusType"));
         model.addAttribute("playdateStatusList", playdateStatusList);
 
-        // let's rock those rsvp status codes
-        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
-        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+//        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+        // above two replaced by below one
+        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("rsvpStatusType"));
         model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
         List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
@@ -117,24 +125,21 @@ public class PlaydateCtl {
         } else {
 
             // (1) deliver lists for drop-down fields
-            String[] startTimeList = { "8:00am", "8:30am", "9:00am", "9:30am", "10:00am", "10:30am", "11:00am",	"11:30am", "12:00pm", "12:30pm", "1:00pm", "1:30pm", "2:00pm", "2:30pm", "3:00pm", "3:30pm", "4:00pm", "4:30pm", "5:00pm", "5:30pm", "6:00pm", "6:30pm", "7:00pm", "7:30pm", "8:00pm", "8:30pm"};
-            model.addAttribute("startTimeList", startTimeList );
 
-            Long codeCategoryIdForPlaydateLocationTypeCodes = Long.valueOf(1);
-            List<CodeMdl> locationTypeList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateLocationTypeCodes);
-            model.addAttribute("locationTypeList", locationTypeList);
-
-            Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
-            List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
+            List<CodeMdl> playdateStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("eventStatusType"));
             model.addAttribute("playdateStatusList", playdateStatusList);
 
-            // let's rock those rsvp status codes
-            Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
-            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
-            model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
+            List<CodeMdl> locationTypeList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("playdateLocationType"));
+            model.addAttribute("locationTypeList", locationTypeList);
+
+            String[] startTimeList = {"8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
+            model.addAttribute("startTimeList", startTimeList );
 
             List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
             model.addAttribute("stateterritoryList", stateterritoryList);
+
+            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("rsvpStatusType"));
+            model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
             // (2) deliver error message
             model.addAttribute("validationErrorMsg", "Uh-oh! Please fix the errors noted below and submit again.  (Or cancel.)");
@@ -302,9 +307,12 @@ public class PlaydateCtl {
         List<UserMdl> userFriendForPlaydateInviteDropdownList = userSrv.userFriendForPlaydateInviteDropdownList(authUserId);
         model.addAttribute("userFriendForPlaydateInviteDropdownList", userFriendForPlaydateInviteDropdownList);
 
-        // let's rock those rsvp status codes
-        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
-        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//        // let's rock those rsvp status codes
+//        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+//        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//        model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
+        // below replaced by above
+        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("rsvpStatusType"));
         model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
         return "playdate/record.jsp";
@@ -326,19 +334,35 @@ public class PlaydateCtl {
         model.addAttribute("playdate", playdateObj); // note: this addAttVar is not kosher, should be 'playdateObj' or better yet: asisPlaydateObj; will need to refactor this later.  'playdateObj' is a var/term currently used different way on postMapping
 
         // (2) deliver lists for drop-down fields
-        String[] startTimeList = {"8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
-        model.addAttribute("startTimeList", startTimeList );
+//        String[] startTimeList = {"8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
+//        model.addAttribute("startTimeList", startTimeList );
+//
+//        Long codeCategoryIdForPlaydateLocationTypeCodes = Long.valueOf(1);
+//        List<CodeMdl> locationTypeList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateLocationTypeCodes);
+//        model.addAttribute("locationTypeList", locationTypeList);
+//
+//        Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
+//        List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
+//        model.addAttribute("playdateStatusList", playdateStatusList);
+//
+//        List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
+//        model.addAttribute("stateterritoryList", stateterritoryList);
 
-        Long codeCategoryIdForPlaydateLocationTypeCodes = Long.valueOf(1);
-        List<CodeMdl> locationTypeList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateLocationTypeCodes);
-        model.addAttribute("locationTypeList", locationTypeList);
-
-        Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
-        List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
+        // (2) deliver lists for drop-down fields
+        List<CodeMdl> playdateStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("eventStatusType"));
         model.addAttribute("playdateStatusList", playdateStatusList);
+
+        List<CodeMdl> locationTypeList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("playdateLocationType"));
+        model.addAttribute("locationTypeList", locationTypeList);
 
         List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
         model.addAttribute("stateterritoryList", stateterritoryList);
+
+        String[] startTimeList = {"8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
+        model.addAttribute("startTimeList", startTimeList );
+
+        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("rsvpStatusType"));
+        model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
         // (3) deliver list of unioned rsvp records for child record table
         List<PlaydateUserUnionRsvpUser> playdateRsvpList = rsvpSrv.playdateRsvpList(playdateId);
@@ -392,10 +416,10 @@ public class PlaydateCtl {
         // (6) add admin variable to page
         model.addAttribute("authUserIsAdmin", authUserIsAdmin);
 
-        // let's rock those rsvp status codes
-        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
-        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
-        model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
+//        // let's rock those rsvp status codes
+//        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+//        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//        model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
         return "playdate/edit.jsp";
     }
@@ -449,20 +473,36 @@ public class PlaydateCtl {
 
             // (1) playdateObj already constituted in steps above, so not repeated here.
 
+//            // (2) deliver lists for drop-down fields
+//            String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
+//            model.addAttribute("startTimeList", startTimeList );
+//
+//            Long codeCategoryIdForPlaydateLocationTypeCodes = Long.valueOf(1);
+//            List<CodeMdl> locationTypeList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateLocationTypeCodes);
+//            model.addAttribute("locationTypeList", locationTypeList);
+//
+//            Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
+//            List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
+//            model.addAttribute("playdateStatusList", playdateStatusList);
+//
+//            List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
+//            model.addAttribute("stateterritoryList", stateterritoryList);
+
             // (2) deliver lists for drop-down fields
-            String[] startTimeList = { "8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
-            model.addAttribute("startTimeList", startTimeList );
-
-            Long codeCategoryIdForPlaydateLocationTypeCodes = Long.valueOf(1);
-            List<CodeMdl> locationTypeList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateLocationTypeCodes);
-            model.addAttribute("locationTypeList", locationTypeList);
-
-            Long codeCategoryIdForPlaydateStatusCodes = Long.valueOf(2);
-            List<CodeMdl> playdateStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateStatusCodes);
+            List<CodeMdl> playdateStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("eventStatusType"));
             model.addAttribute("playdateStatusList", playdateStatusList);
+
+            List<CodeMdl> locationTypeList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("playdateLocationType"));
+            model.addAttribute("locationTypeList", locationTypeList);
 
             List<StateterritoryMdl> stateterritoryList = stateterritorySrv.returnAll();
             model.addAttribute("stateterritoryList", stateterritoryList);
+
+            String[] startTimeList = {"8:00am",	"8:30am",	"9:00am",	"9:30am",	"10:00am",	"10:30am",	"11:00am",	"11:30am",	"12:00pm",	"12:30pm",	"1:00pm",	"1:30pm",	"2:00pm",	"2:30pm",	"3:00pm",	"3:30pm",	"4:00pm",	"4:30pm",	"5:00pm",	"5:30pm",	"6:00pm",	"6:30pm",	"7:00pm",	"7:30pm",	"8:00pm",	"8:30pm"};
+            model.addAttribute("startTimeList", startTimeList );
+
+            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("rsvpStatusType"));
+            model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
             // (3) deliver list of unioned rsvp records for child record table
             Long playdateId = playdateMdl.getId(); // this is needed here, because the id is not being supplied by path variable
@@ -516,11 +556,11 @@ public class PlaydateCtl {
 
             // (6) deliver error msg to page
             model.addAttribute("validationErrorMsg", "Uh-oh! Please fix the errors noted below and submit again.  (Or cancel.)");
-
-            // let's rock those rsvp status codes
-            Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
-            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
-            model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
+//
+//            // let's rock those rsvp status codes
+//            Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+//            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//            model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
             return "playdate/edit.jsp";
         }
@@ -536,14 +576,14 @@ public class PlaydateCtl {
         // authentication boilerplate for all mthd
         UserMdl authUserObj = userSrv.findByEmail(principal.getName());
         // no model attributes here b/c no resulting page we are rending
-        int authUserIsAdmin = userSrv.authUserIsAdmin(authUserObj); // new
+        int authUserIsAdmin = userSrv.authUserIsAdmin(authUserObj); // omg, fix this so it's OOP already.  this is atrocious!
 
         PlaydateMdl playdateObj = playdateSrv.findById(playdateId);
         UserMdl recordCreatorUserMdl = playdateObj.getUserMdl();   // gets the userMdl obj saved to the existing playdateObj
 
         if(
                 !authUserObj.equals(recordCreatorUserMdl)
-                        && authUserIsAdmin != 1
+                        && authUserIsAdmin != 1  // omg, fix this so it's OOP already.  this is atrocious!
         ) {
             System.out.println("recordCreatorUserMdl != currentUserMdl, so redirected to record");
             redirectAttributes.addFlashAttribute("permissionErrorMsg", "You do not have permissions to delete this playdate.");

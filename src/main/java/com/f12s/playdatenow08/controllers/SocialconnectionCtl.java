@@ -45,10 +45,10 @@ public class SocialconnectionCtl {
     // view all socialConnection
     @GetMapping("/connection")
     public String displayConnectionAll(
-//            @ModelAttribute("soConObj") SocialconnectionMdl soConObj // I don't see if/how this is necessary.  old RSVP appendage. 2022.12.01;
+            @ModelAttribute("soConObjForm") SocialconnectionMdl soConObjForm // I don't see if/how this is necessary.  old RSVP appendage. 2022.12.01;
+            // I don't see if/how this is necessary.  old RSVP appendage. 2022.12.01;
             // that said, if comment out, redSqig error; I think it's b/c the friends list and blocked list still has an "add friend" button/functionality??
             // 12/7: WHOA!  above is absolutely required: it puts the soConObj on various records' action-forms in the various lists on the page!
-            @ModelAttribute("soConObjForm") SocialconnectionMdl soConObjForm // I don't see if/how this is necessary.  old RSVP appendage. 2022.12.01;
             , Model model
             , Principal principal
     ) {

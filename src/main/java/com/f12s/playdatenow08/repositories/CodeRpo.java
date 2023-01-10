@@ -13,19 +13,17 @@ public interface CodeRpo extends CrudRepository<CodeMdl, Long> {
 
     List<CodeMdl> findAll();
 
-//    PlaydateMdl findByIdIs(Long id);
-
     CodeMdl findByIdIs(Long id); // I think this line is junk.  12/1
 
     CodeMdl findCodeMdlByCode(String code);
 
-//    List<CodeMdl> findCodeMdlsByCodecategoryOrderByGuiDisplayOrder(CodecategoryMdl codecategory); // jan 8 playaround
-    List<CodeMdl> findCodeMdlsByCodecategory(CodecategoryMdl codecategory); // jan 8 playaround
+//    @Query(
+//            value= "SELECT c.* FROM playdatenow08.code c where c.codecategory = :keyword order by c.gui_display_order"
+//            , nativeQuery = true)
+//    List<CodeMdl> targetedCodeList(Long keyword);
 
-    @Query(
-            value= "SELECT c.* FROM playdatenow08.code c where c.codecategory = :keyword order by c.gui_display_order"
-            , nativeQuery = true)
-    List<CodeMdl> targetedCodeList(Long keyword);
+    //  great example here of how above native query can be readily replaced by simple RPO language (not sure what it's called)
+    List<CodeMdl> findCodeMdlsByCodecategory(CodecategoryMdl codecategory); // jan 8 playaround
 
 } // end rpo
 

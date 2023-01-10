@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.f12s.playdatenow08.models.CodeMdl;
+import com.f12s.playdatenow08.repositories.CodecategoryRpo;
 import com.f12s.playdatenow08.services.CodeSrv;
 import com.f12s.playdatenow08.validator.RsvpValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,9 @@ public class RsvpCtl {
     // adding below to mimic the userValidator program
     @Autowired
     private RsvpValidator rsvpValidator;
+
+    @Autowired
+    private CodecategoryRpo codecategoryRpo;
 
     @PostMapping("/playdate/{id}/rsvp/create")
     public String processRsvpNew(
@@ -134,8 +138,11 @@ public class RsvpCtl {
             // end: calculate various RSVP-related stats.
 
             // let's rock those rsvp status codes
-            Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
-            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//            Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+//            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//            model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
+
+            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("rsvpStatusType"));
             model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
             return "playdate/record.jsp";
@@ -299,9 +306,12 @@ public class RsvpCtl {
         model.addAttribute("rsvpExistsCreatedByAuthUser", rsvpExistsCreatedByAuthUser);
         // end: calculate various RSVP-related stats.
 
-        // let's rock those rsvp status codes
-        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
-        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//        // let's rock those rsvp status codes
+//        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+//        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//        model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
+
+        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("rsvpStatusType"));
         model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
         return "rsvp/edit.jsp";
@@ -410,8 +420,11 @@ public class RsvpCtl {
 
 
             // let's rock those rsvp status codes
-            Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
-            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//            Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+//            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//            model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
+
+            List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType("rsvpStatusType"));
             model.addAttribute("playdateRsvpStatusList", playdateRsvpStatusList);
 
 

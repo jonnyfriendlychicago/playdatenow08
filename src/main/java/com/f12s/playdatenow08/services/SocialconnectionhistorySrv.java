@@ -32,8 +32,4 @@ public class SocialconnectionhistorySrv {
 //        System.out.println("stuff accomplished in mega service now");
     } // end createNew
 
-
-
-
-
 } // end srv

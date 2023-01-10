@@ -1,6 +1,5 @@
 package com.f12s.playdatenow08.services;
 
-import com.f12s.playdatenow08.models.CodeMdl;
 import com.f12s.playdatenow08.models.RoleMdl;
 import com.f12s.playdatenow08.models.UserMdl;
 import com.f12s.playdatenow08.pojos.UserSocialConnectionPjo;
@@ -13,11 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 //import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-
-//import java.util.ArrayList;
-//import org.mindrot.jbcrypt.BCrypt;
-
-//import com.jonfriend.playdatenow_v04.models.LoginUserMdl;
 
 @Service
 public class UserSrv{
@@ -145,6 +139,8 @@ public class UserSrv{
     // (5) relations to authUser: friends
     public List<UserSocialConnectionPjo> userSocialConnectionListFriends(Long authUserId) {return userRpo.userSocialConnectionListFriends(authUserId);}
 
+
+
     // determination of whether auth user is admin or not; this combination of new variable instantiation and list iteration is required b/c of the many:many set-up between user and role
     public int authUserIsAdmin(UserMdl authUserObj) {
         int authUserIsAdmin = 0;
@@ -153,25 +149,30 @@ public class UserSrv{
         // 6c: iterate through the list, looking for values where role id is 2 or 3, i.e. the admin roles; and yes, there is literally only one record in the list, so this iteration is "one and done"
         int a = 0; // instantiate variable for iteration
         for (a=0; a < authUserObjRoleMdlList.size(); a++ ) {
-//            System.out.println("item from service: " + a );
+            System.out.println("item from service: " + a );
+            System.out.println("authUserObjRoleMdlList.get(a): " + authUserObjRoleMdlList.get(a));
 //            System.out.println("authUserObjRoleMdlList.get(a).getId() service: " + authUserObjRoleMdlList.get(a).getId() );
             if (
+
                     authUserObjRoleMdlList.get(a).getId().equals(Long.valueOf(2))
+                            // replace above with a new line below so it's no longer get id... it using object
                             ||
+
                             authUserObjRoleMdlList.get(a).getId().equals(Long.valueOf(3))
+                // replace above with a new line below so it's no longer get id... it using object
             ) authUserIsAdmin = 1;
 //            System.out.println("authUserIsAdmin service: " + authUserIsAdmin  + "\n" );
         }
         return authUserIsAdmin;
     }
 
+
+
     // (6) getting friends list on playdate page
     public List<UserMdl> userFriendForPlaydateInviteDropdownList(Long x) {
         return userRpo.userFriendForPlaydateInviteDropdownList(x);
     }
 
-
-// end srv
-}
+} // end srv
 
 

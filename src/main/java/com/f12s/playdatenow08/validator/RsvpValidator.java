@@ -2,6 +2,7 @@ package com.f12s.playdatenow08.validator;
 
 import com.f12s.playdatenow08.models.CodeMdl;
 import com.f12s.playdatenow08.models.RsvpMdl;
+import com.f12s.playdatenow08.repositories.CodecategoryRpo;
 import com.f12s.playdatenow08.repositories.RsvpRpo;
 import com.f12s.playdatenow08.services.CodeSrv;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class RsvpValidator implements Validator {
 
     @Autowired
     private CodeSrv codeSrv;
+
+    @Autowired
+    private CodecategoryRpo codecategoryRpo;
 
 //    @Autowired
 //    private StateterritorySrv stateterritorySrv;
@@ -45,41 +49,83 @@ public class RsvpValidator implements Validator {
         RsvpMdl rsvpMdl = (RsvpMdl) object;
 
         // begin validations
+        System.out.println("::: BEGIN RSVP VALIDATION :::");
 
-        // playdateOrganizerRsvpStatus
-        // (1) get list of valid objects from code table
-        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
-        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//        // playdateOrganizerRsvpStatus
+//        // (1) get list of valid objects from code table
+//        Long codeCategoryIdForPlaydateRsvpStatusCodes = Long.valueOf(5);
+//        List<CodeMdl> playdateRsvpStatusList = codeSrv.targetedCodeList(codeCategoryIdForPlaydateRsvpStatusCodes);
+//        List<CodeMdl> validValuesList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType(codeCategoryString));
+//
+//        // (2) iterate through the list, looking for objects that match user entry
+//        int validPlaydateRsvpStatus = 0;
+//        int c = 0;
+//
+//        for (c = 0; c < playdateRsvpStatusList.size(); c++) {
+//            // all printStatements herein for initial testing purposes only
+//            System.out.print("respondentRsvpStatus item: " + c + "\n");
+////            System.out.print("playdateMdl.getPlaydateStatus().getCode(): " + playdateMdl.getPlaydateStatus().getCode() + "\n");
+////            System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusList.get(a).getCode() + "\n");
+//            if (
+//                    !rsvpMdl.getRespondentRsvpStatus().getCode().equals( playdateRsvpStatusList.get(c).getCode() )
+//            ) {
+//                System.out.println("entry does not match this list item");
+////                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+//            } else {
+//                validPlaydateRsvpStatus = 1;
+//                System.out.println("validPlaydateRsvpStatus achieved!");
+////                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
+////                System.out.println("we're done!");
+//                break;
+//            }
+//        }
+//        // (3) make determination
+//        if (
+//                validPlaydateRsvpStatus == 0
+//        ) {
+//            errors.rejectValue("respondentRsvpStatus", "Value");
+//        }
 
-        // (2) iterate through the list, looking for objects that match user entry
-        int validPlaydateRsvpStatus = 0;
-        int c = 0;
-
-        for (c = 0; c < playdateRsvpStatusList.size(); c++) {
-            // all printStatements herein for initial testing purposes only
-            System.out.print("respondentRsvpStatus item: " + c + "\n");
-//            System.out.print("playdateMdl.getPlaydateStatus().getCode(): " + playdateMdl.getPlaydateStatus().getCode() + "\n");
-//            System.out.print("playdateStatusList.get(a).getCode(): " + playdateStatusList.get(a).getCode() + "\n");
-            if (
-                    !rsvpMdl.getRespondentRsvpStatus().getCode().equals( playdateRsvpStatusList.get(c).getCode() )
-            ) {
-                System.out.println("entry does not match this list item");
-//                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
-            } else {
-                validPlaydateRsvpStatus = 1;
-                System.out.println("validPlaydateRsvpStatus achieved!");
-//                System.out.println("validPlaydateStatus: " + validPlaydateStatus);
-//                System.out.println("we're done!");
-                break;
+        // start validation code set
+        String targetedField = "respondentRsvpStatus";
+        String codeCategoryString = "rsvpStatusType";
+        CodeMdl userEntry = rsvpMdl.getRespondentRsvpStatus();  // playdateMdl.getPlaydateOrganizerRsvpStatus();
+        String userEntryDisplayText = "rsvpMdl.getRespondentRsvpStatus()";
+//        System.out.println("::: Begin " + targetedField + " validation ::: ");
+        // (1) instantiate essential variable, start as positive and only set to negative if a unacceptable condition met
+        boolean validEntry = true;
+        // (2a) check: does incoming variable exist?
+        if (userEntry == null) {
+//            System.out.println(targetedField + " is null");
+            validEntry = false;
+        } else {
+            // (2b) since exists, now get list of valid objects from code table, then iterate through the list, looking for objects that match the user entry
+            List<CodeMdl> validValuesList = codeSrv.targetedCodeListTwo(codecategoryRpo.findCodecategoryMdlByCodeType(codeCategoryString));
+//            System.out.print(userEntryDisplayText + ".getCode(): " + userEntry.getCode() + "\n");
+            int a = 0;
+            for (a = 0; a < validValuesList.size(); a++) {  // all printStatements herein for initial testing purposes only
+//                System.out.print("item: " + a + "\n");
+//                System.out.print("validValuesList.get(a).getCode(): " + validValuesList.get(a).getCode() + "\n");
+                if (
+                        userEntry.equals( validValuesList.get(a) )
+                ) {
+                    validEntry = true;
+//                    System.out.println("valid" + targetedField + "! we're done!" );
+                    break;
+                } else {
+                    validEntry = false;
+//                    System.out.println("entry does not match this list item");
+                }
             }
         }
+        // (3) deliver error msgs if variable in negative/false status
+        if (!validEntry) {
+            errors.rejectValue(targetedField, "Value");
+        } // end: validation code set
 
-        // (3) make determination
-        if (
-                validPlaydateRsvpStatus == 0
-        ) {
-            errors.rejectValue("respondentRsvpStatus", "Value");
-        }
+
+
+
 
         // kidCount, take two
         if (
@@ -306,7 +352,8 @@ public class RsvpValidator implements Validator {
 
 
 
-
+        // end validations
+        System.out.println("::: END RSVP VALIDATION :::");
     } // end validate function
 
 

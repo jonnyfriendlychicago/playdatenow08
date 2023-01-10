@@ -29,9 +29,3 @@ public interface UserSocialConnectionPjo {
     Integer getInitiatorUser();
 
 } // end pojo
-
-
-//package com.f12s.playdatenow08.pojos;
-//
-//public interface UserSocialConnectionPjo {
-//}

@@ -10,5 +10,4 @@ public interface StateterritoryRpo extends CrudRepository<StateterritoryMdl, Lon
 
     List<StateterritoryMdl> findAll();
 
-// end rpo
-}
+} // end rpo
