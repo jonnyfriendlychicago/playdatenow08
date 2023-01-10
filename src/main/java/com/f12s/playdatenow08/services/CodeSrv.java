@@ -18,21 +18,19 @@ public class CodeSrv {
     // returns all
     public List<CodeMdl> returnAll() {return codeRpo.findAll(); }
 
-    public List<CodeMdl> targetedCodeList(Long x) {
-        return codeRpo.targetedCodeList(x);
-    }
+//    public List<CodeMdl> targetedCodeList(Long x) {
+//        return codeRpo.targetedCodeList(x);
+//    }
 
     // jan 8 mess around
     public List<CodeMdl> targetedCodeListTwo(CodecategoryMdl x) {
         return codeRpo.findCodeMdlsByCodecategory(x);
     }
 
-
     public CodeMdl findCodeMdlByCode(
             String code
     ) {
         return codeRpo.findCodeMdlByCode(code);
     }
-
 
 } // end CodeSrv

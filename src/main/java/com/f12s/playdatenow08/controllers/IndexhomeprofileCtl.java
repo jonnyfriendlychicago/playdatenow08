@@ -248,9 +248,9 @@ public class IndexhomeprofileCtl {
         // above deprecated a while ago by below
 
         // (2) deliver list of user records to page
-        Long authUserId = authUserObj.getId();
+//        Long authUserId = authUserObj.getId();
 //        List<UserSocialConnectionPjo> userSocialConnectionList = userSrv.userSocialConnectionList(authUserObj.getId());
-        List<UserSocialConnectionPjo> userSocialConnectionList = userSrv.userSocialConnectionList( authUserId );
+        List<UserSocialConnectionPjo> userSocialConnectionList = userSrv.userSocialConnectionList( authUserObj.getId() );
         model.addAttribute("userSocialConnectionList", userSocialConnectionList);
 
         return "profile/list.jsp";
@@ -332,7 +332,6 @@ public class IndexhomeprofileCtl {
 //        }
 //        // 6d: send variable to page
 //        model.addAttribute("authUserIsAdmin", authUserIsAdmin);
-
 
         return "profile/record.jsp";
     }
@@ -505,7 +504,6 @@ public class IndexhomeprofileCtl {
         // below is an example of how to redirect users away from this screen if that's desired
 //        return "redirect:/playdate";
     }
-
 
 } // end of methods
 

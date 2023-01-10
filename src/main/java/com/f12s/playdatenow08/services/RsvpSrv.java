@@ -50,12 +50,8 @@ public class RsvpSrv {
         return rsvpRpo.findAllByPlaydateMdl(x);
     }
 
-//    public List<PlaydateUserUnionRsvpUser> playdateRsvpList(Long x) {
-//        return rsvpRpo.playdateRsvpList(x);
-//    }
     public List<PlaydateUserUnionRsvpUser> playdateRsvpList(Long playdateId) {
         return rsvpRpo.playdateRsvpList(playdateId);
     }
 
-// end srv
-}
+} // end srv
